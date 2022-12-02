@@ -4,24 +4,32 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private Tile[] hand;
-    private Tile drawn;
+    int[,] hand = new int[,] {
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+    };
+    //private List<Tile> hand;
+    //private Tile drawn;
     private Mahjong gameManager;
     //private List<Tile> hand;
     // Start is called before the first frame update
+    private int score;
     void Awake()
     {
-        Tile[] hand = new Tile[16];
+        //hand = new List<Tile>(16);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void Finish()
     {
-        gameManager.FinishGame();
+        //gameManager.FinishGame();
     }
 }

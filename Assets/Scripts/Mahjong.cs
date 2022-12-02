@@ -4,16 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum GameState { setup, playing, mahjong };
+
 public class Mahjong : MonoBehaviour
 {
-    private Tile[] board;
+    private List<Tile> board;
     private GameState state;
 
     private Player[] players;
+
+    private int round, numRounds;
     // Start is called before the first frame update
     void Awake()
     {
-        board = new Tile[144];
+        board = new List<Tile>(144);
         players = new Player[4];
         state = GameState.setup;
         BoardSetup();
@@ -28,10 +31,9 @@ public class Mahjong : MonoBehaviour
     void BoardSetup()
     {
         System.Random rand = new System.Random();
-        int n = board.Length;
+        int n = board.Count;
         while (n > 1) 
         {
-            
             int k = rand.Next(n--);
             Tile temp = board[n];
             board[n] = board[k];
