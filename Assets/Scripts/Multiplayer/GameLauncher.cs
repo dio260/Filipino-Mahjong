@@ -70,6 +70,7 @@ public class GameLauncher : MonoBehaviourPunCallbacks
 
                 RoomOptions options = new RoomOptions();
                 options.IsVisible = false;
+                options.MaxPlayers = 4;
                 StartCoroutine(DelayedJoin(roomName.text, options, null));
                 // PhotonNetwork.JoinOrCreateRoom(roomName.text, options, null);
             }
