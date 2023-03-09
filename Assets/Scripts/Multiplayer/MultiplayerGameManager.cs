@@ -58,13 +58,13 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                         PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 1f, -2.5f), Quaternion.identity, 0);
                     break;
                     case 2:
-                        PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(2.5f, 1f, 0f), Quaternion.AngleAxis(90, Vector3.up), 0);
+                        PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(2.5f, 1f, 0f), Quaternion.AngleAxis(-90, Vector3.up), 0);
                     break;
                     case 3:
-                        PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 1f, 2.5f), Quaternion.AngleAxis(180, Vector3.up), 0);
+                        PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 1f, 2.5f), Quaternion.AngleAxis(-180, Vector3.up), 0);
                     break;
                     case 4:
-                        PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(-2.5f, 1f, 0f), Quaternion.AngleAxis(270, Vector3.up), 0);
+                        PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(-2.5f, 1f, 0f), Quaternion.AngleAxis(-270, Vector3.up), 0);
                     break;
                 }
                 
