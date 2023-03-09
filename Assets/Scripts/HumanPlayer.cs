@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HumanPlayer : Player
+public class HumanPlayer : MahjongPlayerBase
 {
     // Start is called before the first frame update
     void Start()

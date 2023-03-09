@@ -10,14 +10,14 @@ public class Mahjong : MonoBehaviour
     private List<Tile> board;
     private GameState state;
 
-    private Player[] players;
+    private MahjongPlayerBase[] players;
 
     private int round, numRounds;
     // Start is called before the first frame update
     void Awake()
     {
         board = new List<Tile>(144);
-        players = new Player[4];
+        players = new MahjongPlayerBase[4];
         state = GameState.setup;
         BoardSetup();
     }

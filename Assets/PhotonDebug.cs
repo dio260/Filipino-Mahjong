@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Realtime;
+using Photon.Pun;
 
-public class AIPlayer : MahjongPlayerBase
+public class PhotonDebug : MonoBehaviour
 {
-    
     // Start is called before the first frame update
     void Start()
     {
