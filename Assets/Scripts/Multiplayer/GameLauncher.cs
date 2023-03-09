@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using Photon.Realtime;
 using Photon.Pun;
 
@@ -69,7 +70,8 @@ public class GameLauncher : MonoBehaviourPunCallbacks
 
                 RoomOptions options = new RoomOptions();
                 options.IsVisible = false;
-                PhotonNetwork.JoinOrCreateRoom(roomName.text, options, null);
+                StartCoroutine(DelayedJoin(roomName.text, options, null));
+                // PhotonNetwork.JoinOrCreateRoom(roomName.text, options, null);
             }
 
         }
@@ -86,7 +88,11 @@ public class GameLauncher : MonoBehaviourPunCallbacks
         // PhotonNetwork.JoinOrCreateRoom(roomName.text, options, null);
     }
 
-
+    IEnumerator DelayedJoin(string name, RoomOptions options, TypedLobby lobby)
+    {
+        yield return new WaitForSeconds(2f);
+        PhotonNetwork.JoinOrCreateRoom(name, options, lobby);
+    }
 
     void LogFeedback(string message)
     {
