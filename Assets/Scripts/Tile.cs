@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public enum suit { stick, ball, character };
+public enum suit { stick, ball, character, flower };
 public class Tile : MonoBehaviour
 {
     public suit tileType;
@@ -17,7 +17,15 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        debugText.text = number + '\n' + tileType.ToString();
+        if(tileType == suit.flower)
+        {
+            debugText.text = tileType.ToString();
+        }
+        else
+        {
+            debugText.text = number + '\n' + tileType.ToString();
+        }
+        
     }
 
     // Update is called once per frame
