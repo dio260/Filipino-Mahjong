@@ -5,20 +5,27 @@ using UnityEngine;
 
 public enum GameState { setup, playing, mahjong };
 
-public class Mahjong : MonoBehaviour
+public class MahjongManager : MonoBehaviour
 {
     private List<Tile> board;
+    private static int MAXTILECOUNT = 144;
     private GameState state;
 
-    private MahjongPlayerBase[] players;
+    private MahjongPlayerBase[] players = new MahjongPlayerBase[4];
+
+    private MahjongPlayerBase dealer, currentPlayerTurn;
 
     private int round, numRounds;
     // Start is called before the first frame update
     void Awake()
     {
-        board = new List<Tile>(144);
-        players = new MahjongPlayerBase[4];
         state = GameState.setup;
+        board = new List<Tile>(MAXTILECOUNT);
+        // players = new MahjongPlayerBase[4];
+        
+
+        dealer = players[1];
+
         BoardSetup();
     }
 
