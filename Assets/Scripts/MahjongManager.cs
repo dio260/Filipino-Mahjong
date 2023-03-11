@@ -8,6 +8,7 @@ public enum GameState { setup, playing, finished };
 public class MahjongManager : MonoBehaviour
 {
     public static MahjongManager mahjongManager;
+    [SerializeField]
     private List<Tile> board;
     public List<Tile> wall;
 
@@ -22,6 +23,7 @@ public class MahjongManager : MonoBehaviour
     private MahjongPlayerBase dealer, previousPlayer, currentPlayer, nextPlayer;
 
     private int round, numRounds;
+    public GameObject InitialTileParent;
     // Start is called before the first frame update
     void Awake()
     {
@@ -33,14 +35,20 @@ public class MahjongManager : MonoBehaviour
         {
             mahjongManager = this;
         }
+        //initialize some stuff
         state = GameState.setup;
         board = new List<Tile>(MAXTILECOUNT);
         wall = new List<Tile>();
         deadTiles = new List<Tile>();
+        // dealer = players[0];
         // players = new MahjongPlayerBase[4];
 
+        //put all the tiles into board structure;
+        foreach (Tile tile in InitialTileParent.transform.GetComponentsInChildren<Tile>())
+        {
+            board.Add(tile);
+        }
 
-        dealer = players[1];
 
         BoardSetup();
     }
@@ -53,6 +61,7 @@ public class MahjongManager : MonoBehaviour
 
     void BoardSetup()
     {
+        Debug.Log("Shuffling Board");
         System.Random rand = new System.Random();
         int n = board.Count;
         while (n > 1)
@@ -63,7 +72,7 @@ public class MahjongManager : MonoBehaviour
             board[k] = temp;
         }
 
-        RollDice();
+        // RollDice();
     }
 
     void RollDice()
