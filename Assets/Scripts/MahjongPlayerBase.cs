@@ -30,7 +30,7 @@ public class MahjongPlayerBase : MonoBehaviour
     public Tile discardChoice;
     public PlayerState currentState;
 
-    public Button chowButton, pongButton, kangButton, todasButton;
+
 
     #region Internal Calculation Variables
     List<Tile> balls = new List<Tile>();
@@ -41,6 +41,7 @@ public class MahjongPlayerBase : MonoBehaviour
     //stuff to be moved to HumanPlayer child class
     Camera playerCam;
     public Transform closedHandParent;
+    public Button chowButton, pongButton, kangButton, todasButton;
 
     void Awake()
     {
@@ -56,13 +57,13 @@ public class MahjongPlayerBase : MonoBehaviour
     {
         // Debug.Log(Input.mousePosition);
         Vector3 mouseWorldPos = playerCam.ViewportToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCam.nearClipPlane));
-        
+
         Ray mouseWorldRay = playerCam.ScreenPointToRay(Input.mousePosition);
         Debug.Log(mouseWorldRay.origin);
-        if(Physics.Raycast(mouseWorldRay, out RaycastHit hit, Vector3.Distance(transform.position, closedHandParent.position)))
+        if (Physics.Raycast(mouseWorldRay, out RaycastHit hit, Vector3.Distance(transform.position, closedHandParent.position)))
         {
             Debug.Log("touched");
-            if(closedHandParent.Find(hit.transform.name) != null && Input.GetMouseButton(0))
+            if (closedHandParent.Find(hit.transform.name) != null && Input.GetMouseButton(0))
             {
                 Debug.Log("holding tile");
                 hit.transform.position = new Vector3(mouseWorldRay.origin.x, mouseWorldRay.origin.y, hit.transform.position.z);
@@ -83,12 +84,14 @@ public class MahjongPlayerBase : MonoBehaviour
         //make life easier by sorting the stuff;
         SortTilesBySuit();
 
+        Tile discard = MahjongManager.mahjongManager.mostRecentDiscard;
         //most priority is a winning hand, takes precedence
         //edge case, closed hand size is 1, so waiting on the last pair
         if (closedHand.Count == 1 &&
-        closedHand[0].number == MahjongManager.mahjongManager.mostRecentDiscard.number &&
-        closedHand[0].tileType == MahjongManager.mahjongManager.mostRecentDiscard.tileType)
+        closedHand[0].number == discard.number &&
+        closedHand[0].tileType == discard.tileType)
         {
+            //GUI stuff probably needs to be moved to Human as well
             todasButton.gameObject.SetActive(true);
         }
         else if (CalculateSevenPairs())
@@ -100,7 +103,45 @@ public class MahjongPlayerBase : MonoBehaviour
             todasButton.gameObject.SetActive(true);
         }
 
-        //find pong and kang
+        // find melds. need to figure out how to determine melds for transferring to the open hand
+        //find melds
+        List<Tile> temp = new List<Tile>();
+        switch (discard.tileType)
+        {
+            case suit.ball:
+                temp = balls;
+                break;
+            case suit.character:
+                temp = chars;
+                break;
+            case suit.stick:
+                temp = sticks;
+                break;
+        }
+
+        int matchCount = 0;
+        int seqCount = 0;
+
+        foreach (Tile tile in temp)
+        {
+            if(tile.number == discard.number)
+            {
+                matchCount += 1;
+            }
+
+            //take advantage of the subarrays being sorted numerically for chow
+            // if(tile.number == discard.number -)
+        }
+
+        if(matchCount > 2)
+        {
+            kangButton.gameObject.SetActive(true);
+        }
+        if(matchCount == 2)
+        {
+            pongButton.gameObject.SetActive(true);
+        }
+
 
     }
 
