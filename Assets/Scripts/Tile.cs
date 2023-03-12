@@ -8,7 +8,7 @@ public class Tile : MonoBehaviour
 {
     public suit tileType;
     public int number;
-    public bool onBoard;
+    public bool onBoard, closed, open;
 
     public TMP_Text debugText;
 
