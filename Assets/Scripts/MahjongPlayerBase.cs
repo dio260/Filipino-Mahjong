@@ -39,7 +39,7 @@ public class MahjongPlayerBase : MonoBehaviour
     #endregion
 
     
-    public Transform closedHandParent;
+    public Transform closedHandParent, openHandParent, flowersParent;
     public Button chowButton, pongButton, kangButton, todasButton;
 
     void Start()
@@ -48,7 +48,7 @@ public class MahjongPlayerBase : MonoBehaviour
         // closedHand = new List<Tile>();
         // openHand = new List<Tile>();
         currentDecision = decision.pass;
-        closedHandParent.position = transform.position + transform.forward * 0.7f;
+        closedHandParent.position = transform.position + transform.forward * 0.7f + transform.up * -0.15f;
     }
 
     
@@ -202,6 +202,8 @@ public class MahjongPlayerBase : MonoBehaviour
     public void AddFlower(Tile flower)
     {
         flowers.Add(flower);
+        flower.transform.parent = closedHandParent;
+        closedHand.Remove(flower);
     }
     public Tile currentDrawnTile()
     {
