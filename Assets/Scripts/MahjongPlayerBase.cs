@@ -153,6 +153,7 @@ public class MahjongPlayerBase : MonoBehaviour
         balls = new List<Tile>();
         sticks = new List<Tile>();
         chars = new List<Tile>();
+        // flowers = new List<Tile>();
 
         foreach (Tile tile in closedHand)
         {
@@ -186,6 +187,38 @@ public class MahjongPlayerBase : MonoBehaviour
             tile.transform.localEulerAngles = closedHandParent.up * 90;
             placementReference += sideOffset;
         }
+    }
+
+    public int replaceInitialFlowerTiles()
+    {
+        List<Tile> flowersInHand = new List<Tile>();
+        foreach(Tile tile in closedHand)
+        {
+            if(tile.tileType == suit.flower)
+            {  
+                flowersInHand.Add(tile);
+            }
+        }
+
+        flowers.AddRange(flowersInHand);
+
+        foreach(Tile tile in flowersInHand)
+        {
+            closedHand.Remove(tile);
+        }
+
+        int newFlowerCount = 0;
+        for(int x = 0; x < flowersInHand.Count; x++)
+        {
+            Tile drawnTile = MahjongManager.mahjongManager.wall[MahjongManager.mahjongManager.wall.Count - 1];
+            if(drawnTile.tileType == suit.flower)
+                newFlowerCount += 1;
+            closedHand.Add(drawnTile);
+            MahjongManager.mahjongManager.wall.RemoveAt(MahjongManager.mahjongManager.wall.Count - 1);
+        }
+
+        return newFlowerCount;
+
     }
 
     public bool IsWaiting()
@@ -222,8 +255,8 @@ public class MahjongPlayerBase : MonoBehaviour
     }
     public void DrawFlowerTile()
     {
-        flowers.Add(currentTile);
         currentTile = MahjongManager.mahjongManager.wall[walls.Count - 1];
+        flowers.Add(currentTile);
         MahjongManager.mahjongManager.wall.RemoveAt(walls.Count - 1);
     }
 }

@@ -50,7 +50,7 @@ public class MahjongManager : MonoBehaviour
             board.Add(tile);
         }
 
-        
+
 
 
         BoardSetup();
@@ -91,7 +91,7 @@ public class MahjongManager : MonoBehaviour
         int wallIndex = (MAXTILECOUNT / 4) * dieRollResult;
         wall.AddRange(board.GetRange(wallIndex, MAXTILECOUNT - wallIndex));
         wall.AddRange(board.GetRange(0, wallIndex));
-        
+
 
         List<Tile> distributedTiles = wall.GetRange(0, 65);
         wall.RemoveRange(0, 65);
@@ -102,13 +102,29 @@ public class MahjongManager : MonoBehaviour
             players[(dieRollResult + ((i - 1) / 16)) % 4].AddTile(distributedTiles[i]);
         }
 
-        foreach(MahjongPlayerBase player in players)
+        StartCoroutine(Wait());
+
+        int needFlowers = -1;
+        while (needFlowers != 0)
+        {
+            needFlowers = 4;
+            foreach (MahjongPlayerBase player in players)
+            {
+                int remainingFlowers = player.replaceInitialFlowerTiles();
+                if (remainingFlowers == 0)
+                    needFlowers -= 1;
+            }
+        }
+
+
+
+        foreach (MahjongPlayerBase player in players)
         {
             player.VisuallySortTiles();
         }
 
         currentPlayer = dealer;
-        nextPlayer = players[(dieRollResult + 1)% players.Count];
+        nextPlayer = players[(dieRollResult + 1) % players.Count];
 
         // state = GameState.playing;
         // StartCoroutine(TakeTurn(currentPlayer));
@@ -178,6 +194,13 @@ public class MahjongManager : MonoBehaviour
     public void FinishGame()
     {
         state = GameState.finished;
+    }
+
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(3);
+
     }
 
 }
