@@ -20,10 +20,13 @@ public class Tile : MonoBehaviour
         if(tileType == suit.flower)
         {
             gameObject.name = tileType.ToString();
+            debugText.text = tileType.ToString();
+
         }
         else
         {
             gameObject.name = number + " " + tileType.ToString();
+            debugText.text = number + " " + tileType.ToString();
         }
         
     }

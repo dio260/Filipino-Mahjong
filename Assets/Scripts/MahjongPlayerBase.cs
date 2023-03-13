@@ -176,15 +176,22 @@ public class MahjongPlayerBase : MonoBehaviour
     {
         // SortTilesBySuit();
         Vector3 localLeft = -1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
-        float sideOffset = 1.5f / closedHand.Count;
-        float placementReference = 1.5f  / 2;
+        Debug.Log("parent forward: " + closedHandParent.forward + " parent up: " + closedHandParent.up.normalized);   
+        float sideOffset = 1.5f / (float)closedHand.Count;
+        float placementReference = 1.5f  / -2.0f;
         Debug.Log("left: " + localLeft + " off: " + sideOffset + " ref: "  + placementReference);
-        int multiplier = 0;
         foreach(Tile tile in closedHand)
         {
-            
-            tile.transform.position = closedHandParent.transform.position + new Vector3() + localLeft * ( sideOffset * multiplier);
-            multiplier += 1;
+            // tile.transform.parent = null;
+            // tile.transform.localPosition = localLeft * (placementReference);
+
+            // tile.transform.position = localLeft * (placementReference);
+            // tile.transform.localPosition = localLeft * (placementReference);
+            tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
+            // tile.transform.Rotate(tile.transform.up * 90, Space.Self);
+            tile.transform.localEulerAngles = closedHandParent.up * 90;
+            // tile.transform.parent = closedHandParent;
+            placementReference += sideOffset;
         }
     }
 
