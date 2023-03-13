@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum decision { pong, kang, chow, pass }
+public enum decision { pass, pong, kang, chow }
 public enum PlayerState { waiting, turn }
 public class MahjongPlayerBase : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class MahjongPlayerBase : MonoBehaviour
     //     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     //     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
     // };
-    private List<Tile> closedHand, openHand;
+    protected List<Tile> closedHand = new List<Tile>(), openHand = new List<Tile>();
     private List<Tile> walls;
     private List<Tile> flowers;
     //private Tile drawn;
@@ -38,38 +38,20 @@ public class MahjongPlayerBase : MonoBehaviour
     List<Tile> chars = new List<Tile>();
     #endregion
 
-    //stuff to be moved to HumanPlayer child class
-    Camera playerCam;
+    
     public Transform closedHandParent;
     public Button chowButton, pongButton, kangButton, todasButton;
 
-    void Awake()
+    void Start()
     {
         //hand = new List<Tile>(16);
+        // closedHand = new List<Tile>();
+        // openHand = new List<Tile>();
         currentDecision = decision.pass;
-
-        //move to Humanplayer
-        playerCam = GetComponent<Camera>();
+        closedHandParent.localPosition = transform.localPosition + transform.forward * 0.7f;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // Debug.Log(Input.mousePosition);
-        Vector3 mouseWorldPos = playerCam.ViewportToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCam.nearClipPlane));
-
-        Ray mouseWorldRay = playerCam.ScreenPointToRay(Input.mousePosition);
-        Debug.Log(mouseWorldRay.origin);
-        if (Physics.Raycast(mouseWorldRay, out RaycastHit hit, Vector3.Distance(transform.position, closedHandParent.position)))
-        {
-            Debug.Log("touched");
-            if (closedHandParent.Find(hit.transform.name) != null && Input.GetMouseButton(0))
-            {
-                Debug.Log("holding tile");
-                hit.transform.position = new Vector3(mouseWorldRay.origin.x, mouseWorldRay.origin.y, hit.transform.position.z);
-            }
-        }
-    }
+    
     void FixedUpdate()
     {
         if (currentState == PlayerState.turn)
@@ -195,6 +177,12 @@ public class MahjongPlayerBase : MonoBehaviour
         return waiting;
     }
 
+    public void AddTile(Tile tile)
+    {
+        closedHand.Add(tile);
+        tile.transform.parent = closedHandParent;
+
+    }
     public void AddFlower(Tile flower)
     {
         flowers.Add(flower);

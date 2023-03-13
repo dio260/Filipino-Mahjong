@@ -8,7 +8,7 @@ public enum GameState { setup, playing, finished };
 public class MahjongManager : MonoBehaviour
 {
     public static MahjongManager mahjongManager;
-    [SerializeField]
+    // [SerializeField]
     private List<Tile> board;
     public List<Tile> wall;
 
@@ -18,7 +18,8 @@ public class MahjongManager : MonoBehaviour
     private static int MAXTILECOUNT = 144;
     private GameState state;
 
-    private List<MahjongPlayerBase> players = new List<MahjongPlayerBase>(4);
+    [SerializeField]
+    private List<MahjongPlayerBase> players;// = new List<MahjongPlayerBase>(4);
 
     private MahjongPlayerBase dealer, previousPlayer, currentPlayer, nextPlayer;
 
@@ -49,6 +50,8 @@ public class MahjongManager : MonoBehaviour
             board.Add(tile);
         }
 
+        
+
 
         BoardSetup();
     }
@@ -72,19 +75,39 @@ public class MahjongManager : MonoBehaviour
             board[k] = temp;
         }
 
-        // RollDice();
+        // wall = board;
+
+        RollDice();
     }
 
     void RollDice()
     {
+        System.Random rand = new System.Random();
+        int dieRollResult = (rand.Next(2, 13) - 1) % 4;
+        Debug.Log(dieRollResult);
+        dealer = players[dieRollResult];
+
+        //create walls
+        int wallIndex = (MAXTILECOUNT / 4) * dieRollResult;
+        wall.AddRange(board.GetRange(wallIndex, MAXTILECOUNT - wallIndex));
+        wall.AddRange(board.GetRange(0, wallIndex));
+        
+
+        List<Tile> distributedTiles = wall.GetRange(0, 65);
+        wall.RemoveRange(0, 65);
+        dealer.GetComponent<MahjongPlayerBase>().AddTile(distributedTiles[0]);
+        // distributedTiles.Remove(wall[0]);
+        for (int i = 1; i < 65; i++)
+        {
+            players[((i - 1) / 16)].AddTile(distributedTiles[i]);
+        }
 
 
+        // currentPlayer = dealer;
+        // nextPlayer = players[(dieRollResult + 1)% players.Count];
 
-        state = GameState.playing;
-
-        currentPlayer = players[0];
-        nextPlayer = players[1];
-        StartCoroutine(TakeTurn(currentPlayer));
+        // state = GameState.playing;
+        // StartCoroutine(TakeTurn(currentPlayer));
     }
 
     IEnumerator TakeTurn(MahjongPlayerBase player)
