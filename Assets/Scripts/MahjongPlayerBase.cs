@@ -15,7 +15,7 @@ public class MahjongPlayerBase : MonoBehaviour
     // };
     protected List<Tile> closedHand = new List<Tile>(), openHand = new List<Tile>();
     private List<Tile> walls;
-    private List<Tile> flowers;
+    private List<Tile> flowers = new List<Tile>();
     //private Tile drawn;
     private MahjongManager gameManager;
     //private List<Tile> hand;
@@ -38,26 +38,32 @@ public class MahjongPlayerBase : MonoBehaviour
     List<Tile> chars = new List<Tile>();
     #endregion
 
-    
+
     public Transform closedHandParent, openHandParent, flowersParent;
     public Button chowButton, pongButton, kangButton, todasButton;
 
     void Start()
     {
-        //hand = new List<Tile>(16);
-        // closedHand = new List<Tile>();
-        // openHand = new List<Tile>();
         currentDecision = decision.pass;
-        closedHandParent.position = transform.position + transform.forward * 0.7f + transform.up * -0.15f;
+        closedHandParent.position = transform.position + transform.forward * 0.65f + transform.up * -0.15f;
+        Vector3 left = Vector3.Cross(transform.forward.normalized, transform.up.normalized);
+        flowersParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * 0.4f;
+        openHandParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * -0.4f;
     }
 
-    
+
     void FixedUpdate()
     {
         if (currentState == PlayerState.turn)
         {
 
         }
+
+        // if(Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     Debug.Log("sorting");
+        //     SortTilesBySuit();
+        // }
 
         // CalculateHandOptions();
     }
@@ -106,7 +112,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
         foreach (Tile tile in temp)
         {
-            if(tile.number == discard.number)
+            if (tile.number == discard.number)
             {
                 matchCount += 1;
             }
@@ -115,11 +121,11 @@ public class MahjongPlayerBase : MonoBehaviour
             // if(tile.number == discard.number -)
         }
 
-        if(matchCount > 2)
+        if (matchCount > 2)
         {
             kangButton.gameObject.SetActive(true);
         }
-        if(matchCount == 2)
+        if (matchCount == 2)
         {
             pongButton.gameObject.SetActive(true);
         }
@@ -171,49 +177,102 @@ public class MahjongPlayerBase : MonoBehaviour
 
             }
         }
+        balls.Sort(CompareTileNumbers);
+        sticks.Sort(CompareTileNumbers);
+        chars.Sort(CompareTileNumbers);
+
+        closedHand = new List<Tile>();
+        closedHand.AddRange(balls);
+        closedHand.AddRange(sticks);
+        closedHand.AddRange(chars);
+        
     }
+
+    private static int CompareTileNumbers(Tile x, Tile y)
+    {
+        if (x == null)
+        {
+            if (y == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        else
+        {
+            if (y == null)
+            {
+                return 1;
+            }
+            else
+            {
+                int retval = x.number.CompareTo(y.number);
+
+                if (retval != 0)
+                {
+                    return retval;
+                }
+                else
+                {
+                    return x.number.CompareTo(y.number);
+                }
+            }
+        }
+    }
+
 
     public void VisuallySortTiles()
     {
-        // SortTilesBySuit();
-        Vector3 localLeft = -1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
+        //first call the sorting function
+        SortTilesBySuit();
+
+        Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
         // Debug.Log("parent forward: " + closedHandParent.forward + " parent up: " + closedHandParent.up.normalized);   
-        float sideOffset = 1.5f / (float)closedHand.Count;
-        float placementReference = 1.5f  / -2.0f;
+        float sideOffset = 1.25f / (float)closedHand.Count;
+        float placementReference = 1.25f / 2.0f;
         // Debug.Log("left: " + localLeft + " off: " + sideOffset + " ref: "  + placementReference);
-        foreach(Tile tile in closedHand)
+        foreach (Tile tile in closedHand)
         {
             tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
             tile.transform.localEulerAngles = closedHandParent.up * 90;
-            placementReference += sideOffset;
+            placementReference -= sideOffset;
         }
     }
 
     public int replaceInitialFlowerTiles()
     {
         List<Tile> flowersInHand = new List<Tile>();
-        foreach(Tile tile in closedHand)
+        // foreach(Tile tile in closedHand)
+        for (int i = 0; i < closedHand.Count; i++)
         {
-            if(tile.tileType == suit.flower)
-            {  
-                flowersInHand.Add(tile);
+            if (closedHand[i].tileType == suit.flower)
+            {
+                flowersInHand.Add(closedHand[i]);
+                AddFlower(closedHand[i]);
+                i--;
             }
         }
 
-        flowers.AddRange(flowersInHand);
+        // flowers.AddRange(flowersInHand);
 
-        foreach(Tile tile in flowersInHand)
-        {
-            closedHand.Remove(tile);
-        }
+        // foreach(Tile tile in flowersInHand)
+        // {
+        //     closedHand.Remove(tile);
+        // }
+
+        // StartCoroutine(Wait)
+
 
         int newFlowerCount = 0;
-        for(int x = 0; x < flowersInHand.Count; x++)
+        for (int x = 0; x < flowersInHand.Count; x++)
         {
             Tile drawnTile = MahjongManager.mahjongManager.wall[MahjongManager.mahjongManager.wall.Count - 1];
-            if(drawnTile.tileType == suit.flower)
+            if (drawnTile.tileType == suit.flower)
                 newFlowerCount += 1;
-            closedHand.Add(drawnTile);
+            AddTile(drawnTile);
             MahjongManager.mahjongManager.wall.RemoveAt(MahjongManager.mahjongManager.wall.Count - 1);
         }
 
@@ -235,8 +294,19 @@ public class MahjongPlayerBase : MonoBehaviour
     public void AddFlower(Tile flower)
     {
         flowers.Add(flower);
-        flower.transform.parent = closedHandParent;
+        flower.transform.parent = flowersParent;
         closedHand.Remove(flower);
+
+        Vector3 localLeft = -1 * Vector3.Cross(flowersParent.forward.normalized, flowersParent.up.normalized);
+        float sideOffset = 0.5f / (float)flowers.Count;
+        float placementReference = 0.5f / -2.0f;
+        foreach (Tile tile in flowers)
+        {
+            tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
+            tile.transform.localEulerAngles = flowersParent.up * 90 + Vector3.forward * 90;// + tile.transform.forward * -90;
+            placementReference += sideOffset;
+        }
+
     }
     public Tile currentDrawnTile()
     {

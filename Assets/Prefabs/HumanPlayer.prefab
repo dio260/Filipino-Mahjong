@@ -94,7 +94,9 @@ MonoBehaviour:
   currentDecision: 0
   discardChoice: {fileID: 0}
   currentState: 0
-  closedHandParent: {fileID: 0}
+  closedHandParent: {fileID: 6886725867946563188}
+  openHandParent: {fileID: 8121919785658311191}
+  flowersParent: {fileID: 8814427028177514817}
   chowButton: {fileID: 0}
   pongButton: {fileID: 0}
   kangButton: {fileID: 0}
