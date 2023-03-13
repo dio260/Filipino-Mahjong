@@ -48,7 +48,7 @@ public class MahjongPlayerBase : MonoBehaviour
         // closedHand = new List<Tile>();
         // openHand = new List<Tile>();
         currentDecision = decision.pass;
-        closedHandParent.localPosition = transform.localPosition + transform.forward * 0.7f;
+        closedHandParent.position = transform.position + transform.forward * 0.7f;
     }
 
     
@@ -169,6 +169,22 @@ public class MahjongPlayerBase : MonoBehaviour
                     break;
 
             }
+        }
+    }
+
+    public void VisuallySortTiles()
+    {
+        // SortTilesBySuit();
+        Vector3 localLeft = -1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
+        float sideOffset = 1.5f / closedHand.Count;
+        float placementReference = 1.5f  / 2;
+        Debug.Log("left: " + localLeft + " off: " + sideOffset + " ref: "  + placementReference);
+        int multiplier = 0;
+        foreach(Tile tile in closedHand)
+        {
+            
+            tile.transform.position = closedHandParent.transform.position + new Vector3() + localLeft * ( sideOffset * multiplier);
+            multiplier += 1;
         }
     }
 

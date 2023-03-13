@@ -99,12 +99,16 @@ public class MahjongManager : MonoBehaviour
         // distributedTiles.Remove(wall[0]);
         for (int i = 1; i < 65; i++)
         {
-            players[((i - 1) / 16)].AddTile(distributedTiles[i]);
+            players[(dieRollResult + ((i - 1) / 16)) % 4].AddTile(distributedTiles[i]);
         }
 
+        foreach(MahjongPlayerBase player in players)
+        {
+            player.VisuallySortTiles();
+        }
 
-        // currentPlayer = dealer;
-        // nextPlayer = players[(dieRollResult + 1)% players.Count];
+        currentPlayer = dealer;
+        nextPlayer = players[(dieRollResult + 1)% players.Count];
 
         // state = GameState.playing;
         // StartCoroutine(TakeTurn(currentPlayer));
