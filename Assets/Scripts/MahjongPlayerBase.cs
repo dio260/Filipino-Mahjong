@@ -40,7 +40,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
 
     public Transform closedHandParent, openHandParent, flowersParent;
-    public Button chowButton, pongButton, kangButton, todasButton;
+    public Button passButton, chowButton, pongButton, kangButton, todasButton;
 
     void Start()
     {
@@ -49,6 +49,13 @@ public class MahjongPlayerBase : MonoBehaviour
         Vector3 left = Vector3.Cross(transform.forward.normalized, transform.up.normalized);
         flowersParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * 0.4f;
         openHandParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * -0.4f;
+
+
+        todasButton.onClick.AddListener(() => DeclareWin());
+        pongButton.onClick.AddListener(() => DeclarePong());
+        kangButton.onClick.AddListener(() => DeclareKang());
+        chowButton.onClick.AddListener(() => DeclareChow());
+        chowButton.onClick.AddListener(() => passTurn());
     }
 
 
@@ -110,27 +117,60 @@ public class MahjongPlayerBase : MonoBehaviour
         int matchCount = 0;
         int seqCount = 0;
 
+        List<Tile> pongMeld = new List<Tile> { discard };
+        List<Tile> chowMeld = new List<Tile> { discard };
+        List<Tile> kangMeld = new List<Tile> { discard };
+
+
         foreach (Tile tile in temp)
         {
             if (tile.number == discard.number)
             {
-                matchCount += 1;
+                if(pongMeld.Count < 3)
+                    pongMeld.Add(tile);
+                kangMeld.Add(tile);
             }
 
             //take advantage of the subarrays being sorted numerically for chow
-            // if(tile.number == discard.number -)
+            //consider three types of chow melds
+            if(tile.number == discard.number - 1 && !HasNumber(chowMeld, discard.number))
+            {
+                chowMeld.Add(tile);
+            }
+            if(tile.number == discard.number - 2 && !HasNumber(chowMeld, discard.number))
+            {
+                chowMeld.Add(tile);
+            }
+            if(tile.number == discard.number + 1 && !HasNumber(chowMeld, discard.number))
+            {
+                chowMeld.Add(tile);
+            }
+            if(tile.number == discard.number + 2 && !HasNumber(chowMeld, discard.number))
+            {
+                chowMeld.Add(tile);
+            }
         }
 
-        if (matchCount > 2)
+        if (pongMeld.Count == 3)
         {
             kangButton.gameObject.SetActive(true);
         }
-        if (matchCount == 2)
+        if (kangMeld.Count == 4)
         {
             pongButton.gameObject.SetActive(true);
         }
 
 
+    }
+
+    bool HasNumber(List<Tile> chowOptions, int number)
+    {
+        foreach(Tile tile in chowOptions)
+        {
+            if(tile.number == number)
+                return true;
+        }
+        return false;
     }
 
     void MakeDecision(decision dec)
@@ -142,7 +182,28 @@ public class MahjongPlayerBase : MonoBehaviour
     {
         //if conditions are fulfilled
 
+    }
+    void DeclareSevenPairs()
+    {
 
+    }
+
+    void DeclarePong()
+    {
+
+    }
+    void DeclareKang()
+    {
+
+    }
+
+    void DeclareChow()
+    {
+
+    }
+    void passTurn()
+    {
+        currentDecision = decision.pass;
     }
 
     bool CalculateSevenPairs()
