@@ -22,7 +22,7 @@ public class HumanPlayer : MahjongPlayerBase
         Vector3 mouseWorldPos = playerCam.ViewportToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCam.nearClipPlane));
 
         Ray mouseWorldRay = playerCam.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(mouseWorldRay.origin, mouseWorldRay.direction,Color.blue, 5f);
+        Debug.DrawRay(mouseWorldRay.origin, mouseWorldRay.direction,Color.blue * Vector3.Distance(transform.position, closedHandParent.position), 0f);
         if (Physics.Raycast(mouseWorldRay, out RaycastHit hit, Vector3.Distance(transform.position, closedHandParent.position))
             && hit.transform.GetComponent<Tile>())
         // if (Physics.Raycast(mouseWorldRay, out RaycastHit hit, 5f))
