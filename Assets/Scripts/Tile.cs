@@ -14,6 +14,7 @@ public class Tile : MonoBehaviour
 
     //to be used in hand win algo
     public bool winning;
+    bool selectedForMeld;
     // Start is called before the first frame update
     void Awake()
     {

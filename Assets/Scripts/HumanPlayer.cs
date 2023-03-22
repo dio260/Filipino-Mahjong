@@ -7,10 +7,16 @@ public class HumanPlayer : MahjongPlayerBase
 {
     //stuff to be moved to HumanPlayer child class
     Camera playerCam;
+    public Button passButton, chowButton, pongButton, kangButton, todasButton;
     void Awake()
     {
         //move to Humanplayer
         playerCam = GetComponent<Camera>();
+        todasButton.onClick.AddListener(() => DeclareWin());
+        pongButton.onClick.AddListener(() => DeclarePong());
+        kangButton.onClick.AddListener(() => DeclareKang());
+        chowButton.onClick.AddListener(() => DeclareChow());
+        chowButton.onClick.AddListener(() => passTurn());
     }
 
     // Update is called once per frame
@@ -35,6 +41,25 @@ public class HumanPlayer : MahjongPlayerBase
                 // hit.transform.position = new Vector3(mouseWorldRay.origin.x, mouseWorldRay.origin.y, hit.transform.position.z);
                 hit.transform.position += new Vector3(Input.GetAxis("Mouse X") * Time.deltaTime * 1.75f, Input.GetAxis("Mouse Y") * Time.deltaTime * 1.75f, 0);
             }
+        }
+        
+    }
+
+    protected override void CalculateHandOptions()
+    {
+        base.CalculateHandOptions();
+
+        if (canPong)
+        {
+            pongButton.gameObject.SetActive(true);
+        }
+        if (canKang)
+        {
+            kangButton.gameObject.SetActive(true);
+        }
+        if (canChow)
+        {
+            chowButton.gameObject.SetActive(true);
         }
     }
 }

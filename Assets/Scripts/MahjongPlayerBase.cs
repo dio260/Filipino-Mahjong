@@ -23,7 +23,7 @@ public class MahjongPlayerBase : MonoBehaviour
     private int score;
     private static int maxHandSize = 17;
 
-    private bool win;
+    protected bool win, canPong, canKang, canChow;
     private bool waiting;
     public decision currentDecision;
     private Tile currentTile;
@@ -33,14 +33,20 @@ public class MahjongPlayerBase : MonoBehaviour
 
 
     #region Internal Calculation Variables
-    List<Tile> balls = new List<Tile>();
-    List<Tile> sticks = new List<Tile>();
-    List<Tile> chars = new List<Tile>();
+    protected List<Tile> balls = new List<Tile>();
+    protected List<Tile> sticks = new List<Tile>();
+    protected List<Tile> chars = new List<Tile>();
+    protected List<Tile> pongMeld = new List<Tile>();
+    protected List<Tile> kangMeld = new List<Tile>();
+    protected List<Tile> chowMeldLeft = new List<Tile>();
+    protected List<Tile> chowMeldMiddle = new List<Tile>();
+    protected List<Tile> chowMeldRight = new List<Tile>();
+    protected List<Tile> selectedTiles = new List<Tile>();
     #endregion
 
 
     public Transform closedHandParent, openHandParent, flowersParent;
-    public Button passButton, chowButton, pongButton, kangButton, todasButton;
+
 
     void Start()
     {
@@ -51,15 +57,11 @@ public class MahjongPlayerBase : MonoBehaviour
         openHandParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * -0.4f;
 
 
-        todasButton.onClick.AddListener(() => DeclareWin());
-        pongButton.onClick.AddListener(() => DeclarePong());
-        kangButton.onClick.AddListener(() => DeclareKang());
-        chowButton.onClick.AddListener(() => DeclareChow());
-        chowButton.onClick.AddListener(() => passTurn());
+
     }
 
 
-    void FixedUpdate()
+    protected void FixedUpdate()
     {
         if (currentState == PlayerState.turn)
         {
@@ -74,28 +76,30 @@ public class MahjongPlayerBase : MonoBehaviour
 
         // CalculateHandOptions();
     }
-    void CalculateHandOptions()
+    protected virtual void CalculateHandOptions()
     {
+
         //make life easier by sorting the stuff;
         SortTilesBySuit();
 
         Tile discard = MahjongManager.mahjongManager.mostRecentDiscard;
         //most priority is a winning hand, takes precedence
         //edge case, closed hand size is 1, so waiting on the last pair
+
         if (closedHand.Count == 1 &&
         closedHand[0].number == discard.number &&
         closedHand[0].tileType == discard.tileType)
         {
             //GUI stuff probably needs to be moved to Human as well
-            todasButton.gameObject.SetActive(true);
+            // todasButton.gameObject.SetActive(true);
         }
         else if (CalculateSevenPairs())
         {
-            todasButton.gameObject.SetActive(true);
+            // todasButton.gameObject.SetActive(true);
         }
         else if (CalculateNormalWin())
         {
-            todasButton.gameObject.SetActive(true);
+            // todasButton.gameObject.SetActive(true);
         }
 
         // find melds. need to figure out how to determine melds for transferring to the open hand
@@ -117,57 +121,72 @@ public class MahjongPlayerBase : MonoBehaviour
         int matchCount = 0;
         int seqCount = 0;
 
-        List<Tile> pongMeld = new List<Tile> { discard };
-        List<Tile> chowMeld = new List<Tile> { discard };
-        List<Tile> kangMeld = new List<Tile> { discard };
-
+        pongMeld = new List<Tile> { discard };
+        chowMeldLeft = new List<Tile> { discard };
+        chowMeldMiddle = new List<Tile> { discard };
+        chowMeldRight = new List<Tile> { discard };
+        kangMeld = new List<Tile> { discard };
 
         foreach (Tile tile in temp)
         {
             if (tile.number == discard.number)
             {
-                if(pongMeld.Count < 3)
+                if (pongMeld.Count < 3)
                     pongMeld.Add(tile);
                 kangMeld.Add(tile);
             }
 
             //take advantage of the subarrays being sorted numerically for chow
             //consider three types of chow melds
-            if(tile.number == discard.number - 1 && !HasNumber(chowMeld, discard.number))
+            //outermost number
+            if (tile.number == discard.number - 2 && !HasNumber(chowMeldLeft, discard.number))
             {
-                chowMeld.Add(tile);
+                chowMeldLeft.Add(tile);
             }
-            if(tile.number == discard.number - 2 && !HasNumber(chowMeld, discard.number))
+            if (tile.number == discard.number + 2 && !HasNumber(chowMeldRight, discard.number))
             {
-                chowMeld.Add(tile);
+                chowMeldRight.Add(tile);
             }
-            if(tile.number == discard.number + 1 && !HasNumber(chowMeld, discard.number))
+
+            if (tile.number == discard.number - 1)
             {
-                chowMeld.Add(tile);
+                if(!HasNumber(chowMeldLeft, discard.number))
+                    chowMeldLeft.Add(tile);
+                if(!HasNumber(chowMeldMiddle, discard.number))
+                    chowMeldMiddle.Add(tile);
             }
-            if(tile.number == discard.number + 2 && !HasNumber(chowMeld, discard.number))
+            
+            if (tile.number == discard.number + 1)
             {
-                chowMeld.Add(tile);
+                if(!HasNumber(chowMeldRight, discard.number))
+                    chowMeldRight.Add(tile);
+                if(!HasNumber(chowMeldMiddle, discard.number))
+                    chowMeldMiddle.Add(tile);
             }
+            
         }
 
         if (pongMeld.Count == 3)
         {
-            kangButton.gameObject.SetActive(true);
+            canPong = true;
         }
         if (kangMeld.Count == 4)
         {
-            pongButton.gameObject.SetActive(true);
+            canKang = false;
         }
-
-
+        if(chowMeldLeft.Count == 3
+        || chowMeldMiddle.Count == 3
+        || chowMeldRight.Count == 3)
+        {
+            canChow = true;
+        }
     }
 
-    bool HasNumber(List<Tile> chowOptions, int number)
+    protected bool HasNumber(List<Tile> chowOptions, int number)
     {
-        foreach(Tile tile in chowOptions)
+        foreach (Tile tile in chowOptions)
         {
-            if(tile.number == number)
+            if (tile.number == number)
                 return true;
         }
         return false;
@@ -178,7 +197,7 @@ public class MahjongPlayerBase : MonoBehaviour
         //if conditions are fulfilled
         currentDecision = dec;
     }
-    void DeclareWin()
+    protected void DeclareWin()
     {
         //if conditions are fulfilled
 
@@ -188,33 +207,51 @@ public class MahjongPlayerBase : MonoBehaviour
 
     }
 
-    void DeclarePong()
+    protected void DeclarePong()
     {
-
+        if (canPong)
+        {
+            openHand.AddRange(pongMeld);
+            canPong = false;
+        }
     }
-    void DeclareKang()
+    protected void DeclareKang()
     {
-
+        if (canKang)
+        {
+            openHand.AddRange(kangMeld);
+            canKang = false;
+        }
     }
 
-    void DeclareChow()
+    protected void DeclareChow()
     {
-
+        if (canChow)
+        {
+            // openHand.AddRange(chowMeld);
+            canChow = false;
+        }
     }
-    void passTurn()
+    protected void passTurn()
     {
         currentDecision = decision.pass;
     }
 
-    bool CalculateSevenPairs()
+    protected bool CalculateSevenPairs()
     {
         return false;
     }
-    bool CalculateNormalWin()
+    protected bool CalculateNormalWin()
     {
         return false;
     }
-    void SortTilesBySuit()
+
+    // protected bool CalculateFlush()
+    // {
+    //     bool res = true;
+    //     foreach()
+    // }
+    protected void SortTilesBySuit()
     {
         //first get suits
         balls = new List<Tile>();
@@ -246,7 +283,7 @@ public class MahjongPlayerBase : MonoBehaviour
         closedHand.AddRange(balls);
         closedHand.AddRange(sticks);
         closedHand.AddRange(chars);
-        
+
     }
 
     private static int CompareTileNumbers(Tile x, Tile y)
