@@ -25,7 +25,8 @@ public class MahjongManager : MonoBehaviour
     private MahjongPlayerBase dealer, previousPlayer, currentPlayer, nextPlayer;
 
     private int round, numRounds;
-    public GameObject InitialTileParent, TileBoundaries;
+    public GameObject InitialTileParent, TileSizeReference;
+    public BoxCollider TileBoundaries;
     // Start is called before the first frame update
     void Awake()
     {
@@ -43,6 +44,9 @@ public class MahjongManager : MonoBehaviour
         wall = new List<Tile>();
         deadTiles = new List<Tile>();
         mostRecentDiscard = null;
+
+        if(!TileBoundaries.isTrigger)
+            TileBoundaries.isTrigger = true;
 
         //put all the tiles into board structure;
         foreach (Tile tile in InitialTileParent.transform.GetComponentsInChildren<Tile>())
@@ -65,6 +69,7 @@ public class MahjongManager : MonoBehaviour
     IEnumerator BoardSetup()
     {
         Debug.Log("Shuffling Board");
+        yield return new WaitForSeconds(2);
         System.Random rand = new System.Random();
         int n = board.Count;
         while (n > 1)
@@ -76,10 +81,85 @@ public class MahjongManager : MonoBehaviour
         }
 
         // wall = board;
+        // Debug.Log(TileBoundaries.bounds.max);
+        board[0].transform.position = new Vector3(TileBoundaries.bounds.max.x, TileBoundaries.bounds.min.y + 0.005f, TileBoundaries.bounds.max.z);
+        
+        float distanceReference = TileSizeReference.transform.localScale.z/2;
+        float heightReference = TileSizeReference.transform.localScale.y/2f;
+        int multiplier = 0;
 
-        foreach(Tile tile in board)
+        board[1].transform.position = board[0].transform.position + Vector3.up * heightReference;
+
+
+        for(int x = 0; x < board.Count; x++)
         {
-            tile.transform.Rotate(new Vector3(0, 0,90));
+            if (x%36 == 0)
+            {
+                multiplier = 0;
+            }
+            if(x < 36)
+            {
+                if(x % 2 == 0)
+                {
+                    board[x].transform.position = new Vector3(TileBoundaries.bounds.max.x, TileBoundaries.bounds.min.y + 0.005f + heightReference, TileBoundaries.bounds.max.z - (distanceReference * multiplier));
+                }
+                else
+                {
+                    board[x].transform.position = board[x-1].transform.position + Vector3.up * -heightReference;
+                    
+                }
+                multiplier += 1;
+                continue;
+            }
+            // break;
+            if (x < 72)
+            {
+                board[x].transform.Rotate(Vector3.left  * 90);
+                if(x % 2 == 0)
+                {
+                    board[x].transform.position = new Vector3(TileBoundaries.bounds.max.x - (distanceReference * multiplier), TileBoundaries.bounds.min.y + 0.005f + heightReference, TileBoundaries.bounds.min.z );
+                }
+                else
+                {
+                    board[x].transform.position = board[x-1].transform.position + Vector3.up * -heightReference;
+                    
+                }
+                multiplier += 1;
+                continue;
+                
+            }
+            // break;
+            if (x < 108)
+            {
+                // board[x].transform.Rotate(Vector3.left  * 90);
+                if(x % 2 == 0)
+                {
+                    board[x].transform.position = new Vector3(TileBoundaries.bounds.min.x, TileBoundaries.bounds.min.y + 0.005f + heightReference, TileBoundaries.bounds.min.z + (distanceReference * multiplier));
+                }
+                else
+                {
+                    board[x].transform.position = board[x-1].transform.position + Vector3.up * -heightReference;
+                    
+                }
+                multiplier += 1;
+                continue;
+            }
+            if (x < 144)
+            {
+                board[x].transform.Rotate(Vector3.left  * 90);
+                if(x % 2 == 0)
+                {
+                    board[x].transform.position = new Vector3(TileBoundaries.bounds.min.x + (distanceReference * multiplier), TileBoundaries.bounds.min.y + 0.005f + heightReference, TileBoundaries.bounds.max.z );
+                }
+                else
+                {
+                    board[x].transform.position = board[x-1].transform.position + Vector3.up * -heightReference;
+                    
+                }
+                multiplier += 1;
+                continue;
+            }
+            // tile.transform.Rotate(new Vector3(0, 0, -90));
         }
 
         yield return new WaitForSeconds(2);
