@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public enum decision { pass, pong, kang, chow }
-public enum PlayerState { waiting, turn }
+public enum PlayerState { waiting, deciding, discarding }
 public class MahjongPlayerBase : MonoBehaviour
 {
     // int[,] hand = new int[,] {
@@ -28,9 +28,7 @@ public class MahjongPlayerBase : MonoBehaviour
     public decision currentDecision;
     private Tile currentTile;
     public Tile discardChoice;
-    public PlayerState currentState;
-
-
+    protected PlayerState currentState;
 
     #region Internal Calculation Variables
     protected List<Tile> balls = new List<Tile>();
@@ -48,7 +46,7 @@ public class MahjongPlayerBase : MonoBehaviour
     public Transform closedHandParent, openHandParent, flowersParent;
 
 
-    void Start()
+    void Awake()
     {
         currentDecision = decision.pass;
         closedHandParent.position = transform.position + transform.forward * 0.65f + transform.up * -0.15f;
@@ -56,17 +54,18 @@ public class MahjongPlayerBase : MonoBehaviour
         flowersParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * 0.4f;
         openHandParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * -0.4f;
 
-
+        currentState = PlayerState.waiting;
+        currentDecision = decision.pass;
 
     }
 
 
     protected void FixedUpdate()
     {
-        if (currentState == PlayerState.turn)
-        {
+        // if (currentState == PlayerState.de)
+        // {
 
-        }
+        // }
 
         // if(Input.GetKeyDown(KeyCode.Space))
         // {
@@ -172,7 +171,7 @@ public class MahjongPlayerBase : MonoBehaviour
         }
         if (kangMeld.Count == 4)
         {
-            canKang = false;
+            canKang = true;
         }
         if(chowMeldLeft.Count == 3
         || chowMeldMiddle.Count == 3
@@ -207,7 +206,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
     }
 
-    protected void DeclarePong()
+    protected virtual void DeclarePong()
     {
         if (canPong)
         {
@@ -215,7 +214,7 @@ public class MahjongPlayerBase : MonoBehaviour
             canPong = false;
         }
     }
-    protected void DeclareKang()
+    protected virtual void DeclareKang()
     {
         if (canKang)
         {
@@ -224,7 +223,7 @@ public class MahjongPlayerBase : MonoBehaviour
         }
     }
 
-    protected void DeclareChow()
+    protected virtual void DeclareChow()
     {
         if (canChow)
         {
@@ -321,12 +320,8 @@ public class MahjongPlayerBase : MonoBehaviour
         }
     }
 
-
-    public void VisuallySortTiles()
+    public void ArrangeTiles()
     {
-        //first call the sorting function
-        SortTilesBySuit();
-
         Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
         // Debug.Log("parent forward: " + closedHandParent.forward + " parent up: " + closedHandParent.up.normalized);   
         float sideOffset = 1.25f / (float)closedHand.Count;
@@ -338,6 +333,14 @@ public class MahjongPlayerBase : MonoBehaviour
             tile.transform.localEulerAngles = closedHandParent.up * 90;
             placementReference -= sideOffset;
         }
+    }
+
+    public void VisuallySortTiles()
+    {
+        //first call the sorting function
+        SortTilesBySuit();
+        ArrangeTiles();
+        
     }
 
     public int replaceInitialFlowerTiles()
@@ -426,5 +429,10 @@ public class MahjongPlayerBase : MonoBehaviour
         currentTile = MahjongManager.mahjongManager.wall[walls.Count - 1];
         flowers.Add(currentTile);
         MahjongManager.mahjongManager.wall.RemoveAt(walls.Count - 1);
+    }
+
+    public void SetPlayerState(PlayerState state)
+    {
+        currentState = state;
     }
 }

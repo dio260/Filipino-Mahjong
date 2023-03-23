@@ -7,6 +7,7 @@ public enum GameState { setup, playing, finished };
 
 public class MahjongManager : MonoBehaviour
 {
+    public bool debug;
     public static MahjongManager mahjongManager;
     // [SerializeField]
     private List<Tile> board;
@@ -84,8 +85,10 @@ public class MahjongManager : MonoBehaviour
     {
         System.Random rand = new System.Random();
         int dieRollResult = (rand.Next(2, 13) - 1) % 4;
-        Debug.Log(dieRollResult);
-        dealer = players[dieRollResult];
+        if(!debug)
+            dealer = players[dieRollResult];
+        else
+            dealer = players[0];
 
         //create walls
         int wallIndex = (MAXTILECOUNT / 4) * dieRollResult;
@@ -120,7 +123,8 @@ public class MahjongManager : MonoBehaviour
 
         foreach (MahjongPlayerBase player in players)
         {
-            player.VisuallySortTiles();
+            // player.VisuallySortTiles();
+            player.ArrangeTiles();
         }
 
         currentPlayer = dealer;
@@ -132,14 +136,19 @@ public class MahjongManager : MonoBehaviour
 
     IEnumerator TakeTurn(MahjongPlayerBase player)
     {
+        Debug.Log("current turn: " + player.gameObject.name);
+        player.SetPlayerState(PlayerState.discarding);
         if (player.currentDecision != decision.pass)
         {
+            Debug.Log(player.gameObject.name + "stole discard");
             player.StealTile();
         }
         else
         {
-            player.DrawTile();
+            Debug.Log(player.gameObject.name + "drawing tile");
             yield return new WaitForSeconds(1);
+            player.DrawTile();
+            
             while (player.currentDrawnTile().tileType == suit.flower)
             {
                 player.DrawFlowerTile();
