@@ -48,7 +48,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
             if (NetworkedPlayer.LocalPlayerInstance == null)
             {
                 
-                Debug.Log("We are Instantiating LocalPlayer from {0}" + SceneManagerHelper.ActiveSceneName + " Current Players: " + PhotonNetwork.CurrentRoom.PlayerCount);
+                Debug.Log("We are Instantiating LocalPlayer from " + SceneManagerHelper.ActiveSceneName + " Current Players: " + PhotonNetwork.CurrentRoom.PlayerCount);
 
                 // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
                 // switch based on current player count
