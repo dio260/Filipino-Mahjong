@@ -1088,7 +1088,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 552969756238571695, guid: 9a69fce9b5854814080c9b76368a562c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7339486405072327083, guid: 9a69fce9b5854814080c9b76368a562c, type: 3}
       propertyPath: m_RootOrder
@@ -11543,6 +11543,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TutorialAI
       objectReference: {fileID: 0}
+    - target: {fileID: 552969756238571695, guid: 9a69fce9b5854814080c9b76368a562c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7339486405072327083, guid: 9a69fce9b5854814080c9b76368a562c, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -12941,7 +12945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 552969756238571695, guid: 9a69fce9b5854814080c9b76368a562c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7339486405072327083, guid: 9a69fce9b5854814080c9b76368a562c, type: 3}
       propertyPath: m_RootOrder
