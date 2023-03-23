@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: ab0ed5f27222e5e45860236bc93826b8
   - enabled: 1
-    path: Assets/Scenes/Game Room.unity
+    path: Assets/Scenes/Multiplayer Game Room.unity
     guid: 2328e135e92520d48a0a6b97d9803f55
   - enabled: 0
     path: Assets/Photon/PhotonUnityNetworking/Demos/PunBasics-Tutorial/Scenes/PunBasics-Launcher.unity

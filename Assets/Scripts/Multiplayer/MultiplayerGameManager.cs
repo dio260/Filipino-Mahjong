@@ -21,11 +21,19 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     [Tooltip("The prefab to use for representing the player")]
     [SerializeField]
     private GameObject playerPrefab;
+    [Tooltip("The prefab for managing game state")]
+    [SerializeField]
+    private GameObject gameManagerPrefab;
+    [Tooltip("The tile prefab")]
+    [SerializeField]
+    private GameObject tilePrefab;
 
+    BoxCollider tilebounds;
     #endregion
     // Start is called before the first frame update
     void Start()
     {
+        tilebounds = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
         Instance = this;
 
         // in case we started this demo with the wrong scene being active, simply load the menu scene
@@ -34,6 +42,39 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
             SceneManager.LoadScene("Main Menu");
 
             return;
+        }
+
+        PhotonNetwork.Instantiate(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity);
+        
+        //Let's instantiate the tiles
+        for(int x = 0; x < 144; x++)
+        {
+            GameObject tileInstance = PhotonNetwork.Instantiate(this.gameManagerPrefab.name, 
+            new Vector3(Random.Range(tilebounds.bounds.min.x, tilebounds.bounds.max.x), Random.Range(0, tilebounds.bounds.max.y), Random.Range(tilebounds.bounds.min.z, tilebounds.bounds.max.z)), Quaternion.identity);
+            
+            tileInstance.transform.parent = GameObject.Find("Tiles").transform;
+            if(x < 36)
+            {
+                tileInstance.GetComponent<Tile>().tileType = suit.ball;
+                tileInstance.GetComponent<Tile>().number = x / 4;
+            }
+            // break;
+            if (x < 72)
+            {
+                tileInstance.GetComponent<Tile>().tileType = suit.character;
+                tileInstance.GetComponent<Tile>().number = x / 4;
+            }
+            // break;
+            if (x < 108)
+            {
+                tileInstance.GetComponent<Tile>().tileType = suit.stick;
+                tileInstance.GetComponent<Tile>().number = x / 4;
+            }
+            if (x < 144)
+            {
+                tileInstance.GetComponent<Tile>().tileType = suit.flower;
+            }
+            // tile.transform.Rotate(new Vector3(0, 0, -90));
         }
 
         if (playerPrefab == null)

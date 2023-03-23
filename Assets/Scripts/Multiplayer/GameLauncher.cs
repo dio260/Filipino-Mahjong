@@ -158,7 +158,7 @@ public class GameLauncher : MonoBehaviourPunCallbacks
 
             // #Critical
             // Load the Room Level. 
-            PhotonNetwork.LoadLevel("Game Room");
+            PhotonNetwork.LoadLevel("Multiplayer Game Room");
 
         }
     }
