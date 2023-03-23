@@ -42,8 +42,7 @@ public class MahjongManager : MonoBehaviour
         board = new List<Tile>(MAXTILECOUNT);
         wall = new List<Tile>();
         deadTiles = new List<Tile>();
-        // dealer = players[0];
-        // players = new MahjongPlayerBase[4];
+        mostRecentDiscard = null;
 
         //put all the tiles into board structure;
         foreach (Tile tile in InitialTileParent.transform.GetComponentsInChildren<Tile>())
@@ -54,7 +53,7 @@ public class MahjongManager : MonoBehaviour
 
 
 
-        BoardSetup();
+        StartCoroutine(BoardSetup());
     }
 
     // Update is called once per frame
@@ -63,7 +62,7 @@ public class MahjongManager : MonoBehaviour
 
     }
 
-    void BoardSetup()
+    IEnumerator BoardSetup()
     {
         Debug.Log("Shuffling Board");
         System.Random rand = new System.Random();
@@ -77,15 +76,16 @@ public class MahjongManager : MonoBehaviour
         }
 
         // wall = board;
-
-        RollDice();
+        yield return new WaitForSeconds(2);
+        StartCoroutine(RollDice());
     }
 
-    void RollDice()
+    IEnumerator RollDice()
     {
+        Debug.Log("Determining Dealer");
         System.Random rand = new System.Random();
         int dieRollResult = (rand.Next(2, 13) - 1) % 4;
-        if(!debug)
+        if (!debug)
             dealer = players[dieRollResult];
         else
             dealer = players[0];
@@ -95,6 +95,7 @@ public class MahjongManager : MonoBehaviour
         wall.AddRange(board.GetRange(wallIndex, MAXTILECOUNT - wallIndex));
         wall.AddRange(board.GetRange(0, wallIndex));
 
+        Debug.Log("Distributing Hand");
 
         List<Tile> distributedTiles = wall.GetRange(0, 65);
         wall.RemoveRange(0, 65);
@@ -105,7 +106,15 @@ public class MahjongManager : MonoBehaviour
             players[(dieRollResult + ((i - 1) / 16)) % 4].AddTile(distributedTiles[i]);
         }
 
-        StartCoroutine(Wait());
+        foreach (MahjongPlayerBase player in players)
+        {
+            // player.VisuallySortTiles();
+            player.ArrangeTiles();
+        }
+        // StartCoroutine(Wait());
+        yield return new WaitForSeconds(2);
+
+        Debug.Log("Replacing Flowers");
 
         int needFlowers = -1;
         while (needFlowers != 0)
@@ -120,7 +129,6 @@ public class MahjongManager : MonoBehaviour
         }
 
 
-
         foreach (MahjongPlayerBase player in players)
         {
             // player.VisuallySortTiles();
@@ -130,8 +138,9 @@ public class MahjongManager : MonoBehaviour
         currentPlayer = dealer;
         nextPlayer = players[(dieRollResult + 1) % players.Count];
 
-        // state = GameState.playing;
-        // StartCoroutine(TakeTurn(currentPlayer));
+        yield return new WaitForSeconds(2);
+        state = GameState.playing;
+        StartCoroutine(TakeTurn(currentPlayer));
     }
 
     IEnumerator TakeTurn(MahjongPlayerBase player)
@@ -140,33 +149,64 @@ public class MahjongManager : MonoBehaviour
         player.SetPlayerState(PlayerState.discarding);
         if (player.currentDecision != decision.pass)
         {
-            Debug.Log(player.gameObject.name + "stole discard");
+            Debug.Log(player.gameObject.name + " stole discard");
             player.StealTile();
         }
         else
         {
-            Debug.Log(player.gameObject.name + "drawing tile");
+
             yield return new WaitForSeconds(1);
+            Debug.Log(player.gameObject.name + " drawing tile");
             player.DrawTile();
-            
-            while (player.currentDrawnTile().tileType == suit.flower)
+
+            // StartCoroutine(player.DrawTile());
+            yield return new WaitForSeconds(1);
+            if (player.currentDrawnTile().tileType == suit.flower)
             {
-                player.DrawFlowerTile();
-                yield return new WaitForSeconds(1);
+                while (player.currentDrawnTile().tileType == suit.flower)
+                {
+                    Debug.Log(player.gameObject.name + " drew flower");
+                    player.DrawFlowerTile();
+                    yield return new WaitForSeconds(1);
+                }
             }
+
+
+            Debug.Log(player.gameObject.name + " finished drawing");
+            player.AddToClosedHand();
+
             // current implementation doesnt add the drawn tile to hand afterwards
         }
+        
+
+        //do a time based implementation so people cannot stall out the turn;
+        for(int i = 30; i > 0; i--)
+        {
+            if(player.GetType() == typeof(HumanPlayer))
+            {
+                player.GetComponent<HumanPlayer>().debugText.text = i + " seconds left";
+            }
+            yield return new WaitForSeconds(1);   
+            if(mostRecentDiscard != null)
+            {
+                break;
+            }
+        }
+        if (mostRecentDiscard == null)
+        {
+            mostRecentDiscard = player.currentDrawnTile();
+            player.SetNullDrawnTile();
+        }
+
+        Debug.Log("Player Discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
+        player.GetComponent<HumanPlayer>().debugText.text = "waiting";
 
 
-        while (player.IsWaiting())
-        { }
 
-
-
-
+        // StartCoroutine(BetweenTurn());
     }
 
-    IEnumerator BetweenTurn()
+    public IEnumerator BetweenTurn()
     {
         yield return new WaitForSeconds(5);
 
@@ -203,6 +243,10 @@ public class MahjongManager : MonoBehaviour
     public void FinishGame()
     {
         state = GameState.finished;
+    }
+    public GameState GetGameState()
+    {
+        return state;
     }
 
 

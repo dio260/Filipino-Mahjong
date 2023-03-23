@@ -26,9 +26,9 @@ public class MahjongPlayerBase : MonoBehaviour
     protected bool win, canPong, canKang, canChow;
     private bool waiting;
     public decision currentDecision;
-    private Tile currentTile;
+    protected Tile drawnTile;
     public Tile discardChoice;
-    protected PlayerState currentState;
+    public PlayerState currentState;
 
     #region Internal Calculation Variables
     protected List<Tile> balls = new List<Tile>();
@@ -411,7 +411,7 @@ public class MahjongPlayerBase : MonoBehaviour
     }
     public Tile currentDrawnTile()
     {
-        return currentTile;
+        return drawnTile;
     }
     public void StealTile()
     {
@@ -421,18 +421,35 @@ public class MahjongPlayerBase : MonoBehaviour
     }
     public void DrawTile()
     {
-        currentTile = MahjongManager.mahjongManager.wall[0];
+        drawnTile = MahjongManager.mahjongManager.wall[0];
         MahjongManager.mahjongManager.wall.RemoveAt(0);
+        // closedHand.Add(drawnTile);
+        Debug.Log("drew tile " + drawnTile);
+        // ArrangeTiles();
     }
     public void DrawFlowerTile()
     {
-        currentTile = MahjongManager.mahjongManager.wall[walls.Count - 1];
-        flowers.Add(currentTile);
-        MahjongManager.mahjongManager.wall.RemoveAt(walls.Count - 1);
+        flowers.Add(drawnTile);
+        drawnTile = MahjongManager.mahjongManager.wall[MahjongManager.mahjongManager.wall.Count - 1];
+        // closedHand.Add(drawnTile);
+        MahjongManager.mahjongManager.wall.RemoveAt(MahjongManager.mahjongManager.wall.Count - 1);
+        // ArrangeTiles();
+    }
+
+    public void AddToClosedHand()
+    {
+        closedHand.Add(drawnTile);
+        ArrangeTiles();
+        // drawnTile = null;
     }
 
     public void SetPlayerState(PlayerState state)
     {
         currentState = state;
     }
+    public void SetNullDrawnTile()
+    {
+        drawnTile = null;
+    }
+
 }
