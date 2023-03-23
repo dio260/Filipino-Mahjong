@@ -44,38 +44,42 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
             return;
         }
 
-        PhotonNetwork.Instantiate(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity);
-        
-        //Let's instantiate the tiles
-        for(int x = 0; x < 144; x++)
+        if (PhotonNetwork.IsMasterClient)
         {
-            GameObject tileInstance = PhotonNetwork.Instantiate(this.tilePrefab.name, 
-            new Vector3(Random.Range(tilebounds.bounds.min.x, tilebounds.bounds.max.x), Random.Range(0, tilebounds.bounds.max.y), Random.Range(tilebounds.bounds.min.z, tilebounds.bounds.max.z)), Quaternion.identity);
-            
-            tileInstance.transform.parent = GameObject.Find("Tiles").transform;
-            if(x < 36)
+            PhotonNetwork.Instantiate(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity);
+
+            //Let's instantiate the tiles
+            for (int x = 0; x < 144; x++)
             {
-                tileInstance.GetComponent<Tile>().tileType = suit.ball;
-                tileInstance.GetComponent<Tile>().number = x / 4;
+                GameObject tileInstance = PhotonNetwork.Instantiate(this.tilePrefab.name,
+                new Vector3(Random.Range(tilebounds.bounds.min.x, tilebounds.bounds.max.x), Random.Range(0, tilebounds.bounds.max.y), Random.Range(tilebounds.bounds.min.z, tilebounds.bounds.max.z)), Quaternion.identity);
+
+                tileInstance.transform.parent = GameObject.Find("Tiles").transform;
+                if (x < 36)
+                {
+                    tileInstance.GetComponent<Tile>().tileType = suit.ball;
+                    tileInstance.GetComponent<Tile>().number = x / 4;
+                }
+                // break;
+                if (x < 72)
+                {
+                    tileInstance.GetComponent<Tile>().tileType = suit.character;
+                    tileInstance.GetComponent<Tile>().number = x / 4;
+                }
+                // break;
+                if (x < 108)
+                {
+                    tileInstance.GetComponent<Tile>().tileType = suit.stick;
+                    tileInstance.GetComponent<Tile>().number = x / 4;
+                }
+                if (x < 144)
+                {
+                    tileInstance.GetComponent<Tile>().tileType = suit.flower;
+                }
+                // tile.transform.Rotate(new Vector3(0, 0, -90));
             }
-            // break;
-            if (x < 72)
-            {
-                tileInstance.GetComponent<Tile>().tileType = suit.character;
-                tileInstance.GetComponent<Tile>().number = x / 4;
-            }
-            // break;
-            if (x < 108)
-            {
-                tileInstance.GetComponent<Tile>().tileType = suit.stick;
-                tileInstance.GetComponent<Tile>().number = x / 4;
-            }
-            if (x < 144)
-            {
-                tileInstance.GetComponent<Tile>().tileType = suit.flower;
-            }
-            // tile.transform.Rotate(new Vector3(0, 0, -90));
         }
+
 
         if (playerPrefab == null)
         { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
@@ -88,27 +92,27 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
 
             if (NetworkedPlayer.LocalPlayerInstance == null)
             {
-                
+
                 Debug.Log("We are Instantiating LocalPlayer from " + SceneManagerHelper.ActiveSceneName + " Current Players: " + PhotonNetwork.CurrentRoom.PlayerCount);
 
                 // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
                 // switch based on current player count
-                switch(PhotonNetwork.CurrentRoom.PlayerCount)
+                switch (PhotonNetwork.CurrentRoom.PlayerCount)
                 {
                     case 1:
                         PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, -1.5f), Quaternion.identity, 0);
-                    break;
+                        break;
                     case 2:
                         PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(1.5f, 0.25f, 0f), Quaternion.AngleAxis(-90, Vector3.up), 0);
-                    break;
+                        break;
                     case 3:
                         PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, 1.5f), Quaternion.AngleAxis(-180, Vector3.up), 0);
-                    break;
+                        break;
                     case 4:
                         PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(-1.5f, 0.25f, 0f), Quaternion.AngleAxis(-270, Vector3.up), 0);
-                    break;
+                        break;
                 }
-                
+
             }
             else
             {
