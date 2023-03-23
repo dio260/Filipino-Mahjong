@@ -46,38 +46,48 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity);
+            // PhotonNetwork.InstantiateRoomObject(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity, 0 , new object[]{ 7, suit.ball});
+            PhotonNetwork.InstantiateRoomObject(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity);
+            GameObject tileInstance = PhotonNetwork.Instantiate(this.tilePrefab.name,
+                new Vector3(Random.Range(tilebounds.bounds.min.x, tilebounds.bounds.max.x), Random.Range(0, tilebounds.bounds.max.y), Random.Range(tilebounds.bounds.min.z, tilebounds.bounds.max.z)), Quaternion.identity);
+                tileInstance.transform.parent = GameObject.Find("Tiles").transform;
+                Debug.Log(tileInstance.TryGetComponent<Tile>(out Tile test));
+                test.testRPC(7, suit.ball);
+                // tileInstance.GetComponent<Tile>().SetTile(7, suit.ball);
 
             //Let's instantiate the tiles
-            for (int x = 0; x < 144; x++)
-            {
-                GameObject tileInstance = PhotonNetwork.Instantiate(this.tilePrefab.name,
-                new Vector3(Random.Range(tilebounds.bounds.min.x, tilebounds.bounds.max.x), Random.Range(0, tilebounds.bounds.max.y), Random.Range(tilebounds.bounds.min.z, tilebounds.bounds.max.z)), Quaternion.identity);
+            // for (int x = 0; x < 144; x++)
+            // {
+            //     GameObject tileInstance = PhotonNetwork.Instantiate(this.tilePrefab.name,
+            //     new Vector3(Random.Range(tilebounds.bounds.min.x, tilebounds.bounds.max.x), Random.Range(0, tilebounds.bounds.max.y), Random.Range(tilebounds.bounds.min.z, tilebounds.bounds.max.z)), Quaternion.identity);
+            //     tileInstance.transform.parent = GameObject.Find("Tiles").transform;
 
-                tileInstance.transform.parent = GameObject.Find("Tiles").transform;
-                if (x < 36)
-                {
-                    tileInstance.GetComponent<Tile>().tileType = suit.ball;
-                    tileInstance.GetComponent<Tile>().number = x / 4;
-                }
-                // break;
-                if (x < 72)
-                {
-                    tileInstance.GetComponent<Tile>().tileType = suit.character;
-                    tileInstance.GetComponent<Tile>().number = x / 4;
-                }
-                // break;
-                if (x < 108)
-                {
-                    tileInstance.GetComponent<Tile>().tileType = suit.stick;
-                    tileInstance.GetComponent<Tile>().number = x / 4;
-                }
-                if (x < 144)
-                {
-                    tileInstance.GetComponent<Tile>().tileType = suit.flower;
-                }
-                // tile.transform.Rotate(new Vector3(0, 0, -90));
-            }
+            //     if (x < 36)
+            //     {
+            //         Debug.Log("hi is this working");
+            //         tileInstance.GetComponent<Tile>().SetTile(x / 4, suit.ball);
+            //         continue;
+            //     }
+            //     // break;
+            //     if (x < 72)
+            //     {
+            //         tileInstance.GetComponent<Tile>().SetTile((x * 2) / 4, suit.character);
+            //         continue;
+            //     }
+            //     // break;
+            //     if (x < 108)
+            //     {
+            //         tileInstance.GetComponent<Tile>().SetTile((x * 4) / 4, suit.stick);
+            //         continue;
+            //     }
+            //     if (x < 144)
+            //     {
+            //         tileInstance.GetComponent<Tile>().SetTile((x * 8) / 4, suit.flower);
+            //         continue;
+            //     }
+
+            //     // tile.transform.Rotate(new Vector3(0, 0, -90));
+            // }
         }
 
 

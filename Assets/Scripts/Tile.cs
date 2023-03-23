@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Photon.Pun;
 
 public enum suit { stick, ball, character, flower };
-public class Tile : MonoBehaviour
+public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
 {
     public suit tileType;
     public int number;
@@ -18,7 +19,36 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        if(tileType == suit.flower)
+        // if (tileType == suit.flower)
+        // {
+        //     gameObject.name = tileType.ToString();
+        //     debugText.text = tileType.ToString();
+
+        // }
+        // else
+        // {
+        //     gameObject.name = number + " " + tileType.ToString();
+        //     debugText.text = number + " " + tileType.ToString();
+        // }
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+    public void testRPC(int num, suit suit)
+    {
+        PhotonView photonView = PhotonView.Get(this);
+        photonView.RPC("SetTile", RpcTarget.All, num, suit);
+    }
+    [PunRPC]
+    public void SetTile(int num, suit suit)
+    {
+        this.number = num;
+        this.tileType = suit;
+        if (tileType == suit.flower)
         {
             gameObject.name = tileType.ToString();
             debugText.text = tileType.ToString();
@@ -29,12 +59,22 @@ public class Tile : MonoBehaviour
             gameObject.name = number + " " + tileType.ToString();
             debugText.text = number + " " + tileType.ToString();
         }
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        
+        // object[] instantiationData = info.photonView.InstantiationData;
+        // if(instantiationData[1])
+        // if (tileType == suit.flower)
+        // {
+        //     gameObject.name = tileType.ToString();
+        //     debugText.text = tileType.ToString();
+
+        // }
+        // else
+        // {
+        //     gameObject.name = number + " " + tileType.ToString();
+        //     debugText.text = number + " " + tileType.ToString();
+        // }
     }
 }
