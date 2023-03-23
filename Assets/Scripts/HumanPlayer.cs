@@ -215,9 +215,15 @@ public class HumanPlayer : MahjongPlayerBase
 
     void DeclareDiscard()
     {
+        
+        if(MahjongManager.mahjongManager.mostRecentDiscard == null)
+        {
+            discardChoice = drawnTile;
+        }
         MahjongManager.mahjongManager.mostRecentDiscard = discardChoice;
-        // StartCoroutine(MahjongManager.mahjongManager.BetweenTurn());
+        closedHand.Remove(discardChoice);
         drawnTile = null;
+        ArrangeTiles();
     }
 
     void SelectMeldTile(Tile clicked)

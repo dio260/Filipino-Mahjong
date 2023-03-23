@@ -25,7 +25,7 @@ public class MahjongManager : MonoBehaviour
     private MahjongPlayerBase dealer, previousPlayer, currentPlayer, nextPlayer;
 
     private int round, numRounds;
-    public GameObject InitialTileParent;
+    public GameObject InitialTileParent, TileBoundaries;
     // Start is called before the first frame update
     void Awake()
     {
@@ -76,8 +76,14 @@ public class MahjongManager : MonoBehaviour
         }
 
         // wall = board;
+
+        foreach(Tile tile in board)
+        {
+            tile.transform.Rotate(new Vector3(0, 0,90));
+        }
+
         yield return new WaitForSeconds(2);
-        StartCoroutine(RollDice());
+        // StartCoroutine(RollDice());
     }
 
     IEnumerator RollDice()
@@ -147,7 +153,7 @@ public class MahjongManager : MonoBehaviour
     {
         Debug.Log("current turn: " + player.gameObject.name);
         player.SetPlayerState(PlayerState.discarding);
-        if (player.currentDecision != decision.pass)
+        if (player.currentDecision != decision.none && player.currentDecision != decision.pass)
         {
             Debug.Log(player.gameObject.name + " stole discard");
             player.StealTile();
@@ -173,21 +179,19 @@ public class MahjongManager : MonoBehaviour
 
 
             Debug.Log(player.gameObject.name + " finished drawing");
-            player.AddToClosedHand();
+            player.AddDrawnTileToClosedHand();
 
-            // current implementation doesnt add the drawn tile to hand afterwards
         }
-        
 
         //do a time based implementation so people cannot stall out the turn;
-        for(int i = 30; i > 0; i--)
+        for (int i = 30; i > 0; i--)
         {
-            if(player.GetType() == typeof(HumanPlayer))
+            if (player.GetType() == typeof(HumanPlayer))
             {
                 player.GetComponent<HumanPlayer>().debugText.text = i + " seconds left";
             }
-            yield return new WaitForSeconds(1);   
-            if(mostRecentDiscard != null)
+            yield return new WaitForSeconds(1);
+            if (mostRecentDiscard != null)
             {
                 break;
             }
@@ -200,44 +204,72 @@ public class MahjongManager : MonoBehaviour
 
         Debug.Log("Player Discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
         player.GetComponent<HumanPlayer>().debugText.text = "waiting";
+        player.SetPlayerState(PlayerState.waiting);
 
+        if(!debug)
+            mostRecentDiscard.transform.position = Vector3.up * 0.5f;
 
-
-        // StartCoroutine(BetweenTurn());
+        StartCoroutine(BetweenTurn());
     }
 
     public IEnumerator BetweenTurn()
     {
-        yield return new WaitForSeconds(5);
-
-        MahjongPlayerBase next = players[0];
+        Debug.Log("Deliberation time");
 
         foreach (MahjongPlayerBase player in players)
         {
-            if (player != currentPlayer || player != nextPlayer)
-            {
-                //only one person can possibly do kang at any given time
-                //so break the loop and give them the turn
-                if (player.currentDecision == decision.kang)
-                {
-                    nextPlayer = player;
-                    break;
-                }
-                //same with pong, but kang get priority so its lower
-                if (player.currentDecision == decision.pong)
-                {
-                    nextPlayer = player;
-                    break;
-                }
-                //both a chow and a pass result in the next person taking their turn anyway
-                //so we do not check it here
-            }
+            player.SetPlayerState(PlayerState.deciding);
         }
-        previousPlayer = currentPlayer;
-        currentPlayer = nextPlayer;
-        nextPlayer = players[(players.IndexOf(nextPlayer) + 1) % players.Count];
 
-        StartCoroutine(TakeTurn(currentPlayer));
+        bool allDone = true;
+        for (int i = 10; i > 0; i--)
+        {
+            yield return new WaitForSeconds(1);
+
+            foreach (MahjongPlayerBase player in players)
+            {
+                if (player.currentDecision == decision.none)
+                {
+                    allDone = false;
+                    break;
+                }
+            }
+            if (allDone)
+                break;
+        }
+        foreach (MahjongPlayerBase player in players)
+            {
+                player.SetPlayerState(PlayerState.waiting);
+            }
+
+        // MahjongPlayerBase next = players[0];
+
+        // foreach (MahjongPlayerBase player in players)
+        // {
+        //     if (player != currentPlayer || player != nextPlayer)
+        //     {
+        //         //only one person can possibly do kang at any given time
+        //         //so break the loop and give them the turn
+        //         if (player.currentDecision == decision.kang)
+        //         {
+        //             nextPlayer = player;
+        //             break;
+        //         }
+        //         //same with pong, but kang get priority so its lower
+        //         if (player.currentDecision == decision.pong)
+        //         {
+        //             nextPlayer = player;
+        //             break;
+        //         }
+        //         //both a chow and a pass result in the next person taking their turn anyway
+        //         //so we do not check it here
+        //     }
+        // }
+        // previousPlayer = currentPlayer;
+        // currentPlayer = nextPlayer;
+        // nextPlayer = players[(players.IndexOf(nextPlayer) + 1) % players.Count];
+
+        // StartCoroutine(TakeTurn(currentPlayer));
     }
 
     public void FinishGame()

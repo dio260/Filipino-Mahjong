@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum decision { pass, pong, kang, chow }
+public enum decision { none, pass, pong, kang, chow }
 public enum PlayerState { waiting, deciding, discarding }
 public class MahjongPlayerBase : MonoBehaviour
 {
@@ -48,14 +48,12 @@ public class MahjongPlayerBase : MonoBehaviour
 
     void Awake()
     {
-        currentDecision = decision.pass;
+        currentDecision = decision.none;
         closedHandParent.position = transform.position + transform.forward * 0.65f + transform.up * -0.15f;
         Vector3 left = Vector3.Cross(transform.forward.normalized, transform.up.normalized);
         flowersParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * 0.4f;
         openHandParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * -0.4f;
 
-        currentState = PlayerState.waiting;
-        currentDecision = decision.pass;
 
     }
 
@@ -436,11 +434,12 @@ public class MahjongPlayerBase : MonoBehaviour
         // ArrangeTiles();
     }
 
-    public void AddToClosedHand()
+    public void AddDrawnTileToClosedHand()
     {
         closedHand.Add(drawnTile);
+        drawnTile.transform.parent = closedHandParent;
         ArrangeTiles();
-        // drawnTile = null;
+        
     }
 
     public void SetPlayerState(PlayerState state)
