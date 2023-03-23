@@ -30,34 +30,34 @@ public class MahjongManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        if (mahjongManager != null && mahjongManager != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            mahjongManager = this;
-        }
-        //initialize some stuff
-        state = GameState.setup;
-        board = new List<Tile>(MAXTILECOUNT);
-        wall = new List<Tile>();
-        deadTiles = new List<Tile>();
-        mostRecentDiscard = null;
+        // if (mahjongManager != null && mahjongManager != this)
+        // {
+        //     Destroy(gameObject);
+        // }
+        // else
+        // {
+        //     mahjongManager = this;
+        // }
+        // //initialize some stuff
+        // state = GameState.setup;
+        // board = new List<Tile>(MAXTILECOUNT);
+        // wall = new List<Tile>();
+        // deadTiles = new List<Tile>();
+        // mostRecentDiscard = null;
 
-        if(!TileBoundaries.isTrigger)
-            TileBoundaries.isTrigger = true;
+        // if(!TileBoundaries.isTrigger)
+        //     TileBoundaries.isTrigger = true;
 
-        //put all the tiles into board structure;
-        foreach (Tile tile in InitialTileParent.transform.GetComponentsInChildren<Tile>())
-        {
-            board.Add(tile);
-        }
-
-
+        // //put all the tiles into board structure;
+        // foreach (Tile tile in InitialTileParent.transform.GetComponentsInChildren<Tile>())
+        // {
+        //     board.Add(tile);
+        // }
 
 
-        StartCoroutine(BoardSetup());
+
+
+        // StartCoroutine(BoardSetup());
     }
 
     // Update is called once per frame
