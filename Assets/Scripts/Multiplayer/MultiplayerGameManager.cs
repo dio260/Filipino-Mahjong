@@ -29,6 +29,8 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     private GameObject tilePrefab;
 
     BoxCollider tilebounds;
+
+    List<Tile> networkedTiles = new List<Tile>();
     #endregion
     // Start is called before the first frame update
     void Start()
@@ -48,46 +50,39 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         {
             // PhotonNetwork.InstantiateRoomObject(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity, 0 , new object[]{ 7, suit.ball});
             PhotonNetwork.InstantiateRoomObject(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity);
-            GameObject tileInstance = PhotonNetwork.Instantiate(this.tilePrefab.name,
+
+            // Let's instantiate the tiles
+            for (int x = 0; x < 144; x++)
+            {
+                GameObject tileInstance = PhotonNetwork.Instantiate(this.tilePrefab.name,
                 new Vector3(Random.Range(tilebounds.bounds.min.x, tilebounds.bounds.max.x), Random.Range(0, tilebounds.bounds.max.y), Random.Range(tilebounds.bounds.min.z, tilebounds.bounds.max.z)), Quaternion.identity);
                 tileInstance.transform.parent = GameObject.Find("Tiles").transform;
-                Debug.Log(tileInstance.TryGetComponent<Tile>(out Tile test));
-                test.testRPC(7, suit.ball);
-                // tileInstance.GetComponent<Tile>().SetTile(7, suit.ball);
+                networkedTiles.Add(tileInstance.GetComponent<Tile>());
+                if (x < 36)
+                {
+                    tileInstance.GetComponent<Tile>().testRPC(x / 4 + 1, suit.ball);
+                    continue;
+                }
+                // break;
+                if (x < 72)
+                {
+                    tileInstance.GetComponent<Tile>().testRPC((x - 36) / 4 + 1, suit.character);
+                    continue;
+                }
+                // break;
+                if (x < 108)
+                {
+                    tileInstance.GetComponent<Tile>().testRPC((x - 72) / 4 + 1, suit.stick);
+                    continue;
+                }
+                if (x < 144)
+                {
+                    tileInstance.GetComponent<Tile>().testRPC((x -108) / 4 + 1, suit.flower);
+                    continue;
+                }
 
-            //Let's instantiate the tiles
-            // for (int x = 0; x < 144; x++)
-            // {
-            //     GameObject tileInstance = PhotonNetwork.Instantiate(this.tilePrefab.name,
-            //     new Vector3(Random.Range(tilebounds.bounds.min.x, tilebounds.bounds.max.x), Random.Range(0, tilebounds.bounds.max.y), Random.Range(tilebounds.bounds.min.z, tilebounds.bounds.max.z)), Quaternion.identity);
-            //     tileInstance.transform.parent = GameObject.Find("Tiles").transform;
-
-            //     if (x < 36)
-            //     {
-            //         Debug.Log("hi is this working");
-            //         tileInstance.GetComponent<Tile>().SetTile(x / 4, suit.ball);
-            //         continue;
-            //     }
-            //     // break;
-            //     if (x < 72)
-            //     {
-            //         tileInstance.GetComponent<Tile>().SetTile((x * 2) / 4, suit.character);
-            //         continue;
-            //     }
-            //     // break;
-            //     if (x < 108)
-            //     {
-            //         tileInstance.GetComponent<Tile>().SetTile((x * 4) / 4, suit.stick);
-            //         continue;
-            //     }
-            //     if (x < 144)
-            //     {
-            //         tileInstance.GetComponent<Tile>().SetTile((x * 8) / 4, suit.flower);
-            //         continue;
-            //     }
-
-            //     // tile.transform.Rotate(new Vector3(0, 0, -90));
-            // }
+                // tile.transform.Rotate(new Vector3(0, 0, -90));
+            }
         }
 
 
@@ -156,6 +151,11 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
+        }
+
+        foreach(Tile tile in networkedTiles)
+        {
+            tile.testRPC(tile.number, tile.tileType);
         }
     }
 

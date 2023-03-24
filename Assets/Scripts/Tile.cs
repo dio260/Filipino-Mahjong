@@ -43,6 +43,11 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
         PhotonView photonView = PhotonView.Get(this);
         photonView.RPC("SetTile", RpcTarget.All, num, suit);
     }
+    public void testRPC2()
+    {
+        PhotonView photonView = PhotonView.Get(this);
+        photonView.RPC("SetTile", RpcTarget.All, this.number, this.tileType);
+    }
     [PunRPC]
     public void SetTile(int num, suit suit)
     {
