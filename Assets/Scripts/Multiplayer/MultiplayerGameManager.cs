@@ -166,11 +166,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
-            Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
-        }
-        else
-        {
-            Debug.Log("updating tileset");
+            Debug.Log("updating tileset for joined player");
             //have to do this so everyone has the same tileset
             foreach (Tile tile in networkedTiles)
             {
