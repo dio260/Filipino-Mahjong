@@ -139,11 +139,6 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player other)
     {
         Debug.Log("OnPlayerLeftRoom() " + other.NickName); // seen when other disconnects
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
-        }
     }
 
     /// <summary>
@@ -151,6 +146,6 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnLeftRoom()
     {
-        SceneManager.LoadScene("PunBasics-Launcher");
+        SceneManager.LoadScene("Main Menu");
     }
 }

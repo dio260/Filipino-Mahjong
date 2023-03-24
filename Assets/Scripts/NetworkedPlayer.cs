@@ -14,6 +14,10 @@ public class NetworkedPlayer : MonoBehaviourPunCallbacks
         {
             LocalPlayerInstance = gameObject;
         }
+        else
+        {
+            GetComponent<Camera>().enabled = false;
+        }
     }
 
     // Update is called once per frame

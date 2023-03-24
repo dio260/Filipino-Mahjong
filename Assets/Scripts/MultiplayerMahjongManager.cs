@@ -89,14 +89,10 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     #region 
     public override void OnPlayerEnteredRoom(Player other)
     {
-        Debug.Log("OnPlayerEnteredRoom() " + other.NickName); // not seen if you're the player connecting
+       
+        if (!PhotonNetwork.IsMasterClient)
+        {
 
-        if (PhotonNetwork.IsMasterClient)
-        {
-            Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
-        }
-        else
-        {
             //have to do this so everyone has the same tileset
             foreach (Tile tile in networkedTiles)
             {
