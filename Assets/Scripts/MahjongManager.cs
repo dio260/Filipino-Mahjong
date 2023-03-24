@@ -108,6 +108,7 @@ public class MahjongManager : MonoBehaviour
 
         for(int x = 0; x < board.Count; x++)
         {
+            board[x].transform.localRotation = Quaternion.Euler(0, 0, -90);
             if (x%36 == 0)
             {
                 multiplier = 0;
