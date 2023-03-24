@@ -37,6 +37,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     public Button gameStart;
 
     public List<MahjongPlayerBase> players;
+    public Material[] playerColors;
 
     // PhotonView photonView;
 
@@ -127,22 +128,29 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                     case 1:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, -1.5f), Quaternion.identity, 0);
                         player.name = PhotonNetwork.NickName;
+                        player.GetComponent<MeshRenderer>().materials[0] = playerColors[0];
                         players.Add(player.GetComponent<MahjongPlayerBase>());
                         break;
                     case 2:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(1.5f, 0.25f, 0f), Quaternion.AngleAxis(-90, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
+                        player.GetComponent<MeshRenderer>().materials[1] = playerColors[0];
+
                         players.Add(player.GetComponent<MahjongPlayerBase>());
                         break;
                     case 3:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, 1.5f), Quaternion.AngleAxis(-180, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
+                        player.GetComponent<MeshRenderer>().materials[2] = playerColors[0];
+
                         players.Add(player.GetComponent<MahjongPlayerBase>());
 
                         break;
                     case 4:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(-1.5f, 0.25f, 0f), Quaternion.AngleAxis(-270, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
+                        player.GetComponent<MeshRenderer>().materials[3] = playerColors[0];
+
                         players.Add(player.GetComponent<MahjongPlayerBase>());
 
                         break;
