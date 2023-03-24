@@ -110,7 +110,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
        
         if (!PhotonNetwork.IsMasterClient)
         {
-
+            Debug.Log("updating tileset");
             //have to do this so everyone has the same tileset
             foreach (Tile tile in networkedTiles)
             {
