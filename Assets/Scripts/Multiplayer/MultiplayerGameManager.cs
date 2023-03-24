@@ -31,10 +31,14 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
 
     #endregion
     // Start is called before the first frame update
+    void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
 
-        Instance = this;
+        
 
         // in case we started this demo with the wrong scene being active, simply load the menu scene
         if (!PhotonNetwork.IsConnected)

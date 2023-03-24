@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6030435354201389513}
   - component: {fileID: 5829320463460384836}
   - component: {fileID: 3043964625487591207}
+  - component: {fileID: -4995514026450326686}
   m_Layer: 0
   m_Name: NetworkMahjongManager
   m_TagString: Untagged
@@ -57,6 +58,7 @@ MonoBehaviour:
   InitialTileParent: {fileID: 0}
   TileSizeReference: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
   TileBoundaries: {fileID: 0}
+  network: 1
 --- !u!114 &5829320463460384836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,7 +77,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 3043964625487591207}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -95,3 +98,16 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &-4995514026450326686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6030435354201389527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c77e8cf534258e4f99fc9b1154a7798, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilePrefab: {fileID: 8228665404231082851, guid: 8161ad177c9b5f94a939ed994fc01af7, type: 3}

@@ -569,7 +569,7 @@ GameObject:
   - component: {fileID: 541233124}
   - component: {fileID: 541233123}
   m_Layer: 5
-  m_Name: Button
+  m_Name: GameStartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1209,6 +1209,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 552969756238571695, guid: b916fea0b28e22f498d9aba2fb00a0b3, type: 3}
   gameManagerPrefab: {fileID: 6030435354201389527, guid: 14e9d404943515944b9a4d4d9ff3d4da, type: 3}
+  multiplayerCanvas: {fileID: 517206911}
+  gameStart: {fileID: 541233123}
 --- !u!114 &2022817422
 MonoBehaviour:
   m_ObjectHideFlags: 0
