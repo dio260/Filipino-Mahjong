@@ -134,14 +134,14 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                     case 2:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(1.5f, 0.25f, 0f), Quaternion.AngleAxis(-90, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
-                        player.GetComponentInChildren<MeshRenderer>().material = playerColors[0];
+                        player.GetComponentInChildren<MeshRenderer>().material = playerColors[1];
 
                         players.Add(player.GetComponent<MahjongPlayerBase>());
                         break;
                     case 3:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, 1.5f), Quaternion.AngleAxis(-180, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
-                        player.GetComponentInChildren<MeshRenderer>().material = playerColors[0];
+                        player.GetComponentInChildren<MeshRenderer>().material = playerColors[2];
 
                         players.Add(player.GetComponent<MahjongPlayerBase>());
 
@@ -149,7 +149,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                     case 4:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(-1.5f, 0.25f, 0f), Quaternion.AngleAxis(-270, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
-                        player.GetComponentInChildren<MeshRenderer>().material = playerColors[0];
+                        player.GetComponentInChildren<MeshRenderer>().material = playerColors[3];
 
                         players.Add(player.GetComponent<MahjongPlayerBase>());
 
