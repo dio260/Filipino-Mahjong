@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 using Photon.Realtime;
 using Photon.Pun;
+using TMPro;
 
 public class MultiplayerGameManager : MonoBehaviourPunCallbacks
 {
@@ -35,6 +36,8 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
 
     public Button gameStart;
 
+    // PhotonView photonView;
+
     #endregion
     // Start is called before the first frame update
     void Awake()
@@ -43,6 +46,9 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     }
     void Start()
     {
+        // photonView = PhotonView.Get(this);
+        multiplayerCanvas = GameObject.Find("Multiplayer Canvas");
+        multiplayerCanvas.transform.Find("Room Title").GetComponent<TMP_Text>().text = "Room Name: " + PhotonNetwork.CurrentRoom.Name;
 
         tilebounds = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
 
@@ -133,7 +139,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                         player.name = PhotonNetwork.NickName;
                         break;
                 }
-                
+
 
             }
             else
@@ -142,10 +148,6 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                 // Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
             }
 
-            foreach(Player player in PhotonNetwork.PlayerList)
-            {
-                Debug.Log(player.NickName);
-            }
         }
     }
 
@@ -203,5 +205,16 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         SceneManager.LoadScene("Main Menu");
+    }
+
+    
+    public void RemoteNameListUpdate()
+    {
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text = "";
+            multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text += player.NickName + '\n';
+        }
+        
     }
 }
