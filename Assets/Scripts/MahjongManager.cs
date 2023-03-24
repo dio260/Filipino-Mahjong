@@ -27,10 +27,10 @@ public class MahjongManager : MonoBehaviour
     protected int round, numRounds;
     public GameObject InitialTileParent, TileSizeReference;
     public BoxCollider TileBoundaries;
-
     public bool network;
+
     // Start is called before the first frame update
-    void Awake()
+    protected virtual void Awake()
     {
         if (mahjongManager != null && mahjongManager != this)
         {
@@ -40,6 +40,21 @@ public class MahjongManager : MonoBehaviour
         {
             mahjongManager = this;
         }
+        
+        if(!network)
+        {
+            InitializeGame();
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    public void InitializeGame()
+    {
         //initialize some stuff
         state = GameState.setup;
         board = new List<Tile>(MAXTILECOUNT);
@@ -55,17 +70,10 @@ public class MahjongManager : MonoBehaviour
         {
             board.Add(tile);
         }
-        if(!network)
-            StartCoroutine(BoardSetup());
+        StartCoroutine(BoardSetup());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    IEnumerator BoardSetup()
+    public IEnumerator BoardSetup()
     {
         Debug.Log("Shuffling Board");
         yield return new WaitForSeconds(2);
@@ -161,7 +169,7 @@ public class MahjongManager : MonoBehaviour
         // StartCoroutine(RollDice());
     }
 
-    IEnumerator RollDice()
+    public IEnumerator RollDice()
     {
         Debug.Log("Determining Dealer");
         System.Random rand = new System.Random();
@@ -356,8 +364,5 @@ public class MahjongManager : MonoBehaviour
         return state;
     }
 
-    #region RPC Calls
-
-    #endregion
 
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 using Photon.Realtime;
 using Photon.Pun;
@@ -24,18 +25,15 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     [Tooltip("The prefab for managing game state")]
     [SerializeField]
     private GameObject gameManagerPrefab;
-    [Tooltip("The tile prefab")]
-    [SerializeField]
-    private GameObject tilePrefab;
+    public GameObject multiplayerCanvas;
 
-    BoxCollider tilebounds;
+    public Button gameStart;
 
-    List<Tile> networkedTiles = new List<Tile>();
     #endregion
     // Start is called before the first frame update
     void Start()
     {
-        tilebounds = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
+
         Instance = this;
 
         // in case we started this demo with the wrong scene being active, simply load the menu scene
@@ -50,39 +48,10 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         {
             // PhotonNetwork.InstantiateRoomObject(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity, 0 , new object[]{ 7, suit.ball});
             PhotonNetwork.InstantiateRoomObject(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity);
-
-            // Let's instantiate the tiles
-            for (int x = 0; x < 144; x++)
-            {
-                GameObject tileInstance = PhotonNetwork.Instantiate(this.tilePrefab.name,
-                new Vector3(Random.Range(tilebounds.bounds.min.x, tilebounds.bounds.max.x), Random.Range(0, tilebounds.bounds.max.y), Random.Range(tilebounds.bounds.min.z, tilebounds.bounds.max.z)), Quaternion.identity);
-                tileInstance.transform.parent = GameObject.Find("Tiles").transform;
-                networkedTiles.Add(tileInstance.GetComponent<Tile>());
-                if (x < 36)
-                {
-                    tileInstance.GetComponent<Tile>().testRPC(x / 4 + 1, suit.ball);
-                    continue;
-                }
-                // break;
-                if (x < 72)
-                {
-                    tileInstance.GetComponent<Tile>().testRPC((x - 36) / 4 + 1, suit.character);
-                    continue;
-                }
-                // break;
-                if (x < 108)
-                {
-                    tileInstance.GetComponent<Tile>().testRPC((x - 72) / 4 + 1, suit.stick);
-                    continue;
-                }
-                if (x < 144)
-                {
-                    tileInstance.GetComponent<Tile>().testRPC((x -108) / 4 + 1, suit.flower);
-                    continue;
-                }
-
-                // tile.transform.Rotate(new Vector3(0, 0, -90));
-            }
+        }
+        else
+        {
+            gameStart.gameObject.SetActive(false);
         }
 
 
@@ -140,6 +109,11 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void HostStartGame()
+    {
+        MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("start");
+    }
+
     /// <summary>
     /// Called when a Photon Player got connected. We need to then load a bigger scene.
     /// </summary>
@@ -151,11 +125,6 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
-        }
-
-        foreach(Tile tile in networkedTiles)
-        {
-            tile.testRPC(tile.number, tile.tileType);
         }
     }
 
