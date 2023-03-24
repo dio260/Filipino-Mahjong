@@ -1359,6 +1359,12 @@ MonoBehaviour:
   tilePrefab: {fileID: 8228665404231082851, guid: 8161ad177c9b5f94a939ed994fc01af7, type: 3}
   multiplayerCanvas: {fileID: 517206911}
   gameStart: {fileID: 541233123}
+  players: []
+  playerColors:
+  - {fileID: 2100000, guid: 2a36092183e2c4d40921b463d011570e, type: 2}
+  - {fileID: 2100000, guid: 33c8fd23cf9da6946b87f95741039ee1, type: 2}
+  - {fileID: 2100000, guid: 98d4297dee4323d44986d77575c3a2ea, type: 2}
+  - {fileID: 2100000, guid: 3ad08bf98db70e748ad288697b4680ca, type: 2}
 --- !u!4 &2022817423
 Transform:
   m_ObjectHideFlags: 0
