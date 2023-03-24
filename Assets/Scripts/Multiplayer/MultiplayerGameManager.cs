@@ -49,7 +49,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         // photonView = PhotonView.Get(this);
         multiplayerCanvas = GameObject.Find("Multiplayer Canvas");
         multiplayerCanvas.transform.Find("Room Title").GetComponent<TMP_Text>().text = "Room Name: " + PhotonNetwork.CurrentRoom.Name;
-
+        multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text = "";
         tilebounds = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
 
         // in case we started this demo with the wrong scene being active, simply load the menu scene
@@ -212,7 +212,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     {
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text = "";
+            
             multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text += player.NickName + '\n';
         }
         
