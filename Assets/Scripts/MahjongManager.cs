@@ -46,6 +46,7 @@ public class MahjongManager : MonoBehaviour
         {
             InitializeGame();
         }
+        InitialTileParent = GameObject.Find("Tiles");
         TileBoundaries = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
     }
 

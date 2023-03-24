@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using Photon.Pun;
 
 public class HumanPlayer : MahjongPlayerBase
 {
@@ -13,6 +13,8 @@ public class HumanPlayer : MahjongPlayerBase
     public TMP_Text debugText;
 
     GameObject tileSwap;
+
+    public bool networked;
 
     // List<Tile> selectedTiles = new List<Tile>();
     void Start()
@@ -46,49 +48,53 @@ public class HumanPlayer : MahjongPlayerBase
                 discardButton.gameObject.SetActive(true);
             }
 
-            Vector2 hitPos;
-
-            // Debug.Log(new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0));
-            Vector3 mouseWorldPos = playerCam.ViewportToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCam.nearClipPlane));
-
-            Ray mouseWorldRay = playerCam.ScreenPointToRay(Input.mousePosition);
-            Debug.DrawRay(mouseWorldRay.origin, mouseWorldRay.direction, Color.blue * Vector3.Distance(transform.position, closedHandParent.position), 0f);
-            if (Physics.Raycast(mouseWorldRay, out RaycastHit hit, Vector3.Distance(transform.position, closedHandParent.position))
-                && hit.transform.GetComponent<Tile>())
-            // if (Physics.Raycast(mouseWorldRay, out RaycastHit hit, 5f))
+            if (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine))
             {
-                // Debug.Log("touched tile at " + hit.point);
-                if (closedHandParent.Find(hit.transform.name) != null)
+                Vector2 hitPos;
+
+                // Debug.Log(new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0));
+                Vector3 mouseWorldPos = playerCam.ViewportToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCam.nearClipPlane));
+
+                Ray mouseWorldRay = playerCam.ScreenPointToRay(Input.mousePosition);
+                Debug.DrawRay(mouseWorldRay.origin, mouseWorldRay.direction, Color.blue * Vector3.Distance(transform.position, closedHandParent.position), 0f);
+                if (Physics.Raycast(mouseWorldRay, out RaycastHit hit, Vector3.Distance(transform.position, closedHandParent.position))
+                    && hit.transform.GetComponent<Tile>())
+                // if (Physics.Raycast(mouseWorldRay, out RaycastHit hit, 5f))
                 {
-                    if (Input.GetMouseButtonDown(0) && currentState != PlayerState.waiting)
+                    // Debug.Log("touched tile at " + hit.point);
+                    if (closedHandParent.Find(hit.transform.name) != null)
                     {
-                        switch (currentState)
+                        if (Input.GetMouseButtonDown(0) && currentState != PlayerState.waiting)
                         {
-                            case PlayerState.deciding:
-                                Debug.Log("Selected Tile for a Meld");
-                                if (selectedTiles.Count < 4)
-                                {
-                                    SelectMeldTile(hit.transform.GetComponent<Tile>());
-                                }
-                                break;
-                            case PlayerState.discarding:
-                                Debug.Log("Selected Tile to discard");
-                                discardChoice = hit.transform.GetComponent<Tile>();
-                                break;
+                            switch (currentState)
+                            {
+                                case PlayerState.deciding:
+                                    Debug.Log("Selected Tile for a Meld");
+                                    if (selectedTiles.Count < 4)
+                                    {
+                                        SelectMeldTile(hit.transform.GetComponent<Tile>());
+                                    }
+                                    break;
+                                case PlayerState.discarding:
+                                    Debug.Log("Selected Tile to discard");
+                                    discardChoice = hit.transform.GetComponent<Tile>();
+                                    break;
+                            }
+
+                        }
+                        else if (Input.GetMouseButtonDown(1))
+                        {
+                            // hitPos = hit.point
+                            Debug.Log("holding tile to swap");
+                            // hit.transform.position = new Vector3(mouseWorldRay.origin.x, mouseWorldRay.origin.y, hit.transform.position.z);
+                            // hit.transform.position += new Vector3(Input.GetAxis("Mouse X") * Time.deltaTime * 1.75f, Input.GetAxis("Mouse Y") * Time.deltaTime * 1.75f, 0);
+                            SwapTilePosition(hit.transform.gameObject);
                         }
 
                     }
-                    else if (Input.GetMouseButtonDown(1))
-                    {
-                        // hitPos = hit.point
-                        Debug.Log("holding tile to swap");
-                        // hit.transform.position = new Vector3(mouseWorldRay.origin.x, mouseWorldRay.origin.y, hit.transform.position.z);
-                        // hit.transform.position += new Vector3(Input.GetAxis("Mouse X") * Time.deltaTime * 1.75f, Input.GetAxis("Mouse Y") * Time.deltaTime * 1.75f, 0);
-                        SwapTilePosition(hit.transform.gameObject);
-                    }
-
                 }
             }
+
         }
 
 
@@ -215,8 +221,8 @@ public class HumanPlayer : MahjongPlayerBase
 
     void DeclareDiscard()
     {
-        
-        if(MahjongManager.mahjongManager.mostRecentDiscard == null)
+
+        if (MahjongManager.mahjongManager.mostRecentDiscard == null)
         {
             discardChoice = drawnTile;
         }
