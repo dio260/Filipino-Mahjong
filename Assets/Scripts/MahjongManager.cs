@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -60,6 +61,8 @@ public class MahjongManager : MonoBehaviour
 
     public void InitializeGame()
     {
+        players = new List<MahjongPlayerBase>();
+        players.AddRange(FindObjectsOfType<MahjongPlayerBase>().ToList<MahjongPlayerBase>());
         //initialize some stuff
         state = GameState.setup;
         board = new List<Tile>(MAXTILECOUNT);

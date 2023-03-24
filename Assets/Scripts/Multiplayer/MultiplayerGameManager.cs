@@ -113,21 +113,27 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
 
                 // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
                 // switch based on current player count
+                GameObject player;
                 switch (PhotonNetwork.CurrentRoom.PlayerCount)
                 {
                     case 1:
-                        PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, -1.5f), Quaternion.identity, 0);
+                        player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, -1.5f), Quaternion.identity, 0);
+                        player.name = PhotonNetwork.NickName;
                         break;
                     case 2:
-                        PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(1.5f, 0.25f, 0f), Quaternion.AngleAxis(-90, Vector3.up), 0);
+                        player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(1.5f, 0.25f, 0f), Quaternion.AngleAxis(-90, Vector3.up), 0);
+                        player.name = PhotonNetwork.NickName;
                         break;
                     case 3:
-                        PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, 1.5f), Quaternion.AngleAxis(-180, Vector3.up), 0);
+                        player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, 1.5f), Quaternion.AngleAxis(-180, Vector3.up), 0);
+                        player.name = PhotonNetwork.NickName;
                         break;
                     case 4:
-                        PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(-1.5f, 0.25f, 0f), Quaternion.AngleAxis(-270, Vector3.up), 0);
+                        player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(-1.5f, 0.25f, 0f), Quaternion.AngleAxis(-270, Vector3.up), 0);
+                        player.name = PhotonNetwork.NickName;
                         break;
                 }
+                
 
             }
             else
@@ -166,6 +172,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
+
             Debug.Log("updating tileset for joined player");
             //have to do this so everyone has the same tileset
             foreach (Tile tile in networkedTiles)
