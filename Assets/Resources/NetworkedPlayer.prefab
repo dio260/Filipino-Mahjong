@@ -405,6 +405,7 @@ GameObject:
   - component: {fileID: 7234042182143124440}
   - component: {fileID: 3073545853664383980}
   - component: {fileID: -1655838947876298364}
+  - component: {fileID: -499195023285318709}
   m_Layer: 0
   m_Name: NetworkedPlayer
   m_TagString: Untagged
@@ -518,7 +519,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: -1655838947876298364}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -538,6 +540,18 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &-499195023285318709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552969756238571695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cec4b11c4eb53c40a2de94b79c00104, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &556463316477465572
 GameObject:
   m_ObjectHideFlags: 0
