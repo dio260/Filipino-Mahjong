@@ -36,6 +36,8 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
 
     public Button gameStart;
 
+    public List<MahjongPlayerBase> players;
+
     // PhotonView photonView;
 
     #endregion
@@ -49,7 +51,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         // photonView = PhotonView.Get(this);
         multiplayerCanvas = GameObject.Find("Multiplayer Canvas");
         multiplayerCanvas.transform.Find("Room Title").GetComponent<TMP_Text>().text = "Room Name: " + PhotonNetwork.CurrentRoom.Name;
-        multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text = "";
+        
         tilebounds = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
 
         // in case we started this demo with the wrong scene being active, simply load the menu scene
@@ -125,18 +127,24 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                     case 1:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, -1.5f), Quaternion.identity, 0);
                         player.name = PhotonNetwork.NickName;
+                        players.Add(player.GetComponent<MahjongPlayerBase>());
                         break;
                     case 2:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(1.5f, 0.25f, 0f), Quaternion.AngleAxis(-90, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
+                        players.Add(player.GetComponent<MahjongPlayerBase>());
                         break;
                     case 3:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, 1.5f), Quaternion.AngleAxis(-180, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
+                        players.Add(player.GetComponent<MahjongPlayerBase>());
+
                         break;
                     case 4:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(-1.5f, 0.25f, 0f), Quaternion.AngleAxis(-270, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
+                        players.Add(player.GetComponent<MahjongPlayerBase>());
+
                         break;
                 }
 
@@ -210,9 +218,9 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     
     public void RemoteNameListUpdate()
     {
+        multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text = "";
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            
             multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text += player.NickName + '\n';
         }
         

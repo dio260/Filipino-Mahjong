@@ -495,7 +495,7 @@ MonoBehaviour:
   openHandParent: {fileID: 8121919785658311191}
   flowersParent: {fileID: 8814427028177514817}
   playerCam: {fileID: 0}
-  playerCanvas: {fileID: 0}
+  playerCanvas: {fileID: 4265425483241202447}
   passButton: {fileID: 8717354414462581563}
   chowButton: {fileID: 5569791294172372113}
   pongButton: {fileID: 6556713184122407136}

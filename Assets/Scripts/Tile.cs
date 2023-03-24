@@ -66,6 +66,7 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
             gameObject.name = number + " " + tileType.ToString();
             debugText.text = number + " " + tileType.ToString();
         }
+        this.transform.parent = MahjongManager.mahjongManager.InitialTileParent.transform;
     }
     [PunRPC]
     public void AddToBoard()
@@ -73,7 +74,7 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
         if(!MahjongManager.mahjongManager.GetBoard().Contains(this))
         {
             MahjongManager.mahjongManager.GetBoard().Add(this);
-            this.transform.parent = MahjongManager.mahjongManager.InitialTileParent.transform;
+            
         }
     }
 
