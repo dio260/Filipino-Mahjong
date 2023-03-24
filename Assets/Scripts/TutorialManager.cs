@@ -2,33 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public enum GameState { setup, playing, finished };
-
-public class MahjongManager : MonoBehaviour
+public class TutorialManager : MahjongManager
 {
-    public bool debug;
-    public static MahjongManager mahjongManager;
-    // [SerializeField]
-    protected List<Tile> board;
-    public List<Tile> wall;
+    public new List<Tile> board;
+    // private static int MAXTILECOUNT = 144;
+    // private GameState state;
+    // private MahjongPlayerBase dealer, previousPlayer, currentPlayer, nextPlayer;
+    // private int round, numRounds;
 
-    protected List<Tile> deadTiles;
-
-    public Tile mostRecentDiscard;
-    protected static int MAXTILECOUNT = 144;
-    protected GameState state;
-
-    [SerializeField]
-    protected List<MahjongPlayerBase> players;// = new List<MahjongPlayerBase>(4);
-
-    protected MahjongPlayerBase dealer, previousPlayer, currentPlayer, nextPlayer;
-
-    protected int round, numRounds;
-    public GameObject InitialTileParent, TileSizeReference;
-    public BoxCollider TileBoundaries;
-
-    public bool network;
+    public HumanPlayer tutorialGuy;
+    public Text tutorialDialogue;
+    public Button nextButton, eventButton;
     // Start is called before the first frame update
     void Awake()
     {
@@ -42,7 +28,7 @@ public class MahjongManager : MonoBehaviour
         }
         //initialize some stuff
         state = GameState.setup;
-        board = new List<Tile>(MAXTILECOUNT);
+        // board = new List<Tile>(MAXTILECOUNT);
         wall = new List<Tile>();
         deadTiles = new List<Tile>();
         mostRecentDiscard = null;
@@ -55,8 +41,8 @@ public class MahjongManager : MonoBehaviour
         {
             board.Add(tile);
         }
-        if(!network)
-            StartCoroutine(BoardSetup());
+
+        StartCoroutine(GameOverview());
     }
 
     // Update is called once per frame
@@ -65,23 +51,27 @@ public class MahjongManager : MonoBehaviour
 
     }
 
+    IEnumerator GameOverview()
+    {
+        tutorialDialogue.text = "Welcome to Mahjong! This tutorial will go over basic rules and steps to playing the game.";
+        yield return new WaitForSeconds(2);
+        tutorialDialogue.text = "Mahjong is a tile-based game in which players must form specific hands of 17 tiles to win.";
+        yield return new WaitForSeconds(2);
+        tutorialDialogue.text = "There are many ways of playing Mahjong, but this game focuses on a basic ruleset used in the Philippines.";
+        yield return new WaitForSeconds(2);
+
+    }
+
     IEnumerator BoardSetup()
     {
-        Debug.Log("Shuffling Board");
+        tutorialDialogue.text = "All Mahjong games start by shuffling the tiles and sorting them into walls. Press the button to shuffle the tiles on the table.";
+
+        //add a button instead of wait;
         yield return new WaitForSeconds(2);
         System.Random rand = new System.Random();
-        int n = board.Count;
-        while (n > 1)
-        {
-            int k = rand.Next(n--);
-            Tile temp = board[n];
-            board[n] = board[k];
-            board[k] = temp;
-        }
 
         // wall = board;
         // Debug.Log(TileBoundaries.bounds.max);
-
         float distanceReference = TileSizeReference.transform.localScale.z/2;
         float heightReference = TileSizeReference.transform.localScale.y/2f;
         int multiplier = 0;
@@ -157,26 +147,34 @@ public class MahjongManager : MonoBehaviour
             // tile.transform.Rotate(new Vector3(0, 0, -90));
         }
 
+        tutorialDialogue.text = "In a real mahjong game, all players work together to shuffle the board and arrange them into those four walls.";
         yield return new WaitForSeconds(2);
+        tutorialDialogue.text = "After the walls have been made, the game's dealer then needs to be determined. Press the button to move on to that.";
+        yield return new WaitForSeconds(2);
+
+        // yield return new WaitForSeconds(2);
         // StartCoroutine(RollDice());
     }
 
     IEnumerator RollDice()
     {
-        Debug.Log("Determining Dealer");
-        System.Random rand = new System.Random();
-        int dieRollResult = (rand.Next(2, 13) - 1) % 4;
-        if (!debug)
-            dealer = players[dieRollResult];
-        else
-            dealer = players[0];
+        tutorialDialogue.text = "The dealer is determined by counting counterclockwise from a dice roll [needs explanation work]";
+        yield return new WaitForSeconds(2);
+        tutorialDialogue.text = "The dealer gets to split one of the walls to start distributing hands to each player";
+        yield return new WaitForSeconds(2);
+        tutorialDialogue.text = "For the sake of this tutorial, you will start as the dealer.";
+        yield return new WaitForSeconds(2);
+        
+        dealer = players[0];
 
         //create walls
-        int wallIndex = (MAXTILECOUNT / 4) * dieRollResult;
-        wall.AddRange(board.GetRange(wallIndex, MAXTILECOUNT - wallIndex));
-        wall.AddRange(board.GetRange(0, wallIndex));
+        // System.Random rand = new System.Random();
+        // int dieRollResult = (rand.Next(2, 13) - 1) % 4;
+        // int wallIndex = (MAXTILECOUNT / 4) * dieRollResult;
+        wall.AddRange(board);
 
-        Debug.Log("Distributing Hand");
+
+        Debug.Log("Distributing Hands");
 
         List<Tile> distributedTiles = wall.GetRange(0, 65);
         wall.RemoveRange(0, 65);
@@ -184,7 +182,7 @@ public class MahjongManager : MonoBehaviour
         // distributedTiles.Remove(wall[0]);
         for (int i = 1; i < 65; i++)
         {
-            players[(dieRollResult + ((i - 1) / 16)) % 4].AddTile(distributedTiles[i]);
+            players[(((i - 1) / 16)) % 4].AddTile(distributedTiles[i]);
         }
 
         foreach (MahjongPlayerBase player in players)
@@ -194,7 +192,22 @@ public class MahjongManager : MonoBehaviour
         }
         // StartCoroutine(Wait());
         yield return new WaitForSeconds(2);
+        tutorialDialogue.text = "Now that each player has their starting hand, the wall now has two ends.";
+        yield return new WaitForSeconds(2);
+        tutorialDialogue.text = "Both ends are used for drawing tiles. One end is for normal drawing, while the end where the die have been placed is for replacing flower tiles.";
+        yield return new WaitForSeconds(2);
 
+        
+    }
+
+    IEnumerator FlowersTutorial()
+    {
+        tutorialDialogue.text = "The ";
+        yield return new WaitForSeconds(2);
+        tutorialDialogue.text = "Flower tiles are bonus tiles that do not influence a player's hand. If a player draws one, they collect it to the side and may draw another tile from the flower end to replace it.";
+        yield return new WaitForSeconds(2);
+        tutorialDialogue.text = "The hand distribution has left you with a flower tile. Press the button to replace it.";
+        yield return new WaitForSeconds(2);
         Debug.Log("Replacing Flowers");
 
         int needFlowers = -1;
@@ -209,6 +222,8 @@ public class MahjongManager : MonoBehaviour
             }
         }
 
+        tutorialDialogue.text = "Now your flowers are replaced and you have a proper hand. Any flowers drawn throughout the ";
+        yield return new WaitForSeconds(2);
 
         foreach (MahjongPlayerBase player in players)
         {
@@ -217,7 +232,7 @@ public class MahjongManager : MonoBehaviour
         }
 
         currentPlayer = dealer;
-        nextPlayer = players[(dieRollResult + 1) % players.Count];
+        nextPlayer = players[1];
 
         yield return new WaitForSeconds(2);
         state = GameState.playing;
