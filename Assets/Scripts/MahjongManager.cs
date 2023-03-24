@@ -105,7 +105,7 @@ public class MahjongManager : MonoBehaviour
         // Debug.Log(TileBoundaries.bounds.max);
 
         float distanceReference = TileSizeReference.transform.localScale.z/2;
-        float heightReference = TileSizeReference.transform.localScale.y/2f;
+        float heightReference = TileSizeReference.transform.localScale.y/2.75f;
         int multiplier = 0;
 
         for(int x = 0; x < board.Count; x++)
@@ -119,7 +119,7 @@ public class MahjongManager : MonoBehaviour
             {
                 if(x % 2 == 0)
                 {
-                    board[x].transform.position = new Vector3(TileBoundaries.bounds.max.x, TileBoundaries.bounds.min.y + 0.0025f + heightReference, TileBoundaries.bounds.max.z - (distanceReference * multiplier) + 0.01f);
+                    board[x].transform.position = new Vector3(TileBoundaries.bounds.max.x, TileBoundaries.bounds.min.y + heightReference, TileBoundaries.bounds.max.z - (distanceReference * multiplier) + 0.01f);
                 }
                 else
                 {
@@ -135,7 +135,7 @@ public class MahjongManager : MonoBehaviour
                 board[x].transform.Rotate(Vector3.left  * 90);
                 if(x % 2 == 0)
                 {
-                    board[x].transform.position = new Vector3(TileBoundaries.bounds.max.x - (distanceReference * multiplier) + 0.01f, TileBoundaries.bounds.min.y + 0.0025f + heightReference, TileBoundaries.bounds.min.z );
+                    board[x].transform.position = new Vector3(TileBoundaries.bounds.max.x - (distanceReference * multiplier) + 0.01f, TileBoundaries.bounds.min.y + heightReference, TileBoundaries.bounds.min.z );
                 }
                 else
                 {
@@ -152,7 +152,7 @@ public class MahjongManager : MonoBehaviour
                 // board[x].transform.Rotate(Vector3.left  * 90);
                 if(x % 2 == 0)
                 {
-                    board[x].transform.position = new Vector3(TileBoundaries.bounds.min.x, TileBoundaries.bounds.min.y + 0.0025f + heightReference, TileBoundaries.bounds.min.z + (distanceReference * multiplier) + 0.01f);
+                    board[x].transform.position = new Vector3(TileBoundaries.bounds.min.x, TileBoundaries.bounds.min.y + heightReference, TileBoundaries.bounds.min.z + (distanceReference * multiplier) + 0.01f);
                 }
                 else
                 {
@@ -167,7 +167,7 @@ public class MahjongManager : MonoBehaviour
                 board[x].transform.Rotate(Vector3.left  * 90);
                 if(x % 2 == 0)
                 {
-                    board[x].transform.position = new Vector3(TileBoundaries.bounds.min.x + (distanceReference * multiplier)  + 0.01f, TileBoundaries.bounds.min.y + 0.0025f + heightReference, TileBoundaries.bounds.max.z );
+                    board[x].transform.position = new Vector3(TileBoundaries.bounds.min.x + (distanceReference * multiplier)  + 0.01f, TileBoundaries.bounds.min.y + heightReference, TileBoundaries.bounds.max.z );
                 }
                 else
                 {
