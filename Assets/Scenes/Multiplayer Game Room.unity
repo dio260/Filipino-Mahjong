@@ -1198,7 +1198,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2022817423}
-  - component: {fileID: 2022817422}
   - component: {fileID: 2022817421}
   m_Layer: 0
   m_Name: MultiplayerManager
@@ -1223,18 +1222,6 @@ MonoBehaviour:
   gameManagerPrefab: {fileID: 6030435354201389527, guid: 14e9d404943515944b9a4d4d9ff3d4da, type: 3}
   multiplayerCanvas: {fileID: 517206911}
   gameStart: {fileID: 541233123}
---- !u!114 &2022817422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2022817420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d16531048510b3d47afb719657f05575, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2022817423
 Transform:
   m_ObjectHideFlags: 0
