@@ -25,6 +25,12 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     [Tooltip("The prefab for managing game state")]
     [SerializeField]
     private GameObject gameManagerPrefab;
+
+    BoxCollider tilebounds;
+    List<Tile> networkedTiles = new List<Tile>();
+    [Tooltip("The tile prefab")]
+    [SerializeField]
+    private GameObject tilePrefab;
     public GameObject multiplayerCanvas;
 
     public Button gameStart;
@@ -38,7 +44,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     void Start()
     {
 
-        
+        tilebounds = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
 
         // in case we started this demo with the wrong scene being active, simply load the menu scene
         if (!PhotonNetwork.IsConnected)
@@ -52,6 +58,38 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         {
             // PhotonNetwork.InstantiateRoomObject(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity, 0 , new object[]{ 7, suit.ball});
             PhotonNetwork.InstantiateRoomObject(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity);
+            // Let's instantiate the tiles
+            for (int x = 0; x < 144; x++)
+            {
+                GameObject tileInstance = PhotonNetwork.Instantiate(this.tilePrefab.name,
+                new Vector3(Random.Range(tilebounds.bounds.min.x, tilebounds.bounds.max.x), Random.Range(0, tilebounds.bounds.max.y), Random.Range(tilebounds.bounds.min.z, tilebounds.bounds.max.z)), Quaternion.identity);
+                tileInstance.transform.parent = GameObject.Find("Tiles").transform;
+                networkedTiles.Add(tileInstance.GetComponent<Tile>());
+                if (x < 36)
+                {
+                    tileInstance.GetComponent<Tile>().RPCTileSet(x / 4 + 1, suit.ball);
+                    continue;
+                }
+                // break;
+                if (x < 72)
+                {
+                    tileInstance.GetComponent<Tile>().RPCTileSet((x - 36) / 4 + 1, suit.character);
+                    continue;
+                }
+                // break;
+                if (x < 108)
+                {
+                    tileInstance.GetComponent<Tile>().RPCTileSet((x - 72) / 4 + 1, suit.stick);
+                    continue;
+                }
+                if (x < 144)
+                {
+                    tileInstance.GetComponent<Tile>().RPCTileSet((x - 108) / 4 + 1, suit.flower);
+                    continue;
+                }
+
+                // tile.transform.Rotate(new Vector3(0, 0, -90));
+            }
         }
         else
         {
@@ -130,6 +168,18 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         {
             Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
         }
+        else
+        {
+            Debug.Log("updating tileset");
+            //have to do this so everyone has the same tileset
+            foreach (Tile tile in networkedTiles)
+            {
+                tile.RPCTileSet(tile.number, tile.tileType);
+                tile.transform.parent = GameObject.Find("Tiles").transform;
+            }
+        }
+
+
     }
 
     /// <summary>
