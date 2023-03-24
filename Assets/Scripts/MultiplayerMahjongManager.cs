@@ -40,24 +40,24 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 networkedTiles.Add(tileInstance.GetComponent<Tile>());
                 if (x < 36)
                 {
-                    tileInstance.GetComponent<Tile>().testRPC(x / 4 + 1, suit.ball);
+                    tileInstance.GetComponent<Tile>().RPCTileSet(x / 4 + 1, suit.ball);
                     continue;
                 }
                 // break;
                 if (x < 72)
                 {
-                    tileInstance.GetComponent<Tile>().testRPC((x - 36) / 4 + 1, suit.character);
+                    tileInstance.GetComponent<Tile>().RPCTileSet((x - 36) / 4 + 1, suit.character);
                     continue;
                 }
                 // break;
                 if (x < 108)
                 {
-                    tileInstance.GetComponent<Tile>().testRPC((x - 72) / 4 + 1, suit.stick);
+                    tileInstance.GetComponent<Tile>().RPCTileSet((x - 72) / 4 + 1, suit.stick);
                     continue;
                 }
                 if (x < 144)
                 {
-                    tileInstance.GetComponent<Tile>().testRPC((x - 108) / 4 + 1, suit.flower);
+                    tileInstance.GetComponent<Tile>().RPCTileSet((x - 108) / 4 + 1, suit.flower);
                     continue;
                 }
 
@@ -83,8 +83,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("starting game for all clients");
         MultiplayerGameManager.Instance.multiplayerCanvas.SetActive(false);
-        // MahjongManager.mahjongManager.InitializeGame();
-        // StartCoroutine();
+        MahjongManager.mahjongManager.InitializeGame();
     }
 
     #region 
@@ -96,12 +95,17 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
         {
             Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
         }
-
-        //have to do this so everyone has the same tileset
-        foreach (Tile tile in networkedTiles)
+        else
         {
-            tile.testRPC(tile.number, tile.tileType);
+            //have to do this so everyone has the same tileset
+            foreach (Tile tile in networkedTiles)
+            {
+                tile.RPCTileSet(tile.number, tile.tileType);
+                tile.transform.parent = GameObject.Find("Tiles").transform;
+            }
         }
+
+
     }
 
     #endregion

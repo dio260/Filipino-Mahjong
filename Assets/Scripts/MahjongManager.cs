@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public enum GameState { setup, playing, finished };
 
@@ -45,6 +46,7 @@ public class MahjongManager : MonoBehaviour
         {
             InitializeGame();
         }
+        TileBoundaries = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
     }
 
     // Update is called once per frame
@@ -70,7 +72,16 @@ public class MahjongManager : MonoBehaviour
         {
             board.Add(tile);
         }
-        StartCoroutine(BoardSetup());
+        if(!network)
+            StartCoroutine(BoardSetup());
+        else
+        {
+            if(PhotonNetwork.IsMasterClient)
+            {
+                Debug.Log("Trying Master Client Board Setup");
+                StartCoroutine(BoardSetup());
+            }
+        }
     }
 
     public IEnumerator BoardSetup()
