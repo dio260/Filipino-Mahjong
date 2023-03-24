@@ -44,6 +44,12 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
         photonView.RPC("SetTile", RpcTarget.All, num, suit);
     }
 
+    public void RPCTileAdd()
+    {
+        PhotonView photonView = PhotonView.Get(this);
+        photonView.RPC("AddToBoard", RpcTarget.All);
+    }
+
     [PunRPC]
     public void SetTile(int num, suit suit)
     {
@@ -59,6 +65,14 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
         {
             gameObject.name = number + " " + tileType.ToString();
             debugText.text = number + " " + tileType.ToString();
+        }
+    }
+    [PunRPC]
+    public void AddToBoard()
+    {
+        if(!MahjongManager.mahjongManager.GetBoard().Contains(this))
+        {
+            MahjongManager.mahjongManager.GetBoard().Add(this);
         }
     }
 

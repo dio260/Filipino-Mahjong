@@ -30,6 +30,8 @@ public class MahjongManager : MonoBehaviour
     public BoxCollider TileBoundaries;
     public bool network;
 
+    
+
     // Start is called before the first frame update
     protected virtual void Awake()
     {
@@ -190,7 +192,10 @@ public class MahjongManager : MonoBehaviour
 
         if (network)
         {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("board");
+            foreach(Tile tile in board)
+            {
+                tile.RPCTileAdd();
+            }
         }
 
         StartCoroutine(RollDice());
