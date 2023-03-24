@@ -68,6 +68,8 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     }
     public void MasterRPCCall(string command)
     {
+        Debug.Log("Calling RPC " + command);
+
         PhotonView photonView = PhotonView.Get(this);
         switch (command)
         {
