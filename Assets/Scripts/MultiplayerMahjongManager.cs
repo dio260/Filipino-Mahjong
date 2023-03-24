@@ -70,7 +70,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void UpdatePlayerList()
     {
-        MultiplayerGameManager.Instance.RemoteNameListUpdate();
+        MultiplayerGameManager.Instance.RemotePlayerListUpdate();
     }
 
     #region 

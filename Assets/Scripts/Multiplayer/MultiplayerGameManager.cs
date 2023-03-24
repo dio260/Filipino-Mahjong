@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -135,14 +136,12 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(1.5f, 0.25f, 0f), Quaternion.AngleAxis(-90, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
                         player.GetComponentInChildren<MeshRenderer>().material = playerColors[1];
-
                         players.Add(player.GetComponent<MahjongPlayerBase>());
                         break;
                     case 3:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, 1.5f), Quaternion.AngleAxis(-180, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
                         player.GetComponentInChildren<MeshRenderer>().material = playerColors[2];
-
                         players.Add(player.GetComponent<MahjongPlayerBase>());
 
                         break;
@@ -150,7 +149,6 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(-1.5f, 0.25f, 0f), Quaternion.AngleAxis(-270, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
                         player.GetComponentInChildren<MeshRenderer>().material = playerColors[3];
-
                         players.Add(player.GetComponent<MahjongPlayerBase>());
 
                         break;
@@ -231,6 +229,19 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         {
             multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text += player.NickName + '\n';
         }
-        
+    }
+    public void RemotePlayerListUpdate()
+    {
+        players = FindObjectsOfType<MahjongPlayerBase>().ToList<MahjongPlayerBase>();
+        multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text = "";
+        for(int x = 0; x < players.Count; x++)
+        {
+            if(players[x].gameObject.name != PhotonNetwork.PlayerList[x].NickName)
+            {
+                players[x].gameObject.name = PhotonNetwork.PlayerList[x].NickName;
+                players[x].gameObject.GetComponentInChildren<MeshRenderer>().material = playerColors[x];
+                multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text += players[x].gameObject.name + '\n';
+            }
+        }
     }
 }
