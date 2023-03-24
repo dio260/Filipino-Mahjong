@@ -66,7 +66,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
         }
 
     }
-    public void MasterRPCCall(string command)
+    public void MasterRPCCall(string command, object data = null)
     {
         Debug.Log("Calling RPC " + command);
 
@@ -77,7 +77,8 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 photonView.RPC("StartGame", RpcTarget.All);
                 break;
             case "board":
-                photonView.RPC("BoardUpdate", RpcTarget.All);
+
+                photonView.RPC("BoardUpdate", RpcTarget.All, data);
                 break;
             case "":
                 break;
@@ -91,10 +92,9 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
         MahjongManager.mahjongManager.InitializeGame();
     }
     [PunRPC]
-    public void BoardUpdate()
-    {
-        Debug.Log("Updating Board Information for Remote Clients");
-        MahjongManager.mahjongManager.SetValues("board", MahjongManager.mahjongManager.GetBoard());
+    public void BoardUpdate(object board)
+    {   
+        MahjongManager.mahjongManager.SetValues("board", board);
     }
 
     [PunRPC]

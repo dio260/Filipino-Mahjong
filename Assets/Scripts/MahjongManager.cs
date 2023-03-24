@@ -190,7 +190,7 @@ public class MahjongManager : MonoBehaviour
 
         if(network)
         {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("board");
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("board", board);
         }
 
         StartCoroutine(RollDice());
@@ -411,6 +411,7 @@ public class MahjongManager : MonoBehaviour
     }
     public void SetValues(string message, object? data)
     {
+        Debug.Log("Updating " + message + " Board Information");
         switch(message)
         {
             case "board":  
