@@ -68,11 +68,14 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     }
     public void MasterRPCCall(string command)
     {
+        PhotonView photonView = PhotonView.Get(this);
         switch (command)
         {
-            case "start":
-                PhotonView photonView = PhotonView.Get(this);
+            case "start":    
                 photonView.RPC("StartGame", RpcTarget.All);
+                break;
+            case "board":
+                photonView.RPC("BoardUpdate", RpcTarget.All);
                 break;
             case "":
                 break;
@@ -83,6 +86,25 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("starting game for all clients");
         MultiplayerGameManager.Instance.multiplayerCanvas.SetActive(false);
+        MahjongManager.mahjongManager.InitializeGame();
+    }
+    [PunRPC]
+    public void BoardUpdate()
+    {
+        Debug.Log("Updating Board Information for Remote Clients");
+        MahjongManager.mahjongManager.InitializeGame();
+    }
+
+    [PunRPC]
+    public void SendClientsMessage(string message)
+    {
+        foreach(MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+        {
+            if (TryGetComponent<HumanPlayer>(out HumanPlayer human))
+            {
+                human.debugText.text = message;
+            }
+        }
         MahjongManager.mahjongManager.InitializeGame();
     }
 

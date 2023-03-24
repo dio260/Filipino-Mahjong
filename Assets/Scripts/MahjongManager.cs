@@ -81,7 +81,7 @@ public class MahjongManager : MonoBehaviour
         {
             if(PhotonNetwork.IsMasterClient)
             {
-                Debug.Log("Trying Master Client Board Setup");
+                // Debug.Log("Trying Master Client Board Setup");
                 StartCoroutine(BoardSetup());
             }
         }
@@ -111,7 +111,7 @@ public class MahjongManager : MonoBehaviour
         for(int x = 0; x < board.Count; x++)
         {
             board[x].transform.localRotation = Quaternion.Euler(0, 0, -90);
-            if (x%36 == 0)
+            if (x % 36 == 0)
             {
                 multiplier = 0;
             }
@@ -187,12 +187,18 @@ public class MahjongManager : MonoBehaviour
         // }
 
         yield return new WaitForSeconds(2);
-        // StartCoroutine(RollDice());
+
+        // if(network)
+        // {
+        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("board");
+        // }
+
+        StartCoroutine(RollDice());
     }
 
     public IEnumerator RollDice()
     {
-        Debug.Log("Determining Dealer");
+        Debug.Log("Rolling dice for dealer");
         System.Random rand = new System.Random();
         int dieRollResult = (rand.Next(2, 13) - 1) % 4;
         if (!debug)
@@ -200,57 +206,67 @@ public class MahjongManager : MonoBehaviour
         else
             dealer = players[0];
 
+        if(network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.SendClientsMessage(
+                "Dealer is player at index " + dieRollResult
+            );
+        }
+
+        Debug.Log("Creating Walls");
+        yield return new WaitForSeconds(2);
+
         //create walls
         int wallIndex = (MAXTILECOUNT / 4) * dieRollResult;
         wall.AddRange(board.GetRange(wallIndex, MAXTILECOUNT - wallIndex));
         wall.AddRange(board.GetRange(0, wallIndex));
 
-        Debug.Log("Distributing Hand");
+        // Debug.Log("Distributing Hand");
 
-        List<Tile> distributedTiles = wall.GetRange(0, 65);
-        wall.RemoveRange(0, 65);
-        dealer.GetComponent<MahjongPlayerBase>().AddTile(distributedTiles[0]);
-        // distributedTiles.Remove(wall[0]);
-        for (int i = 1; i < 65; i++)
-        {
-            players[(dieRollResult + ((i - 1) / 16)) % 4].AddTile(distributedTiles[i]);
-        }
+        // List<Tile> distributedTiles = wall.GetRange(0, 65);
+        // wall.RemoveRange(0, 65);
+        // dealer.GetComponent<MahjongPlayerBase>().AddTile(distributedTiles[0]);
+        // // distributedTiles.Remove(wall[0]);
+        // for (int i = 1; i < 65; i++)
+        // {
+        //     players[(dieRollResult + ((i - 1) / 16)) % 4].AddTile(distributedTiles[i]);
+        // }
 
-        foreach (MahjongPlayerBase player in players)
-        {
-            // player.VisuallySortTiles();
-            player.ArrangeTiles();
-        }
-        // StartCoroutine(Wait());
-        yield return new WaitForSeconds(2);
+        // foreach (MahjongPlayerBase player in players)
+        // {
+        //     // player.VisuallySortTiles();
+        //     player.ArrangeTiles();
+        // }
+        // // StartCoroutine(Wait());
+        // yield return new WaitForSeconds(2);
 
-        Debug.Log("Replacing Flowers");
+        // Debug.Log("Replacing Flowers");
 
-        int needFlowers = -1;
-        while (needFlowers != 0)
-        {
-            needFlowers = 4;
-            foreach (MahjongPlayerBase player in players)
-            {
-                int remainingFlowers = player.replaceInitialFlowerTiles();
-                if (remainingFlowers == 0)
-                    needFlowers -= 1;
-            }
-        }
+        // int needFlowers = -1;
+        // while (needFlowers != 0)
+        // {
+        //     needFlowers = 4;
+        //     foreach (MahjongPlayerBase player in players)
+        //     {
+        //         int remainingFlowers = player.replaceInitialFlowerTiles();
+        //         if (remainingFlowers == 0)
+        //             needFlowers -= 1;
+        //     }
+        // }
 
 
-        foreach (MahjongPlayerBase player in players)
-        {
-            // player.VisuallySortTiles();
-            player.ArrangeTiles();
-        }
+        // foreach (MahjongPlayerBase player in players)
+        // {
+        //     // player.VisuallySortTiles();
+        //     player.ArrangeTiles();
+        // }
 
-        currentPlayer = dealer;
-        nextPlayer = players[(dieRollResult + 1) % players.Count];
+        // currentPlayer = dealer;
+        // nextPlayer = players[(dieRollResult + 1) % players.Count];
 
-        yield return new WaitForSeconds(2);
-        state = GameState.playing;
-        StartCoroutine(TakeTurn(currentPlayer));
+        // yield return new WaitForSeconds(2);
+        // state = GameState.playing;
+        // StartCoroutine(TakeTurn(currentPlayer));
     }
 
     IEnumerator TakeTurn(MahjongPlayerBase player)
@@ -384,6 +400,17 @@ public class MahjongManager : MonoBehaviour
     {
         return state;
     }
+
+    public List<MahjongPlayerBase> GetPlayers()
+    {
+        return players;
+    }
+    public void NetworkedBoardUpdate()
+    {
+        // return players;
+    }
+        
+    
 
 
 }
