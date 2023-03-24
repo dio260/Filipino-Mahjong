@@ -41,8 +41,8 @@ public class MahjongManager : MonoBehaviour
         {
             mahjongManager = this;
         }
-        
-        if(!network)
+
+        if (!network)
         {
             InitializeGame();
         }
@@ -65,7 +65,7 @@ public class MahjongManager : MonoBehaviour
         deadTiles = new List<Tile>();
         mostRecentDiscard = null;
 
-        if(!TileBoundaries.isTrigger)
+        if (!TileBoundaries.isTrigger)
             TileBoundaries.isTrigger = true;
 
         //put all the tiles into board structure;
@@ -75,11 +75,11 @@ public class MahjongManager : MonoBehaviour
             // tile.GetComponent<Rigidbody>().isKinematic = true;
             board.Add(tile);
         }
-        if(!network)
+        if (!network)
             StartCoroutine(BoardSetup());
         else
         {
-            if(PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient)
             {
                 // Debug.Log("Trying Master Client Board Setup");
                 StartCoroutine(BoardSetup());
@@ -104,27 +104,27 @@ public class MahjongManager : MonoBehaviour
         // wall = board;
         // Debug.Log(TileBoundaries.bounds.max);
 
-        float distanceReference = TileSizeReference.transform.localScale.z/2;
-        float heightReference = TileSizeReference.transform.localScale.y/2.75f;
+        float distanceReference = TileSizeReference.transform.localScale.z / 2;
+        float heightReference = TileSizeReference.transform.localScale.y / 2.75f;
         int multiplier = 0;
 
-        for(int x = 0; x < board.Count; x++)
+        for (int x = 0; x < board.Count; x++)
         {
             board[x].transform.localRotation = Quaternion.Euler(0, 0, -90);
             if (x % 36 == 0)
             {
                 multiplier = 0;
             }
-            if(x < 36)
+            if (x < 36)
             {
-                if(x % 2 == 0)
+                if (x % 2 == 0)
                 {
                     board[x].transform.position = new Vector3(TileBoundaries.bounds.max.x, TileBoundaries.bounds.min.y + heightReference, TileBoundaries.bounds.max.z - (distanceReference * multiplier) + 0.01f);
                 }
                 else
                 {
-                    board[x].transform.position = board[x-1].transform.position + Vector3.up * -heightReference;
-                    
+                    board[x].transform.position = board[x - 1].transform.position + Vector3.up * -heightReference;
+
                 }
                 multiplier += 1;
                 continue;
@@ -132,47 +132,47 @@ public class MahjongManager : MonoBehaviour
             // break;
             if (x < 72)
             {
-                board[x].transform.Rotate(Vector3.left  * 90);
-                if(x % 2 == 0)
+                board[x].transform.Rotate(Vector3.left * 90);
+                if (x % 2 == 0)
                 {
-                    board[x].transform.position = new Vector3(TileBoundaries.bounds.max.x - (distanceReference * multiplier) + 0.01f, TileBoundaries.bounds.min.y + heightReference, TileBoundaries.bounds.min.z );
+                    board[x].transform.position = new Vector3(TileBoundaries.bounds.max.x - (distanceReference * multiplier) + 0.01f, TileBoundaries.bounds.min.y + heightReference, TileBoundaries.bounds.min.z);
                 }
                 else
                 {
-                    board[x].transform.position = board[x-1].transform.position + Vector3.up * -heightReference;
-                    
+                    board[x].transform.position = board[x - 1].transform.position + Vector3.up * -heightReference;
+
                 }
                 multiplier += 1;
                 continue;
-                
+
             }
             // break;
             if (x < 108)
             {
                 // board[x].transform.Rotate(Vector3.left  * 90);
-                if(x % 2 == 0)
+                if (x % 2 == 0)
                 {
                     board[x].transform.position = new Vector3(TileBoundaries.bounds.min.x, TileBoundaries.bounds.min.y + heightReference, TileBoundaries.bounds.min.z + (distanceReference * multiplier) + 0.01f);
                 }
                 else
                 {
-                    board[x].transform.position = board[x-1].transform.position + Vector3.up * -heightReference;
-                    
+                    board[x].transform.position = board[x - 1].transform.position + Vector3.up * -heightReference;
+
                 }
                 multiplier += 1;
                 continue;
             }
             if (x < 144)
             {
-                board[x].transform.Rotate(Vector3.left  * 90);
-                if(x % 2 == 0)
+                board[x].transform.Rotate(Vector3.left * 90);
+                if (x % 2 == 0)
                 {
-                    board[x].transform.position = new Vector3(TileBoundaries.bounds.min.x + (distanceReference * multiplier)  + 0.01f, TileBoundaries.bounds.min.y + heightReference, TileBoundaries.bounds.max.z );
+                    board[x].transform.position = new Vector3(TileBoundaries.bounds.min.x + (distanceReference * multiplier) + 0.01f, TileBoundaries.bounds.min.y + heightReference, TileBoundaries.bounds.max.z);
                 }
                 else
                 {
-                    board[x].transform.position = board[x-1].transform.position + Vector3.up * -heightReference;
-                    
+                    board[x].transform.position = board[x - 1].transform.position + Vector3.up * -heightReference;
+
                 }
                 multiplier += 1;
                 continue;
@@ -188,9 +188,9 @@ public class MahjongManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
-        if(network)
+        if (network)
         {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("board", board);
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("board");
         }
 
         StartCoroutine(RollDice());
@@ -206,7 +206,7 @@ public class MahjongManager : MonoBehaviour
         else
             dealer = players[0];
 
-        if(network)
+        if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.SendClientsMessage(
                 "Dealer is player at index " + dieRollResult
@@ -326,7 +326,7 @@ public class MahjongManager : MonoBehaviour
         player.GetComponent<HumanPlayer>().debugText.text = "waiting";
         player.SetPlayerState(PlayerState.waiting);
 
-        if(!debug)
+        if (!debug)
             mostRecentDiscard.transform.position = Vector3.up * 0.5f;
 
         StartCoroutine(BetweenTurn());
@@ -358,9 +358,9 @@ public class MahjongManager : MonoBehaviour
                 break;
         }
         foreach (MahjongPlayerBase player in players)
-            {
-                player.SetPlayerState(PlayerState.waiting);
-            }
+        {
+            player.SetPlayerState(PlayerState.waiting);
+        }
 
         // MahjongPlayerBase next = players[0];
 
@@ -413,11 +413,11 @@ public class MahjongManager : MonoBehaviour
     {
         Debug.Log("Updating Board Information on remote");
 
-                this.board = board;
+        this.board = board;
 
     }
-        
-    
+
+
 
 
 }
