@@ -8,7 +8,8 @@ using Photon.Pun;
 public class HumanPlayer : MahjongPlayerBase
 {
     //stuff to be moved to HumanPlayer child class
-    Camera playerCam;
+    public Camera playerCam;
+    public GameObject playerCanvas;
     public Button passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
     public TMP_Text debugText;
 

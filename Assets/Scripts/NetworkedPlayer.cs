@@ -20,6 +20,7 @@ public class NetworkedPlayer : MonoBehaviourPunCallbacks
             Debug.Log("not mine");
 
             GetComponent<Camera>().enabled = false;
+            GetComponent<Canvas>().gameObject.SetActive(false);
         }
     }
 
