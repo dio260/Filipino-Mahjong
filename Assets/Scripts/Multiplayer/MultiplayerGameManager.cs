@@ -94,8 +94,8 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
             }
             else
             {
-
-                Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
+                Debug.Log("A networked player is joining. Current Players: " + PhotonNetwork.CurrentRoom.PlayerCount);
+                // Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
             }
 
 
@@ -106,11 +106,11 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     void Update()
     {
         // "back" button of phone equals "Escape". quit app if that's pressed
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Debug.Log("byebye");
-            Application.Quit();
-        }
+        // if (Input.GetKeyDown(KeyCode.Escape))
+        // {
+        //     Debug.Log("byebye");
+        //     Application.Quit();
+        // }
     }
 
     public void HostStartGame()
