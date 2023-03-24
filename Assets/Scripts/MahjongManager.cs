@@ -188,10 +188,10 @@ public class MahjongManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
-        // if(network)
-        // {
-        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("board");
-        // }
+        if(network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("board");
+        }
 
         StartCoroutine(RollDice());
     }
@@ -400,14 +400,23 @@ public class MahjongManager : MonoBehaviour
     {
         return state;
     }
+    public List<Tile> GetBoard()
+    {
+        return board;
+    }
 
     public List<MahjongPlayerBase> GetPlayers()
     {
         return players;
     }
-    public void NetworkedBoardUpdate()
+    public void SetValues(string message, object? data)
     {
-        // return players;
+        switch(message)
+        {
+            case "board":  
+                board = (List<Tile>) data;
+            break;
+        }
     }
         
     

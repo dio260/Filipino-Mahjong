@@ -94,7 +94,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     public void BoardUpdate()
     {
         Debug.Log("Updating Board Information for Remote Clients");
-        MahjongManager.mahjongManager.InitializeGame();
+        MahjongManager.mahjongManager.SetValues("board", MahjongManager.mahjongManager.GetBoard());
     }
 
     [PunRPC]
@@ -107,7 +107,6 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 human.debugText.text = message;
             }
         }
-        MahjongManager.mahjongManager.InitializeGame();
     }
 
     #region 
