@@ -29,49 +29,53 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     }
     void Start()
     {
-        // Let's instantiate the tiles
-        for (int x = 0; x < 144; x++)
+        if (PhotonNetwork.IsMasterClient)
         {
-            GameObject tileInstance = PhotonNetwork.Instantiate(this.tilePrefab.name,
-            new Vector3(Random.Range(tilebounds.bounds.min.x, tilebounds.bounds.max.x), Random.Range(0, tilebounds.bounds.max.y), Random.Range(tilebounds.bounds.min.z, tilebounds.bounds.max.z)), Quaternion.identity);
-            tileInstance.transform.parent = GameObject.Find("Tiles").transform;
-            networkedTiles.Add(tileInstance.GetComponent<Tile>());
-            if (x < 36)
+            // Let's instantiate the tiles
+            for (int x = 0; x < 144; x++)
             {
-                tileInstance.GetComponent<Tile>().testRPC(x / 4 + 1, suit.ball);
-                continue;
-            }
-            // break;
-            if (x < 72)
-            {
-                tileInstance.GetComponent<Tile>().testRPC((x - 36) / 4 + 1, suit.character);
-                continue;
-            }
-            // break;
-            if (x < 108)
-            {
-                tileInstance.GetComponent<Tile>().testRPC((x - 72) / 4 + 1, suit.stick);
-                continue;
-            }
-            if (x < 144)
-            {
-                tileInstance.GetComponent<Tile>().testRPC((x - 108) / 4 + 1, suit.flower);
-                continue;
-            }
+                GameObject tileInstance = PhotonNetwork.Instantiate(this.tilePrefab.name,
+                new Vector3(Random.Range(tilebounds.bounds.min.x, tilebounds.bounds.max.x), Random.Range(0, tilebounds.bounds.max.y), Random.Range(tilebounds.bounds.min.z, tilebounds.bounds.max.z)), Quaternion.identity);
+                tileInstance.transform.parent = GameObject.Find("Tiles").transform;
+                networkedTiles.Add(tileInstance.GetComponent<Tile>());
+                if (x < 36)
+                {
+                    tileInstance.GetComponent<Tile>().testRPC(x / 4 + 1, suit.ball);
+                    continue;
+                }
+                // break;
+                if (x < 72)
+                {
+                    tileInstance.GetComponent<Tile>().testRPC((x - 36) / 4 + 1, suit.character);
+                    continue;
+                }
+                // break;
+                if (x < 108)
+                {
+                    tileInstance.GetComponent<Tile>().testRPC((x - 72) / 4 + 1, suit.stick);
+                    continue;
+                }
+                if (x < 144)
+                {
+                    tileInstance.GetComponent<Tile>().testRPC((x - 108) / 4 + 1, suit.flower);
+                    continue;
+                }
 
-            // tile.transform.Rotate(new Vector3(0, 0, -90));
+                // tile.transform.Rotate(new Vector3(0, 0, -90));
+            }
         }
+
     }
     public void MasterRPCCall(string command)
     {
-        switch(command)
+        switch (command)
         {
             case "start":
                 PhotonView photonView = PhotonView.Get(this);
                 photonView.RPC("StartGame", RpcTarget.All);
-            break;
+                break;
             case "":
-            break;
+                break;
         }
     }
     [PunRPC]
@@ -92,7 +96,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
         {
             Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
         }
-        
+
         //have to do this so everyone has the same tileset
         foreach (Tile tile in networkedTiles)
         {
