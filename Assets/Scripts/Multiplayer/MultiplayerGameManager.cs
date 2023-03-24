@@ -142,7 +142,10 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                 // Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
             }
 
-
+            foreach(Player player in PhotonNetwork.PlayerList)
+            {
+                Debug.Log(player.NickName);
+            }
         }
     }
 

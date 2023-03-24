@@ -12,12 +12,12 @@ public class NetworkedPlayer : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine)
         {
-            Debug.Log("mine");
+            // Debug.Log("mine");
             LocalPlayerInstance = gameObject;
         }
         else
         {
-            Debug.Log("not mine");
+            // Debug.Log("not mine");
 
             GetComponent<Camera>().enabled = false;
             GetComponentInChildren<Canvas>().gameObject.SetActive(false);
