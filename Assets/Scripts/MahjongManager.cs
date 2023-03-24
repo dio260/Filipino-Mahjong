@@ -71,8 +71,8 @@ public class MahjongManager : MonoBehaviour
         //put all the tiles into board structure;
         foreach (Tile tile in InitialTileParent.transform.GetComponentsInChildren<Tile>())
         {
-            tile.GetComponent<Rigidbody>().useGravity = false;
-            tile.GetComponent<Rigidbody>().isKinematic = true;
+            // tile.GetComponent<Rigidbody>().useGravity = false;
+            // tile.GetComponent<Rigidbody>().isKinematic = true;
             board.Add(tile);
         }
         if(!network)
