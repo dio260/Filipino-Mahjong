@@ -409,15 +409,12 @@ public class MahjongManager : MonoBehaviour
     {
         return players;
     }
-    public void SetValues(string message, object? data)
+    public void SetRemoteBoardValues(List<Tile> board)
     {
-        Debug.Log("Updating " + message + " Board Information");
-        switch(message)
-        {
-            case "board":  
-                board = (List<Tile>) data;
-            break;
-        }
+        Debug.Log("Updating Board Information on remote");
+
+                this.board = board;
+
     }
         
     
