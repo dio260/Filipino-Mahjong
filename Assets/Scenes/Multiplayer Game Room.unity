@@ -1220,6 +1220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 552969756238571695, guid: b916fea0b28e22f498d9aba2fb00a0b3, type: 3}
   gameManagerPrefab: {fileID: 6030435354201389527, guid: 14e9d404943515944b9a4d4d9ff3d4da, type: 3}
+  tilePrefab: {fileID: 8228665404231082851, guid: 8161ad177c9b5f94a939ed994fc01af7, type: 3}
   multiplayerCanvas: {fileID: 517206911}
   gameStart: {fileID: 541233123}
 --- !u!4 &2022817423
