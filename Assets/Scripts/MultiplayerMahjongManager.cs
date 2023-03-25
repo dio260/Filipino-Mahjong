@@ -45,7 +45,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 break;
             case "dealer":
                 int dealer = (int) data;
-                photonView.RPC("SetDealer", RpcTarget.All, data);
+                photonView.RPC("RemoteSetDealer", RpcTarget.All, data);
                 break;
         }
     }
