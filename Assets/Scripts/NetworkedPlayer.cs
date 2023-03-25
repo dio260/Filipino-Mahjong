@@ -21,6 +21,7 @@ public class NetworkedPlayer : MonoBehaviourPunCallbacks
 
             GetComponent<Camera>().enabled = false;
             GetComponentInChildren<Canvas>().gameObject.SetActive(false);
+            Destroy(this);
         }
     }
 
