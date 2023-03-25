@@ -213,8 +213,8 @@ public class MahjongManager : MonoBehaviour
 
         if (network)
         {
-            MultiplayerMahjongManager.multiMahjongManager.SendClientsMessage(
-                "Dealer is player at index " + dieRollResult
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall(
+                "message", "Dealer is player at index " + dieRollResult
             );
         }
 

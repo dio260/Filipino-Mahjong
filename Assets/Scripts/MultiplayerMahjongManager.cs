@@ -29,7 +29,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
         photonView.RPC("UpdatePlayerList", RpcTarget.All);
 
     }
-    public void MasterRPCCall(string command)
+    public void MasterRPCCall(string command, object data = null)
     {
         Debug.Log("Calling RPC " + command);
 
@@ -39,8 +39,9 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
             case "start":    
                 photonView.RPC("StartGame", RpcTarget.All);
                 break;
-            case "board":
-
+            case "message":
+                string message = (string) data;
+                photonView.RPC("SendClientsMessage", RpcTarget.All, message);
                 break;
             case "":
                 break;
