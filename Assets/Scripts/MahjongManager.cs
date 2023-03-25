@@ -77,10 +77,9 @@ public class MahjongManager : MonoBehaviour
             TileBoundaries.isTrigger = true;
 
         //put all the tiles into board structure;
+        if(!network || (network && PhotonNetwork.IsMasterClient))
         foreach (Tile tile in InitialTileParent.transform.GetComponentsInChildren<Tile>())
         {
-            // tile.GetComponent<Rigidbody>().useGravity = false;
-            // tile.GetComponent<Rigidbody>().isKinematic = true;
             board.Add(tile);
         }
         if (!network)
@@ -198,7 +197,7 @@ public class MahjongManager : MonoBehaviour
             }
         }
 
-        // StartCoroutine(RollDice());
+        StartCoroutine(RollDice());
         
 
     }
