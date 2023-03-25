@@ -31,7 +31,7 @@ public class MahjongManager : MonoBehaviour
     public BoxCollider TileBoundaries;
     public bool network;
 
-    
+
 
     // Start is called before the first frame update
     protected virtual void Awake()
@@ -62,7 +62,7 @@ public class MahjongManager : MonoBehaviour
     public void InitializeGame()
     {
         players = new List<MahjongPlayerBase>();
-        if(!network)
+        if (!network)
             players.AddRange(FindObjectsOfType<MahjongPlayerBase>().ToList<MahjongPlayerBase>());
         else
             players = MultiplayerGameManager.Instance.players;
@@ -192,20 +192,24 @@ public class MahjongManager : MonoBehaviour
 
         if (network)
         {
-            foreach(Tile tile in board)
+            foreach (Tile tile in board)
             {
                 tile.RPCTileAdd();
             }
         }
 
         StartCoroutine(RollDice());
+
     }
 
     public IEnumerator RollDice()
     {
         Debug.Log("Rolling dice for dealer");
+        yield return new WaitForSeconds(2);
+
         System.Random rand = new System.Random();
-        int dieRollResult = (rand.Next(2, 13) - 1) % 4;
+        int dieRoll = rand.Next(2, 13);
+        int dieRollResult = (dieRoll - 1) % players.Count;
         if (!debug)
             dealer = players[dieRollResult];
         else
@@ -216,61 +220,74 @@ public class MahjongManager : MonoBehaviour
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall(
                 "message", "Dealer is player at index " + dieRollResult
             );
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall(
+                "dealer", dieRoll
+            );
+        }
+        else
+        {
+            StartCoroutine(CreateWalls());
         }
 
+        
+    }
+    public IEnumerator CreateWalls()
+    {
         Debug.Log("Creating Walls");
         yield return new WaitForSeconds(2);
 
+        int dealerIndex = players.IndexOf(dealer);
+
         //create walls
-        int wallIndex = (MAXTILECOUNT / 4) * dieRollResult;
+        int wallIndex = (MAXTILECOUNT / 4) * dealerIndex;
         wall.AddRange(board.GetRange(wallIndex, MAXTILECOUNT - wallIndex));
         wall.AddRange(board.GetRange(0, wallIndex));
 
-        // Debug.Log("Distributing Hand");
+        Debug.Log("Distributing Hand");
 
-        // List<Tile> distributedTiles = wall.GetRange(0, 65);
-        // wall.RemoveRange(0, 65);
-        // dealer.GetComponent<MahjongPlayerBase>().AddTile(distributedTiles[0]);
-        // // distributedTiles.Remove(wall[0]);
-        // for (int i = 1; i < 65; i++)
-        // {
-        //     players[(dieRollResult + ((i - 1) / 16)) % 4].AddTile(distributedTiles[i]);
-        // }
+        List<Tile> distributedTiles = wall.GetRange(0, 65);
+        wall.RemoveRange(0, 65);
+        dealer.GetComponent<MahjongPlayerBase>().AddTile(distributedTiles[0]);
+        // distributedTiles.Remove(wall[0]);
+        for (int i = 1; i < 65; i++)
+        {
+            players[(dealerIndex + ((i - 1) / 16)) % 4].AddTile(distributedTiles[i]);
+        }
 
-        // foreach (MahjongPlayerBase player in players)
-        // {
-        //     // player.VisuallySortTiles();
-        //     player.ArrangeTiles();
-        // }
-        // // StartCoroutine(Wait());
-        // yield return new WaitForSeconds(2);
+        foreach (MahjongPlayerBase player in players)
+        {
+            // player.VisuallySortTiles();
+            player.ArrangeTiles();
+        }
+        // StartCoroutine(Wait());
+        yield return new WaitForSeconds(2);
 
-        // Debug.Log("Replacing Flowers");
+        Debug.Log("Replacing Flowers");
 
-        // int needFlowers = -1;
-        // while (needFlowers != 0)
-        // {
-        //     needFlowers = 4;
-        //     foreach (MahjongPlayerBase player in players)
-        //     {
-        //         int remainingFlowers = player.replaceInitialFlowerTiles();
-        //         if (remainingFlowers == 0)
-        //             needFlowers -= 1;
-        //     }
-        // }
+        int needFlowers = -1;
+        while (needFlowers != 0)
+        {
+            needFlowers = 4;
+            foreach (MahjongPlayerBase player in players)
+            {
+                int remainingFlowers = player.replaceInitialFlowerTiles();
+                if (remainingFlowers == 0)
+                    needFlowers -= 1;
+            }
+        }
 
 
-        // foreach (MahjongPlayerBase player in players)
-        // {
-        //     // player.VisuallySortTiles();
-        //     player.ArrangeTiles();
-        // }
+        foreach (MahjongPlayerBase player in players)
+        {
+            // player.VisuallySortTiles();
+            player.ArrangeTiles();
+        }
 
-        // currentPlayer = dealer;
-        // nextPlayer = players[(dieRollResult + 1) % players.Count];
+        currentPlayer = dealer;
+        nextPlayer = players[(dealerIndex + 1) % players.Count];
 
-        // yield return new WaitForSeconds(2);
-        // state = GameState.playing;
+        yield return new WaitForSeconds(2);
+        state = GameState.playing;
         // StartCoroutine(TakeTurn(currentPlayer));
     }
 
@@ -420,6 +437,13 @@ public class MahjongManager : MonoBehaviour
 
         this.board = board;
 
+    }
+    public void SetDealer(int index)
+    {
+        int dieRollResult = (index - 1) % players.Count;
+
+        dealer = players[dieRollResult];
+        
     }
 
 

@@ -43,7 +43,9 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 string message = (string) data;
                 photonView.RPC("SendClientsMessage", RpcTarget.All, message);
                 break;
-            case "":
+            case "dealer":
+                int dealer = (int) data;
+                photonView.RPC("SetDealer", RpcTarget.All, data);
                 break;
         }
     }
@@ -72,6 +74,11 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     public void UpdatePlayerList()
     {
         MultiplayerGameManager.Instance.RemotePlayerListUpdate();
+    }
+    [PunRPC]
+    public void RemoteSetDealer(int index)
+    {
+        MahjongManager.mahjongManager.SetDealer(index);
     }
 
     #region 
