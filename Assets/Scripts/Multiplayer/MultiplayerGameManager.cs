@@ -240,8 +240,9 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
             {
                 players[x].gameObject.name = PhotonNetwork.PlayerList[x].NickName;
                 players[x].gameObject.GetComponentInChildren<MeshRenderer>().material = playerColors[x];
-                multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text += players[x].gameObject.name + '\n';
+                
             }
+            multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text += players[x].gameObject.name + '\n';
         }
     }
 }
