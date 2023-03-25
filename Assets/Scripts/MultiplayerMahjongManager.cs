@@ -60,7 +60,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     {
         foreach(MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
         {
-            if (TryGetComponent<HumanPlayer>(out HumanPlayer human))
+            if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
             {
                 human.debugText.text = message;
             }
