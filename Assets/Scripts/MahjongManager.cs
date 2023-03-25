@@ -62,7 +62,10 @@ public class MahjongManager : MonoBehaviour
     public void InitializeGame()
     {
         players = new List<MahjongPlayerBase>();
-        players.AddRange(FindObjectsOfType<MahjongPlayerBase>().ToList<MahjongPlayerBase>());
+        if(!network)
+            players.AddRange(FindObjectsOfType<MahjongPlayerBase>().ToList<MahjongPlayerBase>());
+        else
+            players = MultiplayerGameManager.Instance.players;
         //initialize some stuff
         state = GameState.setup;
         board = new List<Tile>(MAXTILECOUNT);
@@ -184,12 +187,6 @@ public class MahjongManager : MonoBehaviour
             }
             // tile.transform.Rotate(new Vector3(0, 0, -90));
         }
-
-        // foreach (Tile tile in board)
-        // {
-        //     tile.GetComponent<Rigidbody>().useGravity = false;
-        //     tile.GetComponent<Rigidbody>().isKinematic = true;
-        // }
 
         yield return new WaitForSeconds(2);
 
