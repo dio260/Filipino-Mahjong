@@ -77,11 +77,11 @@ public class MahjongManager : MonoBehaviour
             TileBoundaries.isTrigger = true;
 
         //put all the tiles into board structure;
-        if(!network || (network && PhotonNetwork.IsMasterClient))
-        foreach (Tile tile in InitialTileParent.transform.GetComponentsInChildren<Tile>())
-        {
-            board.Add(tile);
-        }
+        if (!network || (network && PhotonNetwork.IsMasterClient))
+            foreach (Tile tile in InitialTileParent.transform.GetComponentsInChildren<Tile>())
+            {
+                board.Add(tile);
+            }
         if (!network)
             StartCoroutine(BoardSetup());
         else
@@ -198,7 +198,7 @@ public class MahjongManager : MonoBehaviour
         }
 
         StartCoroutine(RollDice());
-        
+
 
     }
 
@@ -255,11 +255,12 @@ public class MahjongManager : MonoBehaviour
             players[(dealerIndex + ((i - 1) / 16)) % players.Count].AddTile(distributedTiles[i]);
         }
 
-        foreach (MahjongPlayerBase player in players)
-        {
-            // player.VisuallySortTiles();
-            player.ArrangeTiles();
-        }
+        if (!network || (network && PhotonNetwork.IsMasterClient))
+            foreach (MahjongPlayerBase player in players)
+            {
+                // player.VisuallySortTiles();
+                player.ArrangeTiles();
+            }
 
         yield return new WaitForSeconds(2);
 
@@ -280,12 +281,13 @@ public class MahjongManager : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         Debug.Log("Flowers Finished");
-
-        foreach (MahjongPlayerBase player in players)
-        {
-            // player.VisuallySortTiles();
-            player.ArrangeTiles();
-        }
+        
+        if (!network || (network && PhotonNetwork.IsMasterClient))
+            foreach (MahjongPlayerBase player in players)
+            {
+                // player.VisuallySortTiles();
+                player.ArrangeTiles();
+            }
 
         currentPlayer = dealer;
         nextPlayer = players[(dealerIndex + 1) % players.Count];
