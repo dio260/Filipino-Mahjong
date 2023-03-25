@@ -503,7 +503,7 @@ MonoBehaviour:
   todasButton: {fileID: 6788468959402142497}
   discardButton: {fileID: 3462891266188004390}
   debugText: {fileID: 1768083841918618209}
-  networked: 0
+  networked: 1
 --- !u!114 &3073545853664383980
 MonoBehaviour:
   m_ObjectHideFlags: 0
