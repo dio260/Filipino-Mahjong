@@ -45,6 +45,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
     public Transform closedHandParent, openHandParent, flowersParent;
 
+    MahjongManager manager;
 
     void Awake()
     {
@@ -55,6 +56,11 @@ public class MahjongPlayerBase : MonoBehaviour
         openHandParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * -0.4f;
 
 
+    }
+
+    void Start()
+    {
+        manager = MahjongManager.mahjongManager;
     }
 
 
@@ -79,7 +85,7 @@ public class MahjongPlayerBase : MonoBehaviour
         //make life easier by sorting the stuff;
         SortTilesBySuit();
 
-        Tile discard = MahjongManager.mahjongManager.mostRecentDiscard;
+        Tile discard = manager.mostRecentDiscard;
         //most priority is a winning hand, takes precedence
         //edge case, closed hand size is 1, so waiting on the last pair
 
@@ -147,20 +153,20 @@ public class MahjongPlayerBase : MonoBehaviour
 
             if (tile.number == discard.number - 1)
             {
-                if(!HasNumber(chowMeldLeft, discard.number))
+                if (!HasNumber(chowMeldLeft, discard.number))
                     chowMeldLeft.Add(tile);
-                if(!HasNumber(chowMeldMiddle, discard.number))
+                if (!HasNumber(chowMeldMiddle, discard.number))
                     chowMeldMiddle.Add(tile);
             }
-            
+
             if (tile.number == discard.number + 1)
             {
-                if(!HasNumber(chowMeldRight, discard.number))
+                if (!HasNumber(chowMeldRight, discard.number))
                     chowMeldRight.Add(tile);
-                if(!HasNumber(chowMeldMiddle, discard.number))
+                if (!HasNumber(chowMeldMiddle, discard.number))
                     chowMeldMiddle.Add(tile);
             }
-            
+
         }
 
         if (pongMeld.Count == 3)
@@ -171,9 +177,10 @@ public class MahjongPlayerBase : MonoBehaviour
         {
             canKang = true;
         }
-        if(chowMeldLeft.Count == 3
+        if ((chowMeldLeft.Count == 3
         || chowMeldMiddle.Count == 3
-        || chowMeldRight.Count == 3)
+        || chowMeldRight.Count == 3) && 
+        (manager.GetPlayers().IndexOf(manager.previousPlayer) + 1) % manager.GetPlayers().Count == manager.GetPlayers().IndexOf(this))
         {
             canChow = true;
         }
@@ -320,10 +327,10 @@ public class MahjongPlayerBase : MonoBehaviour
 
     public void ArrangeTiles()
     {
-        Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);   
+        Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
         float sideOffset = 1.25f / (float)closedHand.Count;
         float placementReference = 1.25f / 2.0f;
-        
+
         foreach (Tile tile in closedHand)
         {
             tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
@@ -337,7 +344,7 @@ public class MahjongPlayerBase : MonoBehaviour
         //first call the sorting function
         SortTilesBySuit();
         ArrangeTiles();
-        
+
     }
 
     public int replaceInitialFlowerTiles()
@@ -367,11 +374,11 @@ public class MahjongPlayerBase : MonoBehaviour
         int newFlowerCount = 0;
         for (int x = 0; x < flowersInHand.Count; x++)
         {
-            Tile drawnTile = MahjongManager.mahjongManager.wall[MahjongManager.mahjongManager.wall.Count - 1];
+            Tile drawnTile = manager.wall[manager.wall.Count - 1];
             if (drawnTile.tileType == suit.flower)
                 newFlowerCount += 1;
             AddTile(drawnTile);
-            MahjongManager.mahjongManager.wall.RemoveAt(MahjongManager.mahjongManager.wall.Count - 1);
+            manager.wall.RemoveAt(manager.wall.Count - 1);
         }
 
         return newFlowerCount;
@@ -413,13 +420,13 @@ public class MahjongPlayerBase : MonoBehaviour
     public void StealTile()
     {
         //add stolen tile and its meld to the open hand
-        openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
+        openHand.Add(manager.mostRecentDiscard);
         // MahjongManager.mahjongManager.wall.mostRe;
     }
     public void DrawTile()
     {
-        drawnTile = MahjongManager.mahjongManager.wall[0];
-        MahjongManager.mahjongManager.wall.RemoveAt(0);
+        drawnTile = manager.wall[0];
+        manager.wall.RemoveAt(0);
         // closedHand.Add(drawnTile);
         Debug.Log("drew tile " + drawnTile);
         // ArrangeTiles();
@@ -427,9 +434,9 @@ public class MahjongPlayerBase : MonoBehaviour
     public void DrawFlowerTile()
     {
         flowers.Add(drawnTile);
-        drawnTile = MahjongManager.mahjongManager.wall[MahjongManager.mahjongManager.wall.Count - 1];
+        drawnTile = manager.wall[manager.wall.Count - 1];
         // closedHand.Add(drawnTile);
-        MahjongManager.mahjongManager.wall.RemoveAt(MahjongManager.mahjongManager.wall.Count - 1);
+        manager.wall.RemoveAt(manager.wall.Count - 1);
         // ArrangeTiles();
     }
 
@@ -438,7 +445,7 @@ public class MahjongPlayerBase : MonoBehaviour
         closedHand.Add(drawnTile);
         drawnTile.transform.parent = closedHandParent;
         ArrangeTiles();
-        
+
     }
 
     public void SetPlayerState(PlayerState state)

@@ -24,7 +24,8 @@ public class MahjongManager : MonoBehaviour
     [SerializeField]
     protected List<MahjongPlayerBase> players;// = new List<MahjongPlayerBase>(4);
 
-    protected MahjongPlayerBase dealer, previousPlayer, currentPlayer, nextPlayer;
+    protected MahjongPlayerBase dealer, currentPlayer, nextPlayer;
+    public MahjongPlayerBase previousPlayer;
 
     protected int round, numRounds;
     public GameObject InitialTileParent, TileSizeReference;
@@ -281,7 +282,7 @@ public class MahjongManager : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         Debug.Log("Flowers Finished");
-        
+
         if (!network || (network && PhotonNetwork.IsMasterClient))
             foreach (MahjongPlayerBase player in players)
             {
