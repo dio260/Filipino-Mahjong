@@ -27,7 +27,6 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     void Start()
     {
         photonView.RPC("UpdatePlayerList", RpcTarget.All);
-
     }
     public void MasterRPCCall(string command, object data = null)
     {

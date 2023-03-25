@@ -245,13 +245,13 @@ public class MahjongManager : MonoBehaviour
 
         Debug.Log("Distributing Hand");
 
-        List<Tile> distributedTiles = wall.GetRange(0, 65);
-        wall.RemoveRange(0, 65);
+        List<Tile> distributedTiles = wall.GetRange(0, 1 + 16 * players.Count);
+        wall.RemoveRange(0, 1 + 16 * players.Count);
         dealer.GetComponent<MahjongPlayerBase>().AddTile(distributedTiles[0]);
         // distributedTiles.Remove(wall[0]);
-        for (int i = 1; i < 65; i++)
+        for (int i = 1; i < 1 + 16 * players.Count; i++)
         {
-            players[(dealerIndex + ((i - 1) / 16)) % 4].AddTile(distributedTiles[i]);
+            players[(dealerIndex + ((i - 1) / 16)) % players.Count].AddTile(distributedTiles[i]);
         }
 
         foreach (MahjongPlayerBase player in players)
@@ -443,6 +443,7 @@ public class MahjongManager : MonoBehaviour
         int dieRollResult = (index - 1) % players.Count;
 
         dealer = players[dieRollResult];
+        StartCoroutine(CreateWalls());
         
     }
 
