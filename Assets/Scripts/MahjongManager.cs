@@ -229,7 +229,7 @@ public class MahjongManager : MonoBehaviour
             StartCoroutine(CreateWalls());
         }
 
-        
+
     }
     public IEnumerator CreateWalls()
     {
@@ -245,12 +245,13 @@ public class MahjongManager : MonoBehaviour
 
         Debug.Log("Distributing Hand");
 
-        List<Tile> distributedTiles = wall.GetRange(0, 1 + 16 * players.Count);
-        wall.RemoveRange(0, 1 + 16 * players.Count);
+        List<Tile> distributedTiles = wall.GetRange(0, 1 + (16 * players.Count));
+        wall.RemoveRange(0, 1 + (16 * players.Count));
         dealer.GetComponent<MahjongPlayerBase>().AddTile(distributedTiles[0]);
-        // distributedTiles.Remove(wall[0]);
-        for (int i = 1; i < 1 + 16 * players.Count; i++)
+
+        for (int i = 1; i < 1 + (16 * players.Count); i++)
         {
+
             players[(dealerIndex + ((i - 1) / 16)) % players.Count].AddTile(distributedTiles[i]);
         }
 
@@ -259,7 +260,7 @@ public class MahjongManager : MonoBehaviour
             // player.VisuallySortTiles();
             player.ArrangeTiles();
         }
-        // StartCoroutine(Wait());
+
         yield return new WaitForSeconds(2);
 
         Debug.Log("Replacing Flowers");
@@ -267,7 +268,7 @@ public class MahjongManager : MonoBehaviour
         int needFlowers = -1;
         while (needFlowers != 0)
         {
-            needFlowers = 4;
+            needFlowers = players.Count;
             foreach (MahjongPlayerBase player in players)
             {
                 int remainingFlowers = player.replaceInitialFlowerTiles();
@@ -276,6 +277,9 @@ public class MahjongManager : MonoBehaviour
             }
         }
 
+        yield return new WaitForSeconds(2);
+
+        Debug.Log("Flowers Finished");
 
         foreach (MahjongPlayerBase player in players)
         {
@@ -441,10 +445,8 @@ public class MahjongManager : MonoBehaviour
     public void SetDealer(int index)
     {
         int dieRollResult = (index - 1) % players.Count;
-
         dealer = players[dieRollResult];
         StartCoroutine(CreateWalls());
-        
     }
 
 

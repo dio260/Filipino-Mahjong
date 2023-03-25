@@ -320,11 +320,10 @@ public class MahjongPlayerBase : MonoBehaviour
 
     public void ArrangeTiles()
     {
-        Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
-        // Debug.Log("parent forward: " + closedHandParent.forward + " parent up: " + closedHandParent.up.normalized);   
+        Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);   
         float sideOffset = 1.25f / (float)closedHand.Count;
         float placementReference = 1.25f / 2.0f;
-        // Debug.Log("left: " + localLeft + " off: " + sideOffset + " ref: "  + placementReference);
+        
         foreach (Tile tile in closedHand)
         {
             tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
