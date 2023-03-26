@@ -242,18 +242,18 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
             return (a.GetComponent<PhotonView>().InstantiationId.CompareTo(b.GetComponent<PhotonView>().InstantiationId));
         }
         );
-        // multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text = "";
-        // for(int x = 0; x < players.Count; x++)
-        // {
-        //     Debug.Log("Updating player " + PhotonNetwork.PlayerList[x].NickName + " for object " + players[x].gameObject.name);
-        //     if(players[x].gameObject.name != PhotonNetwork.PlayerList[x].NickName)
-        //     {
-        //         players[x].gameObject.name = PhotonNetwork.PlayerList[x].NickName;
-        //         players[x].gameObject.GetComponentInChildren<MeshRenderer>().material = playerColors[x];
+        multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text = "";
+        for(int x = 0; x < players.Count; x++)
+        {
+            Debug.Log("Updating player " + PhotonNetwork.PlayerList[x].NickName + " for object " + players[x].gameObject.name);
+            if(players[x].gameObject.name != PhotonNetwork.PlayerList[x].NickName)
+            {
+                players[x].gameObject.name = PhotonNetwork.PlayerList[x].NickName;
+                players[x].gameObject.GetComponentInChildren<MeshRenderer>().material = playerColors[x];
                 
-        //     }
-        //     multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text += players[x].gameObject.name + '\n';
-        // }
+            }
+            multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text += players[x].gameObject.name + '\n';
+        }
     }
 
     // public void AddPlayerID(int id)
