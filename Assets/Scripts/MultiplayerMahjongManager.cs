@@ -72,6 +72,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void UpdatePlayerList()
     {
+        Debug.Log("Updating Client Player List");
         MultiplayerGameManager.Instance.RemotePlayerListUpdate();
     }
     [PunRPC]
