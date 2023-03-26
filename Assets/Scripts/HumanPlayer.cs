@@ -48,6 +48,14 @@ public class HumanPlayer : MahjongPlayerBase
             {
                 discardButton.gameObject.SetActive(true);
             }
+            if (currentState == PlayerState.deciding)
+            {
+                passButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                passButton.gameObject.SetActive(false);
+            }
 
             if (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine))
             {

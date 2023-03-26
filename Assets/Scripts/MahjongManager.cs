@@ -485,6 +485,14 @@ public class MahjongManager : MonoBehaviour
         bool allDone = true;
         for (int i = 20; i > 0; i--)
         {
+            if (network)
+            {
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Decision time remaining: " + i + " seconds left");
+            }
+            else
+            {
+                SendPlayersMessage("Decision time remaining: " + i + " seconds left");
+            }
             yield return new WaitForSeconds(1);
 
             foreach (MahjongPlayerBase player in players)
