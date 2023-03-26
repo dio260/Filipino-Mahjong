@@ -70,14 +70,14 @@ public class HumanPlayer : MahjongPlayerBase
                             switch (currentState)
                             {
                                 case PlayerState.deciding:
-                                    Debug.Log("Selected Tile for a Meld");
+                                    Debug.Log("Selected " + hit.transform.GetComponent<Tile>().ToString() + " for a Meld");
                                     if (selectedTiles.Count < 4)
                                     {
                                         SelectMeldTile(hit.transform.GetComponent<Tile>());
                                     }
                                     break;
                                 case PlayerState.discarding:
-                                    Debug.Log("Selected Tile to discard");
+                                    Debug.Log("Selected " + hit.transform.GetComponent<Tile>().ToString() + " to discard");
                                     discardChoice = hit.transform.GetComponent<Tile>();
                                     break;
                             }
