@@ -238,23 +238,23 @@ public class HumanPlayer : MahjongPlayerBase
         }
     }
 
-    protected override void DeclarePong()
-    {
-        openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
-        openHand.AddRange(selectedTiles);
+    // protected override void DeclarePong()
+    // {
+    //     openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
+    //     openHand.AddRange(selectedTiles);
 
-    }
-    protected override void DeclareKang()
-    {
-        openHand.AddRange(kangMeld);
-        canKang = false;
-    }
+    // }
+    // protected override void DeclareKang()
+    // {
+    //     openHand.AddRange(kangMeld);
+    //     canKang = false;
+    // }
 
-    protected override void DeclareChow()
-    {
-        openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
-        openHand.AddRange(selectedTiles);
-    }
+    // protected override void DeclareChow()
+    // {
+    //     openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
+    //     openHand.AddRange(selectedTiles);
+    // }
 
 
 
