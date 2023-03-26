@@ -207,13 +207,13 @@ public class MahjongPlayerBase : MonoBehaviour
                     GetComponent<PhotonView>().RPC("passTurn", RpcTarget.All);
                     break;
                 case decision.kang:
-                    GetComponent<PhotonView>().RPC("passTurn", RpcTarget.All);
+                    GetComponent<PhotonView>().RPC("DeclareKang", RpcTarget.All);
                     break;
                 case decision.chow:
-                    GetComponent<PhotonView>().RPC("passTurn", RpcTarget.All);
+                    GetComponent<PhotonView>().RPC("DeclareChow", RpcTarget.All);
                     break;
                 case decision.pong:
-                    GetComponent<PhotonView>().RPC("passTurn", RpcTarget.All);
+                    GetComponent<PhotonView>().RPC("DeclarePong", RpcTarget.All);
                     break;
             }
 
