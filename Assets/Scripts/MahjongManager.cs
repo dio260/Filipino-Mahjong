@@ -505,12 +505,18 @@ public class MahjongManager : MonoBehaviour
             {
                 if (player.currentDecision == decision.none)
                 {
+                Debug.Log("someone isnt finished");
+
                     allDone = false;
                     break;
                 }
             }
             if (allDone)
+            {
+                Debug.Log("all players finished");
                 break;
+
+            }
         }
 
         if (network)
