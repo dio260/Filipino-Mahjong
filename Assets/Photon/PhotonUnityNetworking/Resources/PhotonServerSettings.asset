@@ -47,6 +47,8 @@ MonoBehaviour:
   - RemoteNameListUpdate
   - UpdatePlayerList
   - RemoteSetDealer
+  - SetAsDiscard
+  - StartFirstTurn
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -494,6 +494,7 @@ MonoBehaviour:
   closedHandParent: {fileID: 6886725867946563188}
   openHandParent: {fileID: 8121919785658311191}
   flowersParent: {fileID: 8814427028177514817}
+  networked: 1
   playerCam: {fileID: 0}
   playerCanvas: {fileID: 4265425483241202447}
   passButton: {fileID: 8717354414462581563}
@@ -503,7 +504,6 @@ MonoBehaviour:
   todasButton: {fileID: 6788468959402142497}
   discardButton: {fileID: 3462891266188004390}
   debugText: {fileID: 1768083841918618209}
-  networked: 1
 --- !u!114 &3073545853664383980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2961,8 +2961,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7234042182143124440}
-        m_TargetAssemblyTypeName: MahjongPlayerBase, Assembly-CSharp
-        m_MethodName: VisuallySortTiles
+        m_TargetAssemblyTypeName: HumanPlayer, Assembly-CSharp
+        m_MethodName: DeclareDiscard
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -220,7 +220,7 @@ public class HumanPlayer : MahjongPlayerBase
         openHand.AddRange(selectedTiles);
     }
 
-    void DeclareDiscard()
+    public void DeclareDiscard()
     {
         if (MahjongManager.mahjongManager.mostRecentDiscard == null)
         {
