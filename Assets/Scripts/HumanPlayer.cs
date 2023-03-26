@@ -163,6 +163,8 @@ public class HumanPlayer : MahjongPlayerBase
         {
             if (tile.tileType == discard.tileType)
             {
+                Debug.Log("Passed suit check");
+
                 if (tile.number == discard.number)
                 {
                     if (pongMeld.Count < 3)
@@ -172,28 +174,34 @@ public class HumanPlayer : MahjongPlayerBase
                 //take advantage of the subarrays being sorted numerically for chow
                 //consider three types of chow melds
                 //outermost number
-                if (tile.number == discard.number - 2 && !HasNumber(chowMeldLeft, discard.number))
+                if (tile.number == discard.number - 2 && !HasNumber(chowMeldLeft, tile.number))
                 {
+                    Debug.Log("Tile is 2 lower");
                     chowMeldLeft.Add(tile);
                 }
-                if (tile.number == discard.number + 2 && !HasNumber(chowMeldRight, discard.number))
+                if (tile.number == discard.number + 2 && !HasNumber(chowMeldRight, tile.number))
                 {
+                    Debug.Log("Tile is 2 higher");
                     chowMeldRight.Add(tile);
                 }
 
                 if (tile.number == discard.number - 1)
                 {
-                    if (!HasNumber(chowMeldLeft, discard.number))
+                    Debug.Log("Tile is 1 lower");
+
+                    if (!HasNumber(chowMeldLeft, tile.number))
                         chowMeldLeft.Add(tile);
-                    if (!HasNumber(chowMeldMiddle, discard.number))
+                    if (!HasNumber(chowMeldMiddle, tile.number))
                         chowMeldMiddle.Add(tile);
                 }
 
                 if (tile.number == discard.number + 1)
                 {
-                    if (!HasNumber(chowMeldRight, discard.number))
+                    Debug.Log("Tile is 1 higher");
+
+                    if (!HasNumber(chowMeldRight, tile.number))
                         chowMeldRight.Add(tile);
-                    if (!HasNumber(chowMeldMiddle, discard.number))
+                    if (!HasNumber(chowMeldMiddle, tile.number))
                         chowMeldMiddle.Add(tile);
                 }
             }
