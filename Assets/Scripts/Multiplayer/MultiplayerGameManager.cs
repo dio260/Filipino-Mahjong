@@ -36,7 +36,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     public GameObject multiplayerCanvas;
 
     public Button gameStart;
-
+    public List<int> playerIds;
     public List<MahjongPlayerBase> players;
     public Material[] playerColors;
 
