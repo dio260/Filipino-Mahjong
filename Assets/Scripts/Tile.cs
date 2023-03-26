@@ -57,7 +57,7 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     public void RPCDiscardTile()
     {
         PhotonView photonView = PhotonView.Get(this);
-        photonView.RPC("SetAsDiscard", RpcTarget.All);
+        photonView.RPC("SetAsDiscard", RpcTarget.Others);
     }
 
     [PunRPC]
