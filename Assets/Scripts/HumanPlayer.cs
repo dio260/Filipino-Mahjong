@@ -50,11 +50,11 @@ public class HumanPlayer : MahjongPlayerBase
             }
             if (currentState == PlayerState.deciding)
             {
+                Debug.Log("pass active");
                 passButton.gameObject.SetActive(true);
             }
             else
             {
-                Debug.Log("pass active");
                 passButton.gameObject.SetActive(false);
             }
 

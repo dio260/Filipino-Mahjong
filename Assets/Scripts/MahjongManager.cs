@@ -484,7 +484,12 @@ public class MahjongManager : MonoBehaviour
         }
 
         bool allDone = true;
-        for (int i = 20; i > 0; i--)
+        int time;
+        if(!debug)
+            time = 20;
+        else
+            time = 60;
+        for (int i = time; i > 0; i--)
         {
             if (network)
             {
