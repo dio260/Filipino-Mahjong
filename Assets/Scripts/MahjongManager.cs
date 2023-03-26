@@ -468,6 +468,7 @@ public class MahjongManager : MonoBehaviour
 
     public IEnumerator BetweenTurn()
     {
+        Debug.Log("Decision Time");
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Last discard: " + MahjongManager.mahjongManager.mostRecentDiscard.ToString());

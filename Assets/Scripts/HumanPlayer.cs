@@ -54,6 +54,7 @@ public class HumanPlayer : MahjongPlayerBase
             }
             else
             {
+                Debug.Log("pass active");
                 passButton.gameObject.SetActive(false);
             }
 
