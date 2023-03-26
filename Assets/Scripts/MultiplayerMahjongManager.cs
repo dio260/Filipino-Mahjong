@@ -47,7 +47,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 photonView.RPC("RemoteSetDealer", RpcTarget.All, data);
                 break;
             case "turn1":
-                photonView.RPC("StartFirstTurn", RpcTarget.All);
+                photonView.RPC("StartFirstTurn", RpcTarget.Others);
                 break;
         }
     }
