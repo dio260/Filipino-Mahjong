@@ -18,6 +18,11 @@ public class HumanPlayer : MahjongPlayerBase
     public bool networked;
 
     // List<Tile> selectedTiles = new List<Tile>();
+    void Awake()
+    {
+        // if (networked)
+        //     MultiplayerGameManager.Instance.players.Add(this);
+    }
     void Start()
     {
         //move to Humanplayer
