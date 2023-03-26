@@ -79,8 +79,8 @@ public class Tile : MonoBehaviour
             case "ManagerDiscard":
                 photonView.RPC("SetAsDiscard", RpcTarget.All);
                 break;
-            case "turn1":
-                photonView.RPC("StartFirstTurn", RpcTarget.Others);
+            case "SelectForMeld":
+                photonView.RPC("SetMeldforPlayer", RpcTarget.Others);
                 break;
         }
     }
@@ -121,6 +121,11 @@ public class Tile : MonoBehaviour
     public void SetDiscardforPlayer()
     {
         MahjongManager.mahjongManager.currentPlayer.SetDiscardChoice(this);
+    }
+    [PunRPC]
+    public void SetMeldforPlayer()
+    {
+        MahjongManager.mahjongManager.currentPlayer.GetComponent<HumanPlayer>().SelectMeldTile(this);
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)

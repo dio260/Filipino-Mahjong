@@ -79,10 +79,16 @@ public class HumanPlayer : MahjongPlayerBase
                             {
                                 case PlayerState.deciding:
                                     Debug.Log("Selected " + hit.transform.GetComponent<Tile>().ToString() + " for a Meld");
-                                    if (selectedTiles.Count < 4)
+
+                                    if (networked)
+                                    {
+                                        hit.transform.GetComponent<Tile>().TileRPCCall("SelectForMeld");
+                                    }
+                                    else
                                     {
                                         SelectMeldTile(hit.transform.GetComponent<Tile>());
                                     }
+
                                     break;
                                 case PlayerState.discarding:
                                     Debug.Log("Selected " + hit.transform.GetComponent<Tile>().ToString() + " to discard");
@@ -136,7 +142,7 @@ public class HumanPlayer : MahjongPlayerBase
         tileSwap = tile;
     }
 
-    protected override void CalculateHandOptions()
+    public override void CalculateHandOptions()
     {
         // base.CalculateHandOptions();
 
@@ -147,6 +153,16 @@ public class HumanPlayer : MahjongPlayerBase
         chowMeldMiddle = new List<Tile> { discard };
         chowMeldRight = new List<Tile> { discard };
         kangMeld = new List<Tile> { discard };
+
+        //auto calculate kang as a bandaid
+        foreach (Tile tile in closedHand)
+        {
+            if (tile.tileType == discard.tileType && tile.number == discard.number)
+            {
+                kangMeld.Add(tile);
+            }
+        }
+
         foreach (Tile tile in selectedTiles)
         {
             if (tile.tileType == discard.tileType)
@@ -155,7 +171,6 @@ public class HumanPlayer : MahjongPlayerBase
                 {
                     if (pongMeld.Count < 3)
                         pongMeld.Add(tile);
-                    kangMeld.Add(tile);
                 }
 
                 //take advantage of the subarrays being sorted numerically for chow
@@ -198,7 +213,9 @@ public class HumanPlayer : MahjongPlayerBase
         }
         if (chowMeldLeft.Count == 3
         || chowMeldMiddle.Count == 3
-        || chowMeldRight.Count == 3)
+        || chowMeldRight.Count == 3 &&
+        (MahjongManager.mahjongManager.GetPlayers().IndexOf(MahjongManager.mahjongManager.previousPlayer) + 1) %
+        MahjongManager.mahjongManager.GetPlayers().Count == MahjongManager.mahjongManager.GetPlayers().IndexOf(this))
         {
             canChow = true;
         }
@@ -235,9 +252,9 @@ public class HumanPlayer : MahjongPlayerBase
         openHand.AddRange(selectedTiles);
     }
 
-    
 
-    void SelectMeldTile(Tile clicked)
+
+    public void SelectMeldTile(Tile clicked)
     {
         if (selectedTiles.Contains(clicked))
         {
@@ -245,7 +262,13 @@ public class HumanPlayer : MahjongPlayerBase
         }
         else
         {
+            if(selectedTiles.Count < 2)
             selectedTiles.Add(clicked);
+        }
+
+        if (selectedTiles.Count == 2)
+        {
+            CalculateHandOptions();
         }
     }
 

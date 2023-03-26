@@ -348,7 +348,7 @@ public class MahjongManager : MonoBehaviour
         if(!debug)
             time = 60;
         else
-            time = 180;
+            time = 300;
         for (int i = time; i > 0; i--)
         {
             if (network)
@@ -391,6 +391,7 @@ public class MahjongManager : MonoBehaviour
 
     IEnumerator TakeTurn(MahjongPlayerBase player)
     {
+        
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn.");
@@ -431,6 +432,10 @@ public class MahjongManager : MonoBehaviour
 
         }
 
+        //set most recent discard as null after the player has drawn so they can make the decision
+        player.currentDecision = decision.none;
+        mostRecentDiscard = null;
+
         //do a time based implementation so people cannot stall out the turn;
         for (int i = 30; i > 0; i--)
         {
@@ -468,13 +473,14 @@ public class MahjongManager : MonoBehaviour
         if (!debug)
             mostRecentDiscard.transform.position = Vector3.up * 0.5f;
 
-        // StartCoroutine(BetweenTurn());
+        StartCoroutine(BetweenTurn());
     }
 
     public IEnumerator BetweenTurn()
     {
         //set the player that just went to the previous player
         previousPlayer = currentPlayer;
+        
         Debug.Log("Decision Time");
         if (network)
         {
@@ -488,6 +494,7 @@ public class MahjongManager : MonoBehaviour
         foreach (MahjongPlayerBase player in players)
         {
             player.SetPlayerState(PlayerState.deciding);
+            player.CalculateHandOptions();
         }
 
         bool allDone = true;
@@ -495,7 +502,7 @@ public class MahjongManager : MonoBehaviour
         if(!debug)
             time = 30;
         else
-            time = 180;
+            time = 300;
         for (int i = time; i > 0; i--)
         {
             allDone = true;
@@ -571,7 +578,14 @@ public class MahjongManager : MonoBehaviour
         }
         
         currentPlayer = nextPlayer;
-        // nextPlayer = players[(players.IndexOf(nextPlayer) + 1) % players.Count];
+        //reset everyone else's decisions
+        foreach (MahjongPlayerBase player in players)
+        {
+            if (player != currentPlayer)
+            {
+                player.currentDecision = decision.none;
+            }
+        }
 
         StartCoroutine(TakeTurn(currentPlayer));
     }

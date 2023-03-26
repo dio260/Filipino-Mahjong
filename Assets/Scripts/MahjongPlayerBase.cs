@@ -76,7 +76,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
         // CalculateHandOptions();
     }
-    protected virtual void CalculateHandOptions()
+    public virtual void CalculateHandOptions()
     {
 
         //make life easier by sorting the stuff;
@@ -435,8 +435,22 @@ public class MahjongPlayerBase : MonoBehaviour
     public void StealTile()
     {
         //add stolen tile and its meld to the open hand
-        openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
-        // MahjongManager.mahjongManager.wall.mostRe;
+        // openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
+        switch (currentDecision)
+        {
+            case decision.pong:
+                openHand.AddRange(pongMeld);
+            break;
+            case decision.kang:
+                openHand.AddRange(kangMeld);
+
+            break;
+            case decision.chow:
+                openHand.AddRange(selectedTiles);
+            break;
+        }
+
+        // MahjongManager.mahjongManager.mostRecentDiscard = null;
     }
     public void DrawTile()
     {
