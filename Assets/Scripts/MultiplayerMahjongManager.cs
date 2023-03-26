@@ -46,6 +46,9 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 int dealer = (int) data;
                 photonView.RPC("RemoteSetDealer", RpcTarget.All, data);
                 break;
+            case "turn1":
+                photonView.RPC("StartFirstTurn", RpcTarget.All);
+                break;
         }
     }
     [PunRPC]
@@ -80,6 +83,11 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     public void RemoteSetDealer(int index)
     {
         MahjongManager.mahjongManager.SetDealer(index);
+    }
+    [PunRPC]
+    public void StartFirstTurn()
+    {
+        MahjongManager.mahjongManager.FirstNetworkedTurn();
     }
 
     #region 

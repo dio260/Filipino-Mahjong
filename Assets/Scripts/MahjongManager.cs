@@ -317,7 +317,15 @@ public class MahjongManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
         state = GameState.playing;
-        StartCoroutine(TakeTurn(currentPlayer));
+
+        if(network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("turn1");
+        }
+        else
+        {
+            StartCoroutine(TakeTurn(currentPlayer));
+        }
     }
 
     IEnumerator TakeTurn(MahjongPlayerBase player)
@@ -385,14 +393,14 @@ public class MahjongManager : MonoBehaviour
             player.SetNullDrawnTile();
         }
 
-        Debug.Log("Player Discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
+        Debug.Log(player.gameObject.name + " discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Player Discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
         }
         else
         {
-            SendPlayersMessage("Player Discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
+            SendPlayersMessage(player.gameObject.name + " discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
         }
         player.SetPlayerState(PlayerState.waiting);
 
@@ -502,6 +510,11 @@ public class MahjongManager : MonoBehaviour
                 human.debugText.text = message;
             }
         }
+    }
+
+    public void FirstNetworkedTurn()
+    {
+        StartCoroutine(TakeTurn(dealer));
     }
 
 
