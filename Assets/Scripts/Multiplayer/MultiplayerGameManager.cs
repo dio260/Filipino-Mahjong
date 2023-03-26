@@ -240,6 +240,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text = "";
         for(int x = 0; x < players.Count; x++)
         {
+            Debug.Log("Updating player " + PhotonNetwork.PlayerList[x].NickName + " for object " + players[x].gameObject.name);
             if(players[x].gameObject.name != PhotonNetwork.PlayerList[x].NickName)
             {
                 players[x].gameObject.name = PhotonNetwork.PlayerList[x].NickName;
