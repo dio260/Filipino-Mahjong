@@ -232,31 +232,38 @@ public class MahjongPlayerBase : MonoBehaviour
     {
 
     }
+    [PunRPC]
 
     protected virtual void DeclarePong()
     {
-        if (canPong)
-        {
-            openHand.AddRange(pongMeld);
-            canPong = false;
-        }
+        currentDecision = decision.pong;
+        // if (canPong)
+        // {
+        //     openHand.AddRange(pongMeld);
+        //     canPong = false;
+        // }
     }
+    [PunRPC]
+
     protected virtual void DeclareKang()
     {
-        if (canKang)
-        {
-            openHand.AddRange(kangMeld);
-            canKang = false;
-        }
+        currentDecision = decision.kang;
+        // if (canKang)
+        // {
+        //     openHand.AddRange(kangMeld);
+        //     canKang = false;
+        // }
     }
+    [PunRPC]
 
     protected virtual void DeclareChow()
     {
-        if (canChow)
-        {
-            // openHand.AddRange(chowMeld);
-            canChow = false;
-        }
+        currentDecision = decision.chow;
+        // if (canChow)
+        // {
+        //     // openHand.AddRange(chowMeld);
+        //     canChow = false;
+        // }
     }
     [PunRPC]
     protected void passTurn()
@@ -450,6 +457,9 @@ public class MahjongPlayerBase : MonoBehaviour
         chowMeldRight = new List<Tile>();
         kangMeld = new List<Tile>();
         selectedTiles = new List<Tile>();
+        canChow = false;
+        canKang = false;
+        canPong = false;
     }
 
     public void StealTile()
