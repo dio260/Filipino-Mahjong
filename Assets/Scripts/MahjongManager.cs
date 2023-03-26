@@ -339,13 +339,13 @@ public class MahjongManager : MonoBehaviour
         }
 
         player.SetPlayerState(PlayerState.discarding);
-        
+
         yield return new WaitForSeconds(2);
 
 
         //do a time based implementation so people cannot stall out the turn;
         int time;
-        if(!debug)
+        if (!debug)
             time = 60;
         else
             time = 300;
@@ -385,14 +385,14 @@ public class MahjongManager : MonoBehaviour
         player.SetPlayerState(PlayerState.waiting);
 
         // if (!debug)
-            mostRecentDiscard.transform.position = Vector3.zero;
+        mostRecentDiscard.transform.position = Vector3.zero;
 
         StartCoroutine(BetweenTurn());
     }
 
     IEnumerator TakeTurn(MahjongPlayerBase player)
     {
-        
+
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn.");
@@ -402,17 +402,32 @@ public class MahjongManager : MonoBehaviour
             SendPlayersMessage(player.gameObject.name + " is taking their turn.");
         }
 
+        yield return new WaitForSeconds(2);
+
         player.SetPlayerState(PlayerState.discarding);
         if (player.currentDecision != decision.none && player.currentDecision != decision.pass)
         {
-            Debug.Log(player.gameObject.name + " stole discard");
+            if (network)
+            {
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " stole the discard");
+            }
+            else
+            {
+                SendPlayersMessage(player.gameObject.name + " stole the discard");
+            }
             player.StealTile();
         }
         else
         {
 
-            yield return new WaitForSeconds(1);
-            Debug.Log(player.gameObject.name + " drawing tile");
+            if (network)
+            {
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is drawing a tile");
+            }
+            else
+            {
+                SendPlayersMessage(player.gameObject.name + " is drawing a tile");
+            }
             player.DrawTile();
 
             // StartCoroutine(player.DrawTile());
@@ -433,8 +448,11 @@ public class MahjongManager : MonoBehaviour
 
         }
 
+        yield return new WaitForSeconds(2);
+
+
         //set most recent discard as null after the player has drawn so they can make the decision
-        foreach(MahjongPlayerBase user in players)
+        foreach (MahjongPlayerBase user in players)
             user.ResetMelds();
         player.currentDecision = decision.none;
         mostRecentDiscard = null;
@@ -458,7 +476,7 @@ public class MahjongManager : MonoBehaviour
         }
         if (mostRecentDiscard == null)
         {
-            
+
             player.ForceDiscard();
 
             // mostRecentDiscard = player.currentDrawnTile();
@@ -478,6 +496,7 @@ public class MahjongManager : MonoBehaviour
 
         if (!debug)
             mostRecentDiscard.transform.position = Vector3.up * 0.5f;
+        yield return new WaitForSeconds(2);
 
         StartCoroutine(BetweenTurn());
     }
@@ -486,7 +505,7 @@ public class MahjongManager : MonoBehaviour
     {
         //set the player that just went to the previous player
         previousPlayer = currentPlayer;
-        
+
         Debug.Log("Decision Time");
         if (network)
         {
@@ -505,7 +524,7 @@ public class MahjongManager : MonoBehaviour
 
         bool allDone = true;
         int time;
-        if(!debug)
+        if (!debug)
             time = 30;
         else
             time = 300;
@@ -552,8 +571,8 @@ public class MahjongManager : MonoBehaviour
             player.SetPlayerState(PlayerState.waiting);
         }
 
-        
-        
+
+
 
         // MahjongPlayerBase next = players[];
         nextPlayer = players[(players.IndexOf(currentPlayer) + 1) % players.Count];
@@ -582,7 +601,7 @@ public class MahjongManager : MonoBehaviour
                 //so we do not check it here
             }
         }
-        
+
         currentPlayer = nextPlayer;
         //reset everyone else's decisions
         foreach (MahjongPlayerBase player in players)

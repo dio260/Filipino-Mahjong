@@ -471,13 +471,25 @@ public class MahjongPlayerBase : MonoBehaviour
         {
             case decision.pong:
                 openHand.AddRange(pongMeld);
+                foreach(Tile tile in pongMeld)
+                {
+                    closedHand.RemoveAt(closedHand.IndexOf(tile));
+                }
             break;
             case decision.kang:
                 openHand.AddRange(kangMeld);
-
+                foreach(Tile tile in kangMeld)
+                {
+                    closedHand.RemoveAt(closedHand.IndexOf(tile));
+                }
             break;
             case decision.chow:
                 openHand.AddRange(selectedTiles);
+                foreach(Tile tile in selectedTiles)
+                {
+                    closedHand.RemoveAt(closedHand.IndexOf(tile));
+                }
+                openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
             break;
         }
 
