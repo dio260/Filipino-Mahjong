@@ -140,6 +140,7 @@ public class HumanPlayer : MahjongPlayerBase
     public override void CalculateHandOptions()
     {
         // base.CalculateHandOptions();
+        Debug.Log("Calculating Hand Options");
 
         Tile discard = MahjongManager.mahjongManager.mostRecentDiscard;
 
