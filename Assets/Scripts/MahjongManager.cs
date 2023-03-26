@@ -491,6 +491,7 @@ public class MahjongManager : MonoBehaviour
             time = 60;
         for (int i = time; i > 0; i--)
         {
+            allDone = true;
             if (network)
             {
                 MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Decision time remaining: " + i + " seconds left");
@@ -505,8 +506,6 @@ public class MahjongManager : MonoBehaviour
             {
                 if (player.currentDecision == decision.none)
                 {
-                Debug.Log("someone isnt finished");
-
                     allDone = false;
                     break;
                 }
