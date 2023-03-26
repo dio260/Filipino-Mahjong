@@ -234,7 +234,8 @@ public class HumanPlayer : MahjongPlayerBase
         {
             MahjongManager.mahjongManager.mostRecentDiscard = discardChoice;
         }
-        closedHand.Remove(discardChoice);
+        closedHand[closedHand.IndexOf(discardChoice)] = null;
+        closedHand.TrimExcess();
         drawnTile = null;
         ArrangeTiles();
     }
