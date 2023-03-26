@@ -125,6 +125,7 @@ public class Tile : MonoBehaviour
     [PunRPC]
     public void SetMeldforPlayer()
     {
+        Debug.Log("selected tile");
         MahjongManager.mahjongManager.currentPlayer.GetComponent<HumanPlayer>().SelectMeldTile(this);
     }
 

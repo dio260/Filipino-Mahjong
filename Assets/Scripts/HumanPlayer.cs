@@ -78,7 +78,6 @@ public class HumanPlayer : MahjongPlayerBase
                             switch (currentState)
                             {
                                 case PlayerState.deciding:
-                                    Debug.Log("Selected " + hit.transform.GetComponent<Tile>().ToString() + " for a Meld");
 
                                     if (networked)
                                     {
@@ -256,14 +255,16 @@ public class HumanPlayer : MahjongPlayerBase
 
     public void SelectMeldTile(Tile clicked)
     {
+        Debug.Log("Selected " + clicked.ToString() + " for a Meld");
+
         if (selectedTiles.Contains(clicked))
         {
             selectedTiles.Remove(clicked);
         }
         else
         {
-            if(selectedTiles.Count < 2)
-            selectedTiles.Add(clicked);
+            if (selectedTiles.Count < 2)
+                selectedTiles.Add(clicked);
         }
 
         if (selectedTiles.Count == 2)
