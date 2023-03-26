@@ -513,7 +513,14 @@ public class MahjongPlayerBase : MonoBehaviour
     }
     public void ForceDiscard()
     {
-        discardChoice = currentDrawnTile();
+        if(drawnTile == null)
+        {
+            discardChoice = closedHand[closedHand.Count - 1];
+        }
+        else
+        {
+            discardChoice = drawnTile;
+        }
         DeclareDiscard();
     }
 
