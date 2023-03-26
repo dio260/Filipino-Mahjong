@@ -23,18 +23,14 @@ public class HumanPlayer : MahjongPlayerBase
         //move to Humanplayer
         playerCam = GetComponent<Camera>();
         todasButton.onClick.AddListener(() => DeclareWin());
-        pongButton.onClick.AddListener(() => DeclarePong());
-        kangButton.onClick.AddListener(() => DeclareKang());
-        chowButton.onClick.AddListener(() => DeclareChow());
-        discardButton.onClick.AddListener(() => DeclareDiscard());
+        pongButton.onClick.AddListener(() => MakeDecision(decision.pong));
+        kangButton.onClick.AddListener(() => MakeDecision(decision.kang));
+        chowButton.onClick.AddListener(() => MakeDecision(decision.chow));
         passButton.onClick.AddListener(() => MakeDecision(decision.pass));
+        discardButton.onClick.AddListener(() => DeclareDiscard());
 
-        chowButton.gameObject.SetActive(false);
-        todasButton.gameObject.SetActive(false);
-        pongButton.gameObject.SetActive(false);
-        kangButton.gameObject.SetActive(false);
+        HideUI();
         discardButton.gameObject.SetActive(false);
-        passButton.gameObject.SetActive(false);
 
         debugText.text = currentState.ToString();
     }

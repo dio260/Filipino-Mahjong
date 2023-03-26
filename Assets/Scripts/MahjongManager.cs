@@ -434,6 +434,8 @@ public class MahjongManager : MonoBehaviour
         }
 
         //set most recent discard as null after the player has drawn so they can make the decision
+        foreach(MahjongPlayerBase user in players)
+            user.ResetMelds();
         player.currentDecision = decision.none;
         mostRecentDiscard = null;
 

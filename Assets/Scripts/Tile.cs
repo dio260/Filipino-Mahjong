@@ -81,7 +81,7 @@ public class Tile : MonoBehaviour
                 photonView.RPC("SetAsDiscard", RpcTarget.All);
                 break;
             case "SelectForMeld":
-                photonView.RPC("SetMeldforPlayer", RpcTarget.Others);
+                photonView.RPC("SetMeldforPlayer", RpcTarget.All);
                 break;
         }
     }

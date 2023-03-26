@@ -206,13 +206,21 @@ public class MahjongPlayerBase : MonoBehaviour
                 case decision.pass:
                     GetComponent<PhotonView>().RPC("passTurn", RpcTarget.All);
                     break;
+                case decision.kang:
+                    GetComponent<PhotonView>().RPC("passTurn", RpcTarget.All);
+                    break;
+                case decision.chow:
+                    GetComponent<PhotonView>().RPC("passTurn", RpcTarget.All);
+                    break;
+                case decision.pong:
+                    GetComponent<PhotonView>().RPC("passTurn", RpcTarget.All);
+                    break;
             }
 
         }
         else
         {
             currentDecision = dec;
-
         }
     }
     protected void DeclareWin()
@@ -433,6 +441,17 @@ public class MahjongPlayerBase : MonoBehaviour
     {
         return drawnTile;
     }
+
+    public void ResetMelds()
+    {
+        pongMeld = new List<Tile>();
+        chowMeldLeft = new List<Tile>();
+        chowMeldMiddle = new List<Tile>();
+        chowMeldRight = new List<Tile>();
+        kangMeld = new List<Tile>();
+        selectedTiles = new List<Tile>();
+    }
+
     public void StealTile()
     {
         //add stolen tile and its meld to the open hand
