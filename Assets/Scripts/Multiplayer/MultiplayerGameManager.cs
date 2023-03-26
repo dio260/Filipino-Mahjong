@@ -237,6 +237,11 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     public void RemotePlayerListUpdate()
     {
         players = FindObjectsOfType<MahjongPlayerBase>().ToList<MahjongPlayerBase>();
+        players.Sort(delegate(MahjongPlayerBase a, MahjongPlayerBase b)
+        {
+            return (a.GetComponent<PhotonView>().InstantiationId.CompareTo(b.GetComponent<PhotonView>().InstantiationId));
+        }
+        );
         // multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text = "";
         // for(int x = 0; x < players.Count; x++)
         // {
@@ -250,4 +255,10 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         //     multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text += players[x].gameObject.name + '\n';
         // }
     }
+
+    // public void AddPlayerID(int id)
+    // {
+    //     playerIds.Append(id);
+    //     photonView.RPC("RemotePlayerListUpdate", RpcTarget.All, );
+    // }
 }

@@ -14,6 +14,7 @@ public class NetworkedPlayer : MonoBehaviourPunCallbacks
         {
             Debug.Log("mine");
             LocalPlayerInstance = gameObject;
+            
         }
         else
         {
@@ -21,7 +22,7 @@ public class NetworkedPlayer : MonoBehaviourPunCallbacks
 
             GetComponent<Camera>().enabled = false;
             GetComponentInChildren<Canvas>().gameObject.SetActive(false);
-            Destroy(this);
+            // Destroy(this);
         }
     }
 
