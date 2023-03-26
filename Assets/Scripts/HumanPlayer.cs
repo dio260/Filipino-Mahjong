@@ -27,7 +27,7 @@ public class HumanPlayer : MahjongPlayerBase
         kangButton.onClick.AddListener(() => DeclareKang());
         chowButton.onClick.AddListener(() => DeclareChow());
         discardButton.onClick.AddListener(() => DeclareDiscard());
-        passButton.onClick.AddListener(() => passTurn());
+        passButton.onClick.AddListener(() => MakeDecision(decision.pass));
 
         chowButton.gameObject.SetActive(false);
         todasButton.gameObject.SetActive(false);

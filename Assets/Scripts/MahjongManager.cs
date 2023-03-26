@@ -381,7 +381,7 @@ public class MahjongManager : MonoBehaviour
         if (!debug)
             mostRecentDiscard.transform.position = Vector3.up * 0.5f;
 
-        // StartCoroutine(BetweenTurn());
+        StartCoroutine(BetweenTurn());
     }
 
     IEnumerator TakeTurn(MahjongPlayerBase player)
@@ -470,11 +470,11 @@ public class MahjongManager : MonoBehaviour
     {
         if (network)
         {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Waiting...");
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Last discard: " + MahjongManager.mahjongManager.mostRecentDiscard.ToString());
         }
         else
         {
-            SendPlayersMessage("Waiting...");
+            SendPlayersMessage("Last discard: " + MahjongManager.mahjongManager.mostRecentDiscard.ToString());
         }
 
         foreach (MahjongPlayerBase player in players)
@@ -483,7 +483,7 @@ public class MahjongManager : MonoBehaviour
         }
 
         bool allDone = true;
-        for (int i = 10; i > 0; i--)
+        for (int i = 20; i > 0; i--)
         {
             yield return new WaitForSeconds(1);
 
@@ -498,6 +498,16 @@ public class MahjongManager : MonoBehaviour
             if (allDone)
                 break;
         }
+
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "All players done making a decision");
+        }
+        else
+        {
+            SendPlayersMessage("All players done making a decision");
+        }
+
         foreach (MahjongPlayerBase player in players)
         {
             player.SetPlayerState(PlayerState.waiting);

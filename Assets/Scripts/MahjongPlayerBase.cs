@@ -196,10 +196,24 @@ public class MahjongPlayerBase : MonoBehaviour
         return false;
     }
 
-    void MakeDecision(decision dec)
+    protected void MakeDecision(decision dec)
     {
         //if conditions are fulfilled
-        currentDecision = dec;
+        if (networked)
+        {
+            switch (dec)
+            {
+                case decision.pass:
+                    GetComponent<PhotonView>().RPC("passTurn", RpcTarget.All);
+                    break;
+            }
+
+        }
+        else
+        {
+            currentDecision = dec;
+
+        }
     }
     protected void DeclareWin()
     {
@@ -236,6 +250,7 @@ public class MahjongPlayerBase : MonoBehaviour
             canChow = false;
         }
     }
+    [PunRPC]
     protected void passTurn()
     {
         currentDecision = decision.pass;
