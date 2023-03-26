@@ -49,6 +49,11 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
         PhotonView photonView = PhotonView.Get(this);
         photonView.RPC("AddToBoard", RpcTarget.All);
     }
+    public void RPCDiscardTile()
+    {
+        PhotonView photonView = PhotonView.Get(this);
+        photonView.RPC("SetAsDiscard", RpcTarget.All);
+    }
 
     [PunRPC]
     public void SetTile(int num, suit suit)
@@ -71,11 +76,18 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     [PunRPC]
     public void AddToBoard()
     {
-        if(!MahjongManager.mahjongManager.GetBoard().Contains(this))
+        if (!MahjongManager.mahjongManager.GetBoard().Contains(this))
         {
             MahjongManager.mahjongManager.GetBoard().Add(this);
-            
+
         }
+    }
+    [PunRPC]
+    public void SetAsDiscard()
+    {
+
+        MahjongManager.mahjongManager.mostRecentDiscard = this;
+
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)

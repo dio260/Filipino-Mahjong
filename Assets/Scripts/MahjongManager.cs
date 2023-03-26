@@ -227,6 +227,7 @@ public class MahjongManager : MonoBehaviour
         }
         else
         {
+            SendPlayersMessage("Dealer is player at index " + dieRollResult);
             StartCoroutine(CreateWalls());
         }
 
@@ -234,7 +235,14 @@ public class MahjongManager : MonoBehaviour
     }
     public IEnumerator CreateWalls()
     {
-        Debug.Log("Creating Walls");
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Creating Walls");
+        }
+        else
+        {
+            SendPlayersMessage("Creating Walls");
+        }
         yield return new WaitForSeconds(2);
 
         int dealerIndex = players.IndexOf(dealer);
@@ -244,7 +252,14 @@ public class MahjongManager : MonoBehaviour
         wall.AddRange(board.GetRange(wallIndex, MAXTILECOUNT - wallIndex));
         wall.AddRange(board.GetRange(0, wallIndex));
 
-        Debug.Log("Distributing Hand");
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Distributing tiles to players");
+        }
+        else
+        {
+            SendPlayersMessage("Distributing tiles to players");
+        }
 
         List<Tile> distributedTiles = wall.GetRange(0, 1 + (16 * players.Count));
         wall.RemoveRange(0, 1 + (16 * players.Count));
@@ -265,7 +280,14 @@ public class MahjongManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
-        Debug.Log("Replacing Flowers");
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Replacing flowers");
+        }
+        else
+        {
+            SendPlayersMessage("Replacing flowers");
+        }
 
         int needFlowers = -1;
         while (needFlowers != 0)
@@ -295,12 +317,20 @@ public class MahjongManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
         state = GameState.playing;
-        // StartCoroutine(TakeTurn(currentPlayer));
+        StartCoroutine(TakeTurn(currentPlayer));
     }
 
     IEnumerator TakeTurn(MahjongPlayerBase player)
     {
-        Debug.Log("current turn: " + player.gameObject.name);
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn.");
+        }
+        else
+        {
+            SendPlayersMessage(player.gameObject.name + " is taking their turn.");
+        }
+
         player.SetPlayerState(PlayerState.discarding);
         if (player.currentDecision != decision.none && player.currentDecision != decision.pass)
         {
@@ -335,9 +365,13 @@ public class MahjongManager : MonoBehaviour
         //do a time based implementation so people cannot stall out the turn;
         for (int i = 30; i > 0; i--)
         {
-            if (player.GetType() == typeof(HumanPlayer))
+            if (network)
             {
-                player.GetComponent<HumanPlayer>().debugText.text = i + " seconds left";
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Turn time remaining: " + i + " seconds left");
+            }
+            else
+            {
+                SendPlayersMessage("Turn time remaining: " + i + " seconds left");
             }
             yield return new WaitForSeconds(1);
             if (mostRecentDiscard != null)
@@ -352,13 +386,20 @@ public class MahjongManager : MonoBehaviour
         }
 
         Debug.Log("Player Discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
-        player.GetComponent<HumanPlayer>().debugText.text = "waiting";
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Player Discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
+        }
+        else
+        {
+            SendPlayersMessage("Player Discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
+        }
         player.SetPlayerState(PlayerState.waiting);
 
         if (!debug)
             mostRecentDiscard.transform.position = Vector3.up * 0.5f;
 
-        StartCoroutine(BetweenTurn());
+        // StartCoroutine(BetweenTurn());
     }
 
     public IEnumerator BetweenTurn()
@@ -450,6 +491,17 @@ public class MahjongManager : MonoBehaviour
         int dieRollResult = (index - 1) % players.Count;
         dealer = players[dieRollResult];
         StartCoroutine(CreateWalls());
+    }
+
+    public void SendPlayersMessage(string message)
+    {
+        foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+        {
+            if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
+            {
+                human.debugText.text = message;
+            }
+        }
     }
 
 

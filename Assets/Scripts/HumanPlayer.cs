@@ -15,7 +15,7 @@ public class HumanPlayer : MahjongPlayerBase
 
     GameObject tileSwap;
 
-    public bool networked;
+
 
     // List<Tile> selectedTiles = new List<Tile>();
     void Start()
@@ -222,12 +222,18 @@ public class HumanPlayer : MahjongPlayerBase
 
     void DeclareDiscard()
     {
-
         if (MahjongManager.mahjongManager.mostRecentDiscard == null)
         {
             discardChoice = drawnTile;
         }
-        MahjongManager.mahjongManager.mostRecentDiscard = discardChoice;
+        if (networked)
+        {
+            discardChoice.RPCDiscardTile();            
+        }
+        else
+        {
+            MahjongManager.mahjongManager.mostRecentDiscard = discardChoice;
+        }
         closedHand.Remove(discardChoice);
         drawnTile = null;
         ArrangeTiles();

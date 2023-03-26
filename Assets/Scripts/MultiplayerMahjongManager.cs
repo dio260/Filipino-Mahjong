@@ -60,13 +60,14 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SendClientsMessage(string message)
     {
-        foreach(MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
-        {
-            if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
-            {
-                human.debugText.text = message;
-            }
-        }
+        // foreach(MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+        // {
+        //     if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
+        //     {
+        //         human.debugText.text = message;
+        //     }
+        // }
+        MahjongManager.mahjongManager.SendPlayersMessage(message);
     }
 
     [PunRPC]

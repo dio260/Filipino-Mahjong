@@ -45,7 +45,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
     public Transform closedHandParent, openHandParent, flowersParent;
 
-    
+    public bool networked;
 
     void Awake()
     {

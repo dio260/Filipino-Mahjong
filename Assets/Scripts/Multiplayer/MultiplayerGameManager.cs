@@ -182,7 +182,8 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
 
     public void HostStartGame()
     {
-        MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("start");
+        if(PhotonNetwork.CurrentRoom.PlayerCount > 1)
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("start");
     }
 
     /// <summary>
