@@ -426,7 +426,7 @@ public class MahjongPlayerBase : MonoBehaviour
         drawnTile = MahjongManager.mahjongManager.wall[0];
         MahjongManager.mahjongManager.wall.RemoveAt(0);
         // closedHand.Add(drawnTile);
-        Debug.Log("drew tile " + drawnTile);
+        // Debug.Log("drew tile " + drawnTile);
         // ArrangeTiles();
     }
     public void DrawFlowerTile()

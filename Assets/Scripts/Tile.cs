@@ -38,6 +38,11 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     {
 
     }
+
+    public override string ToString()
+    {
+        return number + " " + tileType.ToString();
+    }
     public void RPCTileSet(int num, suit suit)
     {
         PhotonView photonView = PhotonView.Get(this);

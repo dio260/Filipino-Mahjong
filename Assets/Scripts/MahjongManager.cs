@@ -97,7 +97,14 @@ public class MahjongManager : MonoBehaviour
 
     public IEnumerator BoardSetup()
     {
-        Debug.Log("Shuffling Board");
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Shuffling Board and Creating Walls");
+        }
+        else
+        {
+            SendPlayersMessage("Shuffling Board and Creating Walls");
+        }
         yield return new WaitForSeconds(2);
         System.Random rand = new System.Random();
         int n = board.Count;
@@ -200,7 +207,6 @@ public class MahjongManager : MonoBehaviour
 
         StartCoroutine(RollDice());
 
-
     }
 
     public IEnumerator RollDice()
@@ -235,14 +241,7 @@ public class MahjongManager : MonoBehaviour
     }
     public IEnumerator CreateWalls()
     {
-        if (network)
-        {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Creating Walls");
-        }
-        else
-        {
-            SendPlayersMessage("Creating Walls");
-        }
+
         yield return new WaitForSeconds(2);
 
         int dealerIndex = players.IndexOf(dealer);
@@ -318,14 +317,70 @@ public class MahjongManager : MonoBehaviour
         yield return new WaitForSeconds(2);
         state = GameState.playing;
 
-        if(network)
+        if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("turn1");
         }
         else
         {
-            StartCoroutine(TakeTurn(currentPlayer));
+            StartCoroutine(FirstTurn(dealer));
         }
+    }
+
+    IEnumerator FirstTurn(MahjongPlayerBase player)
+    {
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn.");
+        }
+        else
+        {
+            SendPlayersMessage(player.gameObject.name + " is taking their turn.");
+        }
+
+        player.SetPlayerState(PlayerState.discarding);
+        
+        yield return new WaitForSeconds(2);
+
+
+        //do a time based implementation so people cannot stall out the turn;
+        for (int i = 60; i > 0; i--)
+        {
+            if (network)
+            {
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Turn time remaining: " + i + " seconds left");
+            }
+            else
+            {
+                SendPlayersMessage("Turn time remaining: " + i + " seconds left");
+            }
+            yield return new WaitForSeconds(1);
+            if (mostRecentDiscard != null)
+            {
+                break;
+            }
+        }
+        if (mostRecentDiscard == null)
+        {
+            mostRecentDiscard = player.currentDrawnTile();
+            player.SetNullDrawnTile();
+        }
+
+        // Debug.Log(player.gameObject.name + " discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Player Discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
+        }
+        else
+        {
+            SendPlayersMessage(player.gameObject.name + " discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
+        }
+        player.SetPlayerState(PlayerState.waiting);
+
+        if (!debug)
+            mostRecentDiscard.transform.position = Vector3.up * 0.5f;
+
+        // StartCoroutine(BetweenTurn());
     }
 
     IEnumerator TakeTurn(MahjongPlayerBase player)
@@ -412,7 +467,14 @@ public class MahjongManager : MonoBehaviour
 
     public IEnumerator BetweenTurn()
     {
-        Debug.Log("Deliberation time");
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Waiting...");
+        }
+        else
+        {
+            SendPlayersMessage("Waiting...");
+        }
 
         foreach (MahjongPlayerBase player in players)
         {
@@ -514,7 +576,7 @@ public class MahjongManager : MonoBehaviour
 
     public void FirstNetworkedTurn()
     {
-        StartCoroutine(TakeTurn(dealer));
+        StartCoroutine(FirstTurn(dealer));
     }
 
 
