@@ -139,28 +139,28 @@ public class MahjongPlayerBase : MonoBehaviour
             //take advantage of the subarrays being sorted numerically for chow
             //consider three types of chow melds
             //outermost number
-            if (tile.number == discard.number - 2 && !HasNumber(chowMeldLeft, discard.number))
+            if (tile.number == discard.number - 2 && !HasNumber(chowMeldLeft, tile.number))
             {
                 chowMeldLeft.Add(tile);
             }
-            if (tile.number == discard.number + 2 && !HasNumber(chowMeldRight, discard.number))
+            if (tile.number == discard.number + 2 && !HasNumber(chowMeldRight, tile.number))
             {
                 chowMeldRight.Add(tile);
             }
 
             if (tile.number == discard.number - 1)
             {
-                if (!HasNumber(chowMeldLeft, discard.number))
+                if (!HasNumber(chowMeldLeft, tile.number))
                     chowMeldLeft.Add(tile);
-                if (!HasNumber(chowMeldMiddle, discard.number))
+                if (!HasNumber(chowMeldMiddle, tile.number))
                     chowMeldMiddle.Add(tile);
             }
 
             if (tile.number == discard.number + 1)
             {
-                if (!HasNumber(chowMeldRight, discard.number))
+                if (!HasNumber(chowMeldRight, tile.number))
                     chowMeldRight.Add(tile);
-                if (!HasNumber(chowMeldMiddle, discard.number))
+                if (!HasNumber(chowMeldMiddle, tile.number))
                     chowMeldMiddle.Add(tile);
             }
 
