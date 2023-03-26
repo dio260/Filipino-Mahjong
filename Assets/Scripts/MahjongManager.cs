@@ -24,7 +24,7 @@ public class MahjongManager : MonoBehaviour
     [SerializeField]
     protected List<MahjongPlayerBase> players;// = new List<MahjongPlayerBase>(4);
 
-    protected MahjongPlayerBase dealer, currentPlayer, nextPlayer;
+    public MahjongPlayerBase dealer, currentPlayer, nextPlayer;
     public MahjongPlayerBase previousPlayer;
 
     protected int round, numRounds;
@@ -201,7 +201,7 @@ public class MahjongManager : MonoBehaviour
         {
             foreach (Tile tile in board)
             {
-                tile.RPCTileAdd();
+                tile.TileRPCCall("BoardAdd");
             }
         }
 

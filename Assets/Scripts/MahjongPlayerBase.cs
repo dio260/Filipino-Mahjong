@@ -454,5 +454,9 @@ public class MahjongPlayerBase : MonoBehaviour
     {
         drawnTile = null;
     }
+    public void SetDiscardChoice(Tile tile)
+    {
+        discardChoice = tile;
+    }
 
 }

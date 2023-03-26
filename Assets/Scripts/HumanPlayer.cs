@@ -78,7 +78,14 @@ public class HumanPlayer : MahjongPlayerBase
                                     break;
                                 case PlayerState.discarding:
                                     Debug.Log("Selected " + hit.transform.GetComponent<Tile>().ToString() + " to discard");
-                                    discardChoice = hit.transform.GetComponent<Tile>();
+                                    if (networked)
+                                    {
+                                        hit.transform.GetComponent<Tile>().TileRPCCall("PlayerDiscard");
+                                    }
+                                    else
+                                    {
+                                        discardChoice = hit.transform.GetComponent<Tile>();
+                                    }
                                     break;
                             }
 
@@ -220,6 +227,7 @@ public class HumanPlayer : MahjongPlayerBase
         openHand.AddRange(selectedTiles);
     }
 
+    [PunRPC]
     public void DeclareDiscard()
     {
         if (MahjongManager.mahjongManager.mostRecentDiscard == null)
@@ -228,7 +236,8 @@ public class HumanPlayer : MahjongPlayerBase
         }
         if (networked)
         {
-            discardChoice.RPCDiscardTile();            
+            // discardChoice.RPCDiscardTile();
+            discardChoice.TileRPCCall("ManagerDiscard");
         }
         else
         {
@@ -237,21 +246,21 @@ public class HumanPlayer : MahjongPlayerBase
         // closedHand[closedHand.IndexOf(discardChoice)] = null;
         // closedHand.TrimExcess();
 
-        closedHand.Remove(discardChoice);
-        for(int x = 0; x < closedHand.Count; x++)
-        {
-            if(closedHand[x].Equals(closedHand[x]))
-            {
-                Debug.Log("found duplicate");
-                List<Tile> newClosedHand = new List<Tile>();
-                // newClosedHand.AddRange(closedHand.GetRange(0, x));
-                // newClosedHand.AddRange(closedHand.GetRange(0));
-                closedHand[x] = null;
-                closedHand.TrimExcess();
-            }
-        }
-        drawnTile = null;
-        ArrangeTiles();
+        // closedHand.Remove(discardChoice);
+        // for (int x = 0; x < closedHand.Count; x++)
+        // {
+        //     if (closedHand[x].Equals(closedHand[x]))
+        //     {
+        //         Debug.Log("found duplicate");
+        //         List<Tile> newClosedHand = new List<Tile>();
+        //         // newClosedHand.AddRange(closedHand.GetRange(0, x));
+        //         // newClosedHand.AddRange(closedHand.GetRange(0));
+        //         closedHand[x] = null;
+        //         closedHand.TrimExcess();
+        //     }
+        // }
+        // drawnTile = null;
+        // ArrangeTiles();
     }
 
     void SelectMeldTile(Tile clicked)

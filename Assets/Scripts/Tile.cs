@@ -49,15 +49,40 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
         photonView.RPC("SetTile", RpcTarget.All, num, suit);
     }
 
-    public void RPCTileAdd()
+    // public void RPCTileAdd()
+    // {
+    //     PhotonView photonView = PhotonView.Get(this);
+    //     photonView.RPC("AddToBoard", RpcTarget.All);
+    // }
+    // public void RPCDiscardTile()
+    // {
+    //     PhotonView photonView = PhotonView.Get(this);
+    //     photonView.RPC("SetAsDiscard", RpcTarget.Others);
+    // }
+    // public void RPCPlayerDiscardTile()
+    // {
+    //     PhotonView photonView = PhotonView.Get(this);
+    //     photonView.RPC("SetAsDiscard", RpcTarget.Others);
+    // }
+
+    public void TileRPCCall(string command, object data = null)
     {
         PhotonView photonView = PhotonView.Get(this);
-        photonView.RPC("AddToBoard", RpcTarget.All);
-    }
-    public void RPCDiscardTile()
-    {
-        PhotonView photonView = PhotonView.Get(this);
-        photonView.RPC("SetAsDiscard", RpcTarget.Others);
+        switch (command)
+        {
+            case "BoardAdd":    
+                photonView.RPC("AddToBoard", RpcTarget.All);
+                break;
+            case "PlayerDiscard":
+                photonView.RPC("SetDiscardforPlayer", RpcTarget.All);
+                break;
+            case "ManagerDiscard":
+                photonView.RPC("SetAsDiscard", RpcTarget.All);
+                break;
+            case "turn1":
+                photonView.RPC("StartFirstTurn", RpcTarget.Others);
+                break;
+        }
     }
 
     [PunRPC]
@@ -90,9 +115,12 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     [PunRPC]
     public void SetAsDiscard()
     {
-
         MahjongManager.mahjongManager.mostRecentDiscard = this;
-
+    }
+    [PunRPC]
+    public void SetDiscardforPlayer()
+    {
+        MahjongManager.mahjongManager.currentPlayer.SetDiscardChoice(this);
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
