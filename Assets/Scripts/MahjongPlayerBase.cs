@@ -407,6 +407,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
     public void AddTile(Tile tile)
     {
+        tile.owner = this;
         closedHand.Add(tile);
         tile.transform.parent = closedHandParent;
 
@@ -436,6 +437,7 @@ public class MahjongPlayerBase : MonoBehaviour
     {
         //add stolen tile and its meld to the open hand
         // openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
+        MahjongManager.mahjongManager.mostRecentDiscard.owner = this;
         switch (currentDecision)
         {
             case decision.pong:
@@ -484,16 +486,17 @@ public class MahjongPlayerBase : MonoBehaviour
     {
         MahjongManager.mahjongManager.mostRecentDiscard = discardChoice;
         closedHand.RemoveAt(closedHand.IndexOf(discardChoice));
+        discardChoice.owner = null;
         drawnTile = null;
         ArrangeTiles();
     }
 
     public void AddDrawnTileToClosedHand()
     {
+        drawnTile.owner = this;
         closedHand.Add(drawnTile);
         drawnTile.transform.parent = closedHandParent;
         ArrangeTiles();
-
     }
 
     public void SetPlayerState(PlayerState state)
@@ -507,6 +510,11 @@ public class MahjongPlayerBase : MonoBehaviour
     public void SetDiscardChoice(Tile tile)
     {
         discardChoice = tile;
+    }
+    public void ForceDiscard()
+    {
+        discardChoice = currentDrawnTile();
+        DeclareDiscard();
     }
 
 }

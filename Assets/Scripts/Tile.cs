@@ -16,6 +16,7 @@ public class Tile : MonoBehaviour
     //to be used in hand win algo
     public bool winning;
     bool selectedForMeld;
+    public MahjongPlayerBase owner;
     // Start is called before the first frame update
     void Awake()
     {
@@ -120,13 +121,14 @@ public class Tile : MonoBehaviour
     [PunRPC]
     public void SetDiscardforPlayer()
     {
-        MahjongManager.mahjongManager.currentPlayer.SetDiscardChoice(this);
+        // MahjongManager.mahjongManager.currentPlayer.SetDiscardChoice(this);
+        owner.SetDiscardChoice(this);
     }
     [PunRPC]
     public void SetMeldforPlayer()
     {
         Debug.Log("selected tile");
-        MahjongManager.mahjongManager.currentPlayer.GetComponent<HumanPlayer>().SelectMeldTile(this);
+        owner.GetComponent<HumanPlayer>().SelectMeldTile(this);
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)

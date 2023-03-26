@@ -455,8 +455,11 @@ public class MahjongManager : MonoBehaviour
         }
         if (mostRecentDiscard == null)
         {
-            mostRecentDiscard = player.currentDrawnTile();
-            player.SetNullDrawnTile();
+            
+            player.ForceDiscard();
+
+            // mostRecentDiscard = player.currentDrawnTile();
+            // player.SetNullDrawnTile();
         }
 
         Debug.Log(player.gameObject.name + " discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
