@@ -344,7 +344,12 @@ public class MahjongManager : MonoBehaviour
 
 
         //do a time based implementation so people cannot stall out the turn;
-        for (int i = 60; i > 0; i--)
+        int time;
+        if(!debug)
+            time = 60;
+        else
+            time = 180;
+        for (int i = time; i > 0; i--)
         {
             if (network)
             {
@@ -378,8 +383,8 @@ public class MahjongManager : MonoBehaviour
         }
         player.SetPlayerState(PlayerState.waiting);
 
-        if (!debug)
-            mostRecentDiscard.transform.position = Vector3.up * 0.5f;
+        // if (!debug)
+            mostRecentDiscard.transform.position = Vector3.zero;
 
         StartCoroutine(BetweenTurn());
     }
@@ -468,6 +473,8 @@ public class MahjongManager : MonoBehaviour
 
     public IEnumerator BetweenTurn()
     {
+        //set the player that just went to the previous player
+        previousPlayer = currentPlayer;
         Debug.Log("Decision Time");
         if (network)
         {
@@ -486,9 +493,9 @@ public class MahjongManager : MonoBehaviour
         bool allDone = true;
         int time;
         if(!debug)
-            time = 20;
+            time = 30;
         else
-            time = 60;
+            time = 180;
         for (int i = time; i > 0; i--)
         {
             allDone = true;
@@ -532,34 +539,41 @@ public class MahjongManager : MonoBehaviour
             player.SetPlayerState(PlayerState.waiting);
         }
 
-        // MahjongPlayerBase next = players[0];
+        
+        
 
-        // foreach (MahjongPlayerBase player in players)
-        // {
-        //     if (player != currentPlayer || player != nextPlayer)
-        //     {
-        //         //only one person can possibly do kang at any given time
-        //         //so break the loop and give them the turn
-        //         if (player.currentDecision == decision.kang)
-        //         {
-        //             nextPlayer = player;
-        //             break;
-        //         }
-        //         //same with pong, but kang get priority so its lower
-        //         if (player.currentDecision == decision.pong)
-        //         {
-        //             nextPlayer = player;
-        //             break;
-        //         }
-        //         //both a chow and a pass result in the next person taking their turn anyway
-        //         //so we do not check it here
-        //     }
-        // }
-        // previousPlayer = currentPlayer;
-        // currentPlayer = nextPlayer;
+        // MahjongPlayerBase next = players[];
+        nextPlayer = players[(players.IndexOf(currentPlayer) + 1) % players.Count];
+        Debug.Log("set next player but lets check the decision list");
+        yield return new WaitForSeconds(5);
+
+
+        foreach (MahjongPlayerBase player in players)
+        {
+            if (player != currentPlayer)
+            {
+                //only one person can do any meld at any given time.
+                //so break the loop and give them the turn if true
+                if (player.currentDecision == decision.kang)
+                {
+                    nextPlayer = player;
+                    break;
+                }
+                //same with pong, but kang get priority so its lower
+                if (player.currentDecision == decision.pong)
+                {
+                    nextPlayer = player;
+                    break;
+                }
+                //both a chow and a pass result in the next person taking their turn anyway
+                //so we do not check it here
+            }
+        }
+        
+        currentPlayer = nextPlayer;
         // nextPlayer = players[(players.IndexOf(nextPlayer) + 1) % players.Count];
 
-        // StartCoroutine(TakeTurn(currentPlayer));
+        StartCoroutine(TakeTurn(currentPlayer));
     }
 
     public void FinishGame()
