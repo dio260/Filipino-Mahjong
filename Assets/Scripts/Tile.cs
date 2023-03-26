@@ -5,7 +5,7 @@ using TMPro;
 using Photon.Pun;
 
 public enum suit { stick, ball, character, flower };
-public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
+public class Tile : MonoBehaviour
 {
     public suit tileType;
     public int number;

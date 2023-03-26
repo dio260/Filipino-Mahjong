@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
+using Photon;
 
 public enum decision { none, pass, pong, kang, chow }
 public enum PlayerState { waiting, deciding, discarding }
@@ -148,20 +150,20 @@ public class MahjongPlayerBase : MonoBehaviour
 
             if (tile.number == discard.number - 1)
             {
-                if(!HasNumber(chowMeldLeft, discard.number))
+                if (!HasNumber(chowMeldLeft, discard.number))
                     chowMeldLeft.Add(tile);
-                if(!HasNumber(chowMeldMiddle, discard.number))
+                if (!HasNumber(chowMeldMiddle, discard.number))
                     chowMeldMiddle.Add(tile);
             }
-            
+
             if (tile.number == discard.number + 1)
             {
-                if(!HasNumber(chowMeldRight, discard.number))
+                if (!HasNumber(chowMeldRight, discard.number))
                     chowMeldRight.Add(tile);
-                if(!HasNumber(chowMeldMiddle, discard.number))
+                if (!HasNumber(chowMeldMiddle, discard.number))
                     chowMeldMiddle.Add(tile);
             }
-            
+
         }
 
         if (pongMeld.Count == 3)
@@ -172,12 +174,12 @@ public class MahjongPlayerBase : MonoBehaviour
         {
             canKang = true;
         }
-        if((chowMeldLeft.Count == 3
+        if ((chowMeldLeft.Count == 3
         || chowMeldMiddle.Count == 3
-        || chowMeldRight.Count == 3) && 
-        (MahjongManager.mahjongManager.GetPlayers().IndexOf(MahjongManager.mahjongManager.previousPlayer) + 1) % 
+        || chowMeldRight.Count == 3) &&
+        (MahjongManager.mahjongManager.GetPlayers().IndexOf(MahjongManager.mahjongManager.previousPlayer) + 1) %
         MahjongManager.mahjongManager.GetPlayers().Count == MahjongManager.mahjongManager.GetPlayers().IndexOf(this)
-        
+
         )
         {
             canChow = true;
@@ -325,10 +327,10 @@ public class MahjongPlayerBase : MonoBehaviour
 
     public void ArrangeTiles()
     {
-        Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);   
+        Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
         float sideOffset = 1.25f / (float)closedHand.Count;
         float placementReference = 1.25f / 2.0f;
-        
+
         foreach (Tile tile in closedHand)
         {
             tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
@@ -342,7 +344,7 @@ public class MahjongPlayerBase : MonoBehaviour
         //first call the sorting function
         SortTilesBySuit();
         ArrangeTiles();
-        
+
     }
 
     public int replaceInitialFlowerTiles()
@@ -437,13 +439,32 @@ public class MahjongPlayerBase : MonoBehaviour
         MahjongManager.mahjongManager.wall.RemoveAt(MahjongManager.mahjongManager.wall.Count - 1);
         // ArrangeTiles();
     }
+    public void DeclareDiscard()
+    {
+        if (networked)
+        {
+            GetComponent<PhotonView>().RPC("DiscardTile", RpcTarget.All);
+        }
+        else
+        {
+            DiscardTile();
+        }
+    }
+    [PunRPC]
+    public void DiscardTile()
+    {
+        MahjongManager.mahjongManager.mostRecentDiscard = discardChoice;
+        closedHand.RemoveAt(closedHand.IndexOf(discardChoice));
+        drawnTile = null;
+        ArrangeTiles();
+    }
 
     public void AddDrawnTileToClosedHand()
     {
         closedHand.Add(drawnTile);
         drawnTile.transform.parent = closedHandParent;
         ArrangeTiles();
-        
+
     }
 
     public void SetPlayerState(PlayerState state)
