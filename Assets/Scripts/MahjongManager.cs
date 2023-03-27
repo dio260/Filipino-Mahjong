@@ -9,7 +9,7 @@ public enum GameState { setup, playing, finished };
 
 public class MahjongManager : MonoBehaviour
 {
-    public bool debug;
+    
     public static MahjongManager mahjongManager;
     // [SerializeField]
     protected List<Tile> board;
@@ -32,6 +32,11 @@ public class MahjongManager : MonoBehaviour
     public BoxCollider TileBoundaries;
     public bool network;
 
+    [Header("Debugging Tools")]
+    public bool debug;
+    public List<Tile> debugFullClosedSevenPairs;
+    public List<Tile> debugOneMeldSevenPairsClosedHand;
+    public List<Tile> debugOneMeldSevenPairsOpenHand;
 
 
     // Start is called before the first frame update
@@ -66,6 +71,46 @@ public class MahjongManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!network && debug)
+        {
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+            Debug.Log("StopAllCoroutines called");
+                
+            StopAllCoroutines();
+            }
+
+            if(Input.GetKeyDown(KeyCode.Q))
+            {
+                StopAllCoroutines();
+                Debug.Log("Testing Seven Pairs");
+                HumanPlayer human = FindObjectOfType<HumanPlayer>();
+                human.DebugClearHand();
+                foreach(Tile tile in debugFullClosedSevenPairs)
+                {
+                    human.AddTile(tile);
+                }
+                human.currentState = PlayerState.deciding;
+                human.CalculateHandOptions();
+            }
+            if(Input.GetKeyDown(KeyCode.W))
+            {
+                StopAllCoroutines();
+                Debug.Log("Testing Seven Pairs");
+                HumanPlayer human = FindObjectOfType<HumanPlayer>();
+                human.DebugClearHand();
+                foreach(Tile tile in debugOneMeldSevenPairsClosedHand)
+                {
+                    human.AddTile(tile);
+                }
+                foreach(Tile tile in debugOneMeldSevenPairsOpenHand)
+                {
+                    human.DebugAddOpenHandTile(tile);
+                }
+                human.currentState = PlayerState.deciding;
+                human.CalculateHandOptions();
+            }
+        }
 
     }
 
@@ -367,11 +412,11 @@ public class MahjongManager : MonoBehaviour
         {
             if (network)
             {
-                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Turn time remaining: " + i + " seconds left");
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn." + "\nTurn time remaining: " + i + " seconds left");
             }
             else
             {
-                SendPlayersMessage("Turn time remaining: " + i + " seconds left");
+                SendPlayersMessage(player.gameObject.name + " is taking their turn." + "\nTurn time remaining: " + i + " seconds left");
             }
             yield return new WaitForSeconds(1);
             if (mostRecentDiscard != null)

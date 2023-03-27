@@ -296,8 +296,11 @@ public class MahjongPlayerBase : MonoBehaviour
                     allPairs = false;
                     break;
                 }
-                return allPairs;
+
             }
+            Debug.Log("One Meld Closed Hand Seven Pairs " + allPairs);
+            return allPairs;
+
         }
 
         //final case: entire hand is still closed
@@ -309,35 +312,46 @@ public class MahjongPlayerBase : MonoBehaviour
         List<Tile> evenTiles = new List<Tile>();
         if (balls.Count % 2 == 1)
         {
+            Debug.Log("balls are odd");
             oddTiles = balls;
             oddSuits += 1;
         }
         else
         {
+            Debug.Log("balls are even");
+
             evenTiles.AddRange(balls);
         }
         if (sticks.Count % 2 == 1)
         {
+            Debug.Log("sticks are odd");
+
             oddSuits += 1;
             oddTiles = sticks;
         }
         else
         {
-            evenTiles.AddRange(balls);
+            Debug.Log("sticks are even");
+
+            evenTiles.AddRange(sticks);
         }
         if (chars.Count % 2 == 1)
         {
+            Debug.Log("chars are odd");
+
             oddSuits += 1;
             oddTiles = chars;
         }
         else
         {
+            Debug.Log("chars are even");
+
             evenTiles.AddRange(chars);
         }
         //only one suit collection can have an odd number
         if (oddSuits > 1)
             return false;
-        
+
         //check the even tiles for all pairs
         bool allEvenPairs = true;
         for (int i = 0; i < evenTiles.Count - 1; i += 2)
@@ -358,7 +372,7 @@ public class MahjongPlayerBase : MonoBehaviour
         // }
         //whittle the oddtiles count down to meld size
         int startIndex = 0;
-        while(oddTiles.Count > 1 || startIndex < oddTiles.Count - 1)
+        while (oddTiles.Count > 1 && startIndex < oddTiles.Count - 1)
         {
             //since the array is sorted, all pairs are logically adjacent to one another
             if (oddTiles[startIndex].number == oddTiles[startIndex + 1].number && oddTiles[startIndex].tileType == oddTiles[startIndex + 1].tileType)
@@ -376,18 +390,18 @@ public class MahjongPlayerBase : MonoBehaviour
         }
 
         Debug.Log(oddTiles.Count);
-        if(oddTiles.Count == 3)
+        if (oddTiles.Count == 3)
         {
-            if(oddTiles[1].number != oddTiles[0].number + 1 || oddTiles[1].number != oddTiles[2].number - 1)
+            if (oddTiles[1].number != oddTiles[0].number + 1 || oddTiles[1].number != oddTiles[2].number - 1)
                 oddPairsAndMeld = false;
 
         }
         else if (oddTiles.Count == 1)
         {
-            if(!HasNumber(visitedOddTiles, oddTiles[0].number))
+            if (!HasNumber(visitedOddTiles, oddTiles[0].number))
                 oddPairsAndMeld = false;
         }
-            
+
         Debug.Log("Full Closed Hand Seven Pairs " + (oddPairsAndMeld && allEvenPairs));
         return (oddPairsAndMeld && allEvenPairs);
     }
@@ -549,6 +563,13 @@ public class MahjongPlayerBase : MonoBehaviour
     {
         tile.owner = this;
         closedHand.Add(tile);
+        tile.transform.parent = closedHandParent;
+
+    }
+    public void DebugAddOpenHandTile(Tile tile)
+    {
+        tile.owner = this;
+        openHand.Add(tile);
         tile.transform.parent = closedHandParent;
 
     }
