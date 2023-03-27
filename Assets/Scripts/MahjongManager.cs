@@ -28,7 +28,7 @@ public class MahjongManager : MonoBehaviour
     public MahjongPlayerBase previousPlayer;
 
     protected int round, numRounds;
-    public GameObject InitialTileParent, TileSizeReference;
+    public GameObject InitialTileParent, TileSizeReference, DeadTileParent;
     public BoxCollider TileBoundaries;
     public bool network;
 
@@ -50,7 +50,16 @@ public class MahjongManager : MonoBehaviour
         {
             InitializeGame();
         }
+        if(GetComponent<PhotonView>() == null)
+        {
+            network = false;
+        }
+        else
+        {
+            network = true;
+        }
         InitialTileParent = GameObject.Find("Tiles");
+        DeadTileParent = GameObject.Find("Dead Tiles");
         TileBoundaries = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
     }
 
@@ -220,12 +229,17 @@ public class MahjongManager : MonoBehaviour
         if (!debug)
             dealer = players[dieRollResult];
         else
-            dealer = players[0];
+        {
+            if(network)
+                dealer = players[0];
+            else
+                dealer = FindObjectOfType<HumanPlayer>();
+        }
 
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall(
-                "message", "Dealer is player at index " + dieRollResult
+                "message", "Dealer is " + dealer.name
             );
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall(
                 "dealer", dieRoll
@@ -233,7 +247,7 @@ public class MahjongManager : MonoBehaviour
         }
         else
         {
-            SendPlayersMessage("Dealer is player at index " + dieRollResult);
+            SendPlayersMessage("Dealer is " + dealer.name);
             StartCoroutine(CreateWalls());
         }
 
@@ -386,6 +400,7 @@ public class MahjongManager : MonoBehaviour
 
         // if (!debug)
         mostRecentDiscard.transform.position = Vector3.zero;
+        mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);
 
         StartCoroutine(BetweenTurn());
     }

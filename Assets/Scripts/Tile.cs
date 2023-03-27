@@ -20,17 +20,17 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        // if (tileType == suit.flower)
-        // {
-        //     gameObject.name = tileType.ToString();
-        //     debugText.text = tileType.ToString();
+        if (tileType == suit.flower)
+        {
+            gameObject.name = tileType.ToString();
+            debugText.text = tileType.ToString();
 
-        // }
-        // else
-        // {
-        //     gameObject.name = number + " " + tileType.ToString();
-        //     debugText.text = number + " " + tileType.ToString();
-        // }
+        }
+        else
+        {
+            gameObject.name = number + " " + tileType.ToString();
+            debugText.text = number + " " + tileType.ToString();
+        }
 
     }
 

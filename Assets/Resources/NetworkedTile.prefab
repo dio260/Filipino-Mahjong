@@ -432,6 +432,7 @@ MonoBehaviour:
   open: 0
   debugText: {fileID: 5221592522488416080}
   winning: 0
+  owner: {fileID: 0}
 --- !u!114 &7874063829748148543
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ public class MahjongPlayerBase : MonoBehaviour
     private int score;
     private static int maxHandSize = 17;
 
-    protected bool win, canPong, canKang, canChow;
+    protected bool win, canWin, canPong, canKang, canChow;
     private bool waiting;
     public decision currentDecision;
     protected Tile drawnTile;
@@ -92,14 +92,17 @@ public class MahjongPlayerBase : MonoBehaviour
         {
             //GUI stuff probably needs to be moved to Human as well
             // todasButton.gameObject.SetActive(true);
+            canWin = true;
         }
         else if (CalculateSevenPairs())
         {
             // todasButton.gameObject.SetActive(true);
+            canWin = true;
         }
         else if (CalculateNormalWin())
         {
             // todasButton.gameObject.SetActive(true);
+            canWin = true;
         }
 
         // find melds. need to figure out how to determine melds for transferring to the open hand
@@ -273,10 +276,132 @@ public class MahjongPlayerBase : MonoBehaviour
 
     protected bool CalculateSevenPairs()
     {
-        return false;
+        //check if theres more than one meld in the open hand
+        if (openHand.Count > 4)
+        {
+            return false;
+        }
+
+        //there is exactly one meld in the open hand
+        if (openHand.Count != 0)
+        {
+            bool allPairs = true;
+            SortTilesBySuit();
+            for (int i = 0; i < closedHand.Count - 1; i += 2)
+            {
+                //since the array is sorted, all pairs are logically adjacent to one another
+                if (closedHand[i].number != closedHand[i + 1].number || closedHand[i].tileType != closedHand[i + 1].tileType)
+                {
+                    Debug.Log("not matching");
+                    allPairs = false;
+                    break;
+                }
+                return allPairs;
+            }
+        }
+
+        //final case: entire hand is still closed
+        SortTilesBySuit();
+
+        //if two suits have odd counts of tiles, it is logically impossible to do seven pairs and a meld
+        int oddSuits = 0;
+        List<Tile> oddTiles = new List<Tile>();
+        List<Tile> evenTiles = new List<Tile>();
+        if (balls.Count % 2 == 1)
+        {
+            oddTiles = balls;
+            oddSuits += 1;
+        }
+        else
+        {
+            evenTiles.AddRange(balls);
+        }
+        if (sticks.Count % 2 == 1)
+        {
+            oddSuits += 1;
+            oddTiles = sticks;
+        }
+        else
+        {
+            evenTiles.AddRange(balls);
+        }
+        if (chars.Count % 2 == 1)
+        {
+            oddSuits += 1;
+            oddTiles = chars;
+        }
+        else
+        {
+            evenTiles.AddRange(chars);
+        }
+        //only one suit collection can have an odd number
+        if (oddSuits > 1)
+            return false;
+        
+        //check the even tiles for all pairs
+        bool allEvenPairs = true;
+        for (int i = 0; i < evenTiles.Count - 1; i += 2)
+        {
+            //since the array is sorted, all pairs are logically adjacent to one another
+            if (evenTiles[i].number != evenTiles[i + 1].number || evenTiles[i].tileType != evenTiles[i + 1].tileType)
+            {
+                Debug.Log("not matching");
+                allEvenPairs = false;
+                break;
+            }
+        }
+
+        bool oddPairsAndMeld = true;
+        List<Tile> visitedOddTiles = new List<Tile>();
+        // for (int i = 0; i < oddTiles.Count; i++)
+        // {
+        // }
+        //whittle the oddtiles count down to meld size
+        int startIndex = 0;
+        while(oddTiles.Count > 1 || startIndex < oddTiles.Count - 1)
+        {
+            //since the array is sorted, all pairs are logically adjacent to one another
+            if (oddTiles[startIndex].number == oddTiles[startIndex + 1].number && oddTiles[startIndex].tileType == oddTiles[startIndex + 1].tileType)
+            {
+                Debug.Log("matching");
+                visitedOddTiles.Add(oddTiles[startIndex]);
+                visitedOddTiles.Add(oddTiles[startIndex + 1]);
+                oddTiles.RemoveRange(startIndex, 2);
+                startIndex = 0;
+            }
+            else
+            {
+                startIndex++;
+            }
+        }
+
+        Debug.Log(oddTiles.Count);
+        if(oddTiles.Count == 3)
+        {
+            if(oddTiles[1].number != oddTiles[0].number + 1 || oddTiles[1].number != oddTiles[2].number - 1)
+                oddPairsAndMeld = false;
+
+        }
+        else if (oddTiles.Count == 1)
+        {
+            if(!HasNumber(visitedOddTiles, oddTiles[0].number))
+                oddPairsAndMeld = false;
+        }
+            
+        Debug.Log("Full Closed Hand Seven Pairs " + (oddPairsAndMeld && allEvenPairs));
+        return (oddPairsAndMeld && allEvenPairs);
     }
     protected bool CalculateNormalWin()
     {
+        //calculate only using tiles from the closed hand, since only melds can exist in the closed hand
+
+        //keep track of what tiles have been checked
+        List<Tile> checkedTiles = new List<Tile>();
+
+        //take advantage of sorting function again
+        SortTilesBySuit();
+
+
         return false;
     }
 
@@ -471,26 +596,26 @@ public class MahjongPlayerBase : MonoBehaviour
         {
             case decision.pong:
                 openHand.AddRange(pongMeld);
-                foreach(Tile tile in pongMeld)
+                foreach (Tile tile in pongMeld)
                 {
                     closedHand.RemoveAt(closedHand.IndexOf(tile));
                 }
-            break;
+                break;
             case decision.kang:
                 openHand.AddRange(kangMeld);
-                foreach(Tile tile in kangMeld)
+                foreach (Tile tile in kangMeld)
                 {
                     closedHand.RemoveAt(closedHand.IndexOf(tile));
                 }
-            break;
+                break;
             case decision.chow:
                 openHand.AddRange(selectedTiles);
-                foreach(Tile tile in selectedTiles)
+                foreach (Tile tile in selectedTiles)
                 {
                     closedHand.RemoveAt(closedHand.IndexOf(tile));
                 }
                 openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
-            break;
+                break;
         }
 
         // MahjongManager.mahjongManager.mostRecentDiscard = null;
@@ -554,7 +679,7 @@ public class MahjongPlayerBase : MonoBehaviour
     }
     public void ForceDiscard()
     {
-        if(drawnTile == null)
+        if (drawnTile == null)
         {
             discardChoice = closedHand[closedHand.Count - 1];
         }
