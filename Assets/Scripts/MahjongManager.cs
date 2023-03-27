@@ -9,7 +9,7 @@ public enum GameState { setup, playing, finished };
 
 public class MahjongManager : MonoBehaviour
 {
-    
+
     public static MahjongManager mahjongManager;
     // [SerializeField]
     protected List<Tile> board;
@@ -55,7 +55,7 @@ public class MahjongManager : MonoBehaviour
         {
             InitializeGame();
         }
-        if(GetComponent<PhotonView>() == null)
+        if (GetComponent<PhotonView>() == null)
         {
             network = false;
         }
@@ -71,39 +71,39 @@ public class MahjongManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!network && debug)
+        if (!network && debug)
         {
-            if(Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-            Debug.Log("StopAllCoroutines called");
-                
-            StopAllCoroutines();
+                Debug.Log("StopAllCoroutines called");
+
+                StopAllCoroutines();
             }
 
-            if(Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 StopAllCoroutines();
-                Debug.Log("Testing Seven Pairs");
+                Debug.Log("Testing Seven Pairs Fully Closed");
                 HumanPlayer human = FindObjectOfType<HumanPlayer>();
                 human.DebugClearHand();
-                foreach(Tile tile in debugFullClosedSevenPairs)
+                foreach (Tile tile in debugFullClosedSevenPairs)
                 {
                     human.AddTile(tile);
                 }
                 human.currentState = PlayerState.deciding;
                 human.CalculateHandOptions();
             }
-            if(Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.W))
             {
                 StopAllCoroutines();
-                Debug.Log("Testing Seven Pairs");
+                Debug.Log("Testing Seven Pairs with one Meld");
                 HumanPlayer human = FindObjectOfType<HumanPlayer>();
                 human.DebugClearHand();
-                foreach(Tile tile in debugOneMeldSevenPairsClosedHand)
+                foreach (Tile tile in debugOneMeldSevenPairsClosedHand)
                 {
                     human.AddTile(tile);
                 }
-                foreach(Tile tile in debugOneMeldSevenPairsOpenHand)
+                foreach (Tile tile in debugOneMeldSevenPairsOpenHand)
                 {
                     human.DebugAddOpenHandTile(tile);
                 }
@@ -275,7 +275,7 @@ public class MahjongManager : MonoBehaviour
             dealer = players[dieRollResult];
         else
         {
-            if(network)
+            if (network)
                 dealer = players[0];
             else
                 dealer = FindObjectOfType<HumanPlayer>();
@@ -527,11 +527,11 @@ public class MahjongManager : MonoBehaviour
         {
             if (network)
             {
-                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Turn time remaining: " + i + " seconds left");
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is deciding on a discard" + "\nTurn time remaining: " + i + " seconds left");
             }
             else
             {
-                SendPlayersMessage("Turn time remaining: " + i + " seconds left");
+                SendPlayersMessage(player.gameObject.name + " is deciding on a discard" + "\nTurn time remaining: " + i + " seconds left");
             }
             yield return new WaitForSeconds(1);
             if (mostRecentDiscard != null)
@@ -551,7 +551,7 @@ public class MahjongManager : MonoBehaviour
         Debug.Log(player.gameObject.name + " discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
         if (network)
         {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Player Discarded " + mostRecentDiscard.ToString());
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
         }
         else
         {
@@ -571,23 +571,14 @@ public class MahjongManager : MonoBehaviour
         //set the player that just went to the previous player
         previousPlayer = currentPlayer;
 
-        // Debug.Log("Decision Time");
-        // if (network)
-        // {
-        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Last discard: " + MahjongManager.mahjongManager.mostRecentDiscard.ToString());
-        // }
-        // else
-        // {
-        //     SendPlayersMessage("Last discard: " + MahjongManager.mahjongManager.mostRecentDiscard.ToString());
-        // }
-
         foreach (MahjongPlayerBase player in players)
         {
-            player.SetPlayerState(PlayerState.deciding);
-            player.CalculateHandOptions();
+            if (player != currentPlayer)
+            {
+                player.SetPlayerState(PlayerState.deciding);
+                player.CalculateHandOptions();
+            }
         }
-
-
 
         bool allDone = true;
         int time;

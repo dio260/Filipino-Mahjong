@@ -75,15 +75,17 @@ public class HumanPlayer : MahjongPlayerBase
                             {
                                 case PlayerState.deciding:
 
-                                    if (networked)
+                                    if (this != MahjongManager.mahjongManager.currentPlayer)
                                     {
-                                        hit.transform.GetComponent<Tile>().TileRPCCall("SelectForMeld");
+                                        if (networked)
+                                        {
+                                            hit.transform.GetComponent<Tile>().TileRPCCall("SelectForMeld");
+                                        }
+                                        else
+                                        {
+                                            SelectMeldTile(hit.transform.GetComponent<Tile>());
+                                        }
                                     }
-                                    else
-                                    {
-                                        SelectMeldTile(hit.transform.GetComponent<Tile>());
-                                    }
-
                                     break;
                                 case PlayerState.discarding:
                                     Debug.Log("Selected " + hit.transform.GetComponent<Tile>().ToString() + " to discard");
@@ -101,10 +103,7 @@ public class HumanPlayer : MahjongPlayerBase
                         }
                         else if (Input.GetMouseButtonDown(1))
                         {
-                            // hitPos = hit.point
                             Debug.Log("holding tile to swap");
-                            // hit.transform.position = new Vector3(mouseWorldRay.origin.x, mouseWorldRay.origin.y, hit.transform.position.z);
-                            // hit.transform.position += new Vector3(Input.GetAxis("Mouse X") * Time.deltaTime * 1.75f, Input.GetAxis("Mouse Y") * Time.deltaTime * 1.75f, 0);
                             SwapTilePosition(hit.transform.gameObject);
                         }
 
@@ -257,9 +256,6 @@ public class HumanPlayer : MahjongPlayerBase
     //     openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
     //     openHand.AddRange(selectedTiles);
     // }
-
-
-
     public void SelectMeldTile(Tile clicked)
     {
         Debug.Log("Selected " + clicked.ToString() + " for a Meld");
@@ -267,14 +263,18 @@ public class HumanPlayer : MahjongPlayerBase
         if (selectedTiles.Contains(clicked))
         {
             selectedTiles.Remove(clicked);
+            clicked.transform.position -= Vector3.up * 0.025f;
         }
         else
         {
             if (selectedTiles.Count < 2)
+            {
                 selectedTiles.Add(clicked);
+                clicked.transform.position += Vector3.up * 0.025f;
+            }
         }
 
-        if (selectedTiles.Count == 2)
+        if (selectedTiles.Count > 0)
         {
             CalculateHandOptions();
         }

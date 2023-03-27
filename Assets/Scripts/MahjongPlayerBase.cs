@@ -424,6 +424,7 @@ public class MahjongPlayerBase : MonoBehaviour
     //     bool res = true;
     //     foreach()
     // }
+    [PunRPC]
     protected void SortTilesBySuit()
     {
         //first get suits
@@ -494,6 +495,7 @@ public class MahjongPlayerBase : MonoBehaviour
         }
     }
 
+    [PunRPC]
     public void ArrangeTiles()
     {
         Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
@@ -511,8 +513,15 @@ public class MahjongPlayerBase : MonoBehaviour
     public void VisuallySortTiles()
     {
         //first call the sorting function
-        SortTilesBySuit();
-        ArrangeTiles();
+        if (networked)
+        {
+            GetComponent<PhotonView>().RPC("ArrangeTiles", RpcTarget.All);
+            GetComponent<PhotonView>().RPC("SortTilesBySuit", RpcTarget.All);
+        }
+        {
+            ArrangeTiles();
+            SortTilesBySuit();
+        }
 
     }
 
