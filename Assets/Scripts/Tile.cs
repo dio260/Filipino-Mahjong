@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 
@@ -9,6 +10,7 @@ public class Tile : MonoBehaviour
 {
     public suit tileType;
     public int number;
+    public Image tileImage;
     public bool onBoard, closed, open;
 
     public TMP_Text debugText;
@@ -18,7 +20,7 @@ public class Tile : MonoBehaviour
     bool selectedForMeld;
     public MahjongPlayerBase owner;
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         if (tileType == suit.flower)
         {
@@ -30,6 +32,35 @@ public class Tile : MonoBehaviour
         {
             gameObject.name = number + " " + tileType.ToString();
             debugText.text = number + " " + tileType.ToString();
+        }
+
+        switch (tileType)
+        {
+            case suit.ball:
+                tileImage.sprite = TileSpriteCaller.sprites.ballsprites[number - 1];
+                break;
+            case suit.stick:
+                tileImage.sprite = TileSpriteCaller.sprites.sticksprites[number - 1];
+                break;
+            case suit.character:
+                tileImage.sprite = TileSpriteCaller.sprites.charsprites[number - 1];
+                break;
+            case suit.flower:
+
+                if (number == 9)
+                {
+                    tileImage.sprite = TileSpriteCaller.sprites.GetFlower2();
+                }
+                else if (number == 8)
+                {
+                    tileImage.sprite = TileSpriteCaller.sprites.GetFlower1();
+                }
+                else
+                {
+                    tileImage.sprite = TileSpriteCaller.sprites.winddragonsprites[number - 1];
+                }
+
+                break;
         }
 
     }
@@ -71,7 +102,7 @@ public class Tile : MonoBehaviour
         PhotonView photonView = PhotonView.Get(this);
         switch (command)
         {
-            case "BoardAdd":    
+            case "BoardAdd":
                 photonView.RPC("AddToBoard", RpcTarget.All);
                 break;
             case "PlayerDiscard":
@@ -133,18 +164,5 @@ public class Tile : MonoBehaviour
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        // object[] instantiationData = info.photonView.InstantiationData;
-        // if(instantiationData[1])
-        // if (tileType == suit.flower)
-        // {
-        //     gameObject.name = tileType.ToString();
-        //     debugText.text = tileType.ToString();
-
-        // }
-        // else
-        // {
-        //     gameObject.name = number + " " + tileType.ToString();
-        //     debugText.text = number + " " + tileType.ToString();
-        // }
     }
 }
