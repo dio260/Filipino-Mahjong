@@ -276,6 +276,8 @@ public class MahjongPlayerBase : MonoBehaviour
 
     protected bool CalculateSevenPairs()
     {
+        SortTilesBySuit();
+
         //check if theres more than one meld in the open hand
         if (openHand.Count > 4)
         {
@@ -286,7 +288,7 @@ public class MahjongPlayerBase : MonoBehaviour
         if (openHand.Count != 0)
         {
             bool allPairs = true;
-            SortTilesBySuit();
+            // SortTilesBySuit();
             for (int i = 0; i < closedHand.Count - 1; i += 2)
             {
                 //since the array is sorted, all pairs are logically adjacent to one another
@@ -304,7 +306,7 @@ public class MahjongPlayerBase : MonoBehaviour
         }
 
         //final case: entire hand is still closed
-        SortTilesBySuit();
+        // SortTilesBySuit();
 
         //if two suits have odd counts of tiles, it is logically impossible to do seven pairs and a meld
         int oddSuits = 0;
@@ -415,15 +417,78 @@ public class MahjongPlayerBase : MonoBehaviour
         //take advantage of sorting function again
         SortTilesBySuit();
 
+        //check the divisibility of each subgroup by 3.
+        //only one should not match and thats the one with the pair
+        int notDivisible = 0;
+        List<Tile> oddTiles = new List<Tile>();
+        List<Tile> pairGroup = new List<Tile>();
+        if (balls.Count % 3 == 0)
+        {
+            Debug.Log("balls are even");
+            pairGroup = balls;
+            notDivisible += 1;
+        }
+        else
+        {
+            Debug.Log("balls are odd");
+
+            oddTiles.AddRange(balls);
+        }
+        if (sticks.Count % 2 == 0)
+        {
+            Debug.Log("sticks are even");
+            pairGroup = sticks;
+            notDivisible += 1;
+        }
+        else
+        {
+            Debug.Log("sticks are odd");
+
+            oddTiles.AddRange(sticks);
+        }
+        if (chars.Count % 2 == 0)
+        {
+            Debug.Log("chars are even");
+            pairGroup = chars;
+            notDivisible += 1;
+        }
+        else
+        {
+            Debug.Log("chars are odd");
+
+            oddTiles.AddRange(chars);
+        }
+        //only one suit collection can have an even count
+        if (notDivisible > 1)
+            return false;
+
+        List<Tile> visitedTiles = new List<Tile>();
+
+
+        bool MeldsAndPair = true;
+        //make sure the evenTiles only have a meld and a single pair
+        for (int x = 0; x < pairGroup.Count; x++)
+        {
+
+        }
+
+        bool JustMelds = true;
+        //make sure the oddTiles only have melds
+        for (int x = 0; x < oddTiles.Count; x++)
+        {
+            if (MatchTiles(oddTiles[x], oddTiles[x]))
+            {
+
+            }
+        }
 
         return false;
     }
 
-    // protected bool CalculateFlush()
-    // {
-    //     bool res = true;
-    //     foreach()
-    // }
+    protected bool MatchTiles(Tile a, Tile b)
+    {
+        return (a.number == b.number) && (a.tileType == b.tileType);
+    }
     [PunRPC]
     protected void SortTilesBySuit()
     {
@@ -684,7 +749,6 @@ public class MahjongPlayerBase : MonoBehaviour
         closedHand.RemoveAt(closedHand.IndexOf(discardChoice));
         discardChoice.owner = null;
         drawnTile = null;
-        ArrangeTiles();
     }
 
     public void AddDrawnTileToClosedHand()

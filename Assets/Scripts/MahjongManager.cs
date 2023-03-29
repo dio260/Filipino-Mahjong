@@ -51,10 +51,6 @@ public class MahjongManager : MonoBehaviour
             mahjongManager = this;
         }
 
-        if (!network)
-        {
-            InitializeGame();
-        }
         if (GetComponent<PhotonView>() == null)
         {
             network = false;
@@ -63,6 +59,12 @@ public class MahjongManager : MonoBehaviour
         {
             network = true;
         }
+
+        if (!network)
+        {
+            InitializeGame();
+        }
+        
         InitialTileParent = GameObject.Find("Tiles");
         DeadTileParent = GameObject.Find("Dead Tiles");
         TileBoundaries = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
@@ -116,6 +118,15 @@ public class MahjongManager : MonoBehaviour
 
     public void InitializeGame()
     {
+        Debug.Log("Starting game");
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Starting game");
+        }
+        else
+        {
+            SendPlayersMessage("Starting game");
+        }
         players = new List<MahjongPlayerBase>();
         if (!network)
             players.AddRange(FindObjectsOfType<MahjongPlayerBase>().ToList<MahjongPlayerBase>());
@@ -151,6 +162,8 @@ public class MahjongManager : MonoBehaviour
 
     public IEnumerator BoardSetup()
     {
+        Debug.Log("Setting board up");
+
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Shuffling Board and Creating Walls");
@@ -431,6 +444,8 @@ public class MahjongManager : MonoBehaviour
             // player.DiscardTile();
             player.ForceDiscard();
         }
+        player.ArrangeTiles();
+
 
         // Debug.Log(player.gameObject.name + " discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
         if (network)
@@ -547,6 +562,9 @@ public class MahjongManager : MonoBehaviour
             // mostRecentDiscard = player.currentDrawnTile();
             // player.SetNullDrawnTile();
         }
+
+        player.ArrangeTiles();
+
 
         Debug.Log(player.gameObject.name + " discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
         if (network)
