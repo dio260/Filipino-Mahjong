@@ -149,7 +149,8 @@ public class HumanPlayer : MahjongPlayerBase
         chowMeldRight = new List<Tile> { discard };
         kangMeld = new List<Tile> { discard };
 
-        Debug.Log(CalculateSevenPairs());
+        // Debug.Log(CalculateSevenPairs());
+        Debug.Log(CalculateNormalWin());
 
         //auto calculate kang as a bandaid
         foreach (Tile tile in closedHand)

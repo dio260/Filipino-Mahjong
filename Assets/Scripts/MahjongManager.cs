@@ -37,6 +37,7 @@ public class MahjongManager : MonoBehaviour
     public List<Tile> debugFullClosedSevenPairs;
     public List<Tile> debugOneMeldSevenPairsClosedHand;
     public List<Tile> debugOneMeldSevenPairsOpenHand;
+    public List<Tile> debugFullClosedNormalWin;
 
 
     // Start is called before the first frame update
@@ -108,6 +109,19 @@ public class MahjongManager : MonoBehaviour
                 foreach (Tile tile in debugOneMeldSevenPairsOpenHand)
                 {
                     human.DebugAddOpenHandTile(tile);
+                }
+                human.currentState = PlayerState.deciding;
+                human.CalculateHandOptions();
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                StopAllCoroutines();
+                Debug.Log("Testing Normal Win 1");
+                HumanPlayer human = FindObjectOfType<HumanPlayer>();
+                human.DebugClearHand();
+                foreach (Tile tile in debugFullClosedNormalWin)
+                {
+                    human.AddTile(tile);
                 }
                 human.currentState = PlayerState.deciding;
                 human.CalculateHandOptions();

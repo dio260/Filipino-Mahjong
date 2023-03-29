@@ -44,6 +44,7 @@ public class MahjongPlayerBase : MonoBehaviour
     protected List<Tile> selectedTiles = new List<Tile>();
     #endregion
 
+    List<Tile> othertiles = new List<Tile>();
 
     public Transform closedHandParent, openHandParent, flowersParent;
 
@@ -294,7 +295,7 @@ public class MahjongPlayerBase : MonoBehaviour
                 //since the array is sorted, all pairs are logically adjacent to one another
                 if (closedHand[i].number != closedHand[i + 1].number || closedHand[i].tileType != closedHand[i + 1].tileType)
                 {
-                    Debug.Log("not matching");
+                    // Debug.Log("not matching");
                     allPairs = false;
                     break;
                 }
@@ -314,39 +315,39 @@ public class MahjongPlayerBase : MonoBehaviour
         List<Tile> evenTiles = new List<Tile>();
         if (balls.Count % 2 == 1)
         {
-            Debug.Log("balls are odd");
+            // Debug.Log("balls are odd");
             oddTiles = balls;
             oddSuits += 1;
         }
         else
         {
-            Debug.Log("balls are even");
+            // Debug.Log("balls are even");
 
             evenTiles.AddRange(balls);
         }
         if (sticks.Count % 2 == 1)
         {
-            Debug.Log("sticks are odd");
+            // Debug.Log("sticks are odd");
 
             oddSuits += 1;
             oddTiles = sticks;
         }
         else
         {
-            Debug.Log("sticks are even");
+            // Debug.Log("sticks are even");
 
             evenTiles.AddRange(sticks);
         }
         if (chars.Count % 2 == 1)
         {
-            Debug.Log("chars are odd");
+            // Debug.Log("chars are odd");
 
             oddSuits += 1;
             oddTiles = chars;
         }
         else
         {
-            Debug.Log("chars are even");
+            // Debug.Log("chars are even");
 
             evenTiles.AddRange(chars);
         }
@@ -361,7 +362,7 @@ public class MahjongPlayerBase : MonoBehaviour
             //since the array is sorted, all pairs are logically adjacent to one another
             if (evenTiles[i].number != evenTiles[i + 1].number || evenTiles[i].tileType != evenTiles[i + 1].tileType)
             {
-                Debug.Log("not matching");
+                // Debug.Log("not matching");
                 allEvenPairs = false;
                 break;
             }
@@ -379,7 +380,7 @@ public class MahjongPlayerBase : MonoBehaviour
             //since the array is sorted, all pairs are logically adjacent to one another
             if (oddTiles[startIndex].number == oddTiles[startIndex + 1].number && oddTiles[startIndex].tileType == oddTiles[startIndex + 1].tileType)
             {
-                Debug.Log("matching");
+                // Debug.Log("matching");
                 visitedOddTiles.Add(oddTiles[startIndex]);
                 visitedOddTiles.Add(oddTiles[startIndex + 1]);
                 oddTiles.RemoveRange(startIndex, 2);
@@ -391,7 +392,7 @@ public class MahjongPlayerBase : MonoBehaviour
             }
         }
 
-        Debug.Log(oddTiles.Count);
+        // Debug.Log(oddTiles.Count);
         if (oddTiles.Count == 3)
         {
             if (oddTiles[1].number != oddTiles[0].number + 1 || oddTiles[1].number != oddTiles[2].number - 1)
@@ -420,45 +421,46 @@ public class MahjongPlayerBase : MonoBehaviour
         //check the divisibility of each subgroup by 3.
         //only one should not match and thats the one with the pair
         int notDivisible = 0;
-        List<Tile> oddTiles = new List<Tile>();
+        // List<Tile> othertiles = new List<Tile>();
+        otherTiles = new List<Tile>();
         List<Tile> pairGroup = new List<Tile>();
-        if (balls.Count % 3 == 0)
+        if (balls.Count % 3 != 0)
         {
-            Debug.Log("balls are even");
+            // Debug.Log("balls are even");
             pairGroup = balls;
             notDivisible += 1;
         }
         else
         {
-            Debug.Log("balls are odd");
+            // Debug.Log("balls are odd");
 
-            oddTiles.AddRange(balls);
+            othertiles.AddRange(balls);
         }
-        if (sticks.Count % 2 == 0)
+        if (sticks.Count % 3 != 0)
         {
-            Debug.Log("sticks are even");
+            // Debug.Log("sticks are even");
             pairGroup = sticks;
             notDivisible += 1;
         }
         else
         {
-            Debug.Log("sticks are odd");
+            // Debug.Log("sticks are odd");
 
-            oddTiles.AddRange(sticks);
+            othertiles.AddRange(sticks);
         }
-        if (chars.Count % 2 == 0)
+        if (chars.Count % 3 != 0)
         {
-            Debug.Log("chars are even");
+            // Debug.Log("chars are even");
             pairGroup = chars;
             notDivisible += 1;
         }
         else
         {
-            Debug.Log("chars are odd");
+            // Debug.Log("chars are odd");
 
-            oddTiles.AddRange(chars);
+            othertiles.AddRange(chars);
         }
-        //only one suit collection can have an even count
+        //only one suit collection can be not divisible by 3
         if (notDivisible > 1)
             return false;
 
@@ -467,27 +469,97 @@ public class MahjongPlayerBase : MonoBehaviour
 
         bool MeldsAndPair = true;
         //make sure the evenTiles only have a meld and a single pair
-        for (int x = 0; x < pairGroup.Count; x++)
+        if (pairGroup.Count == 2)
         {
-
+            if (!MatchNumber(pairGroup[0], pairGroup[1]))
+            {
+                MeldsAndPair = false;
+            }
         }
-
-        bool JustMelds = true;
-        //make sure the oddTiles only have melds
-        for (int x = 0; x < oddTiles.Count; x++)
+        else
         {
-            if (MatchTiles(oddTiles[x], oddTiles[x]))
+            for (int x = 0; x < pairGroup.Count; x++)
             {
 
             }
         }
 
-        return false;
+
+        bool JustMelds = true;
+        //make sure the othertiles only have melds
+        int index = 0;
+        while (othertiles.Count > 2 && index < othertiles.Count)
+        {
+            int startListCount = othertiles.Count;
+
+            //check for pong
+            if (MatchNumber(othertiles[index], othertiles[index + 1]) && MatchSuit(othertiles[index], othertiles[index + 1]))
+            {
+                if (MatchNumber(othertiles[index + 1], othertiles[index + 2]) && MatchSuit(othertiles[index + 1], othertiles[index + 2]))
+                {
+                    visitedTiles.AddRange(othertiles.GetRange(index, 3));
+                    othertiles.RemoveRange(index, 3);
+                }
+            }
+            //check for chow
+            else
+            {
+                int chowIndex1 = -1;
+                int chowIndex2 = -1;
+                for (int x = index + 1; x < othertiles.Count; x++)
+                {
+                    if (chowIndex1 == -1 && othertiles[index].number == othertiles[x].number - 1)
+                    {
+                        chowIndex1 = x;
+                    }
+                    if (chowIndex2 == -1 && othertiles[index].number == othertiles[x].number - 2)
+                    {
+                        chowIndex2 = x;
+                    }
+
+                    if (chowIndex1 != -1 && chowIndex2 != -2)
+                    {
+                        break;
+                    }
+                }
+
+                if (chowIndex1 != -1 && chowIndex2 != -1)
+                {
+                    visitedTiles.Add(othertiles[index]);
+                    visitedTiles.Add(othertiles[chowIndex1]);
+                    visitedTiles.Add(othertiles[chowIndex2]);
+                    othertiles.RemoveAt(index);
+                    othertiles.RemoveAt(chowIndex1);
+                    othertiles.RemoveAt(chowIndex2);
+                }
+
+            }
+
+            if (othertiles.Count != startListCount)
+            {
+                index = 0;
+            }
+            else
+                index += 1;
+        }
+
+        //if not every tile has been visited then the check fails.
+        if (othertiles.Count != 0)
+            JustMelds = false;
+
+        Debug.Log("all melds: " + JustMelds);
+        Debug.Log("one pair with all melds: " + MeldsAndPair);
+
+        return MeldsAndPair && JustMelds;
     }
 
-    protected bool MatchTiles(Tile a, Tile b)
+    protected bool MatchSuit(Tile a, Tile b)
     {
-        return (a.number == b.number) && (a.tileType == b.tileType);
+        return (a.tileType == b.tileType);
+    }
+    protected bool MatchNumber(Tile a, Tile b)
+    {
+        return (a.number == b.number);
     }
     [PunRPC]
     protected void SortTilesBySuit()
