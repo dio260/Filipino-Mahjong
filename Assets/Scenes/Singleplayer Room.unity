@@ -208,7 +208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 7 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -579,7 +579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 1 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -757,7 +757,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 1 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -948,7 +948,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 2 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -1791,7 +1791,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 4 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -1885,7 +1885,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 3 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -2157,7 +2157,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 3 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -2604,7 +2604,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 5 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -2710,6 +2710,24 @@ MonoBehaviour:
   - {fileID: 1624080896}
   - {fileID: 1765381900}
   - {fileID: 425854296}
+  debugFullClosedNormalWin:
+  - {fileID: 1952699762}
+  - {fileID: 2087083246}
+  - {fileID: 1386274037}
+  - {fileID: 1852784636}
+  - {fileID: 1852784636}
+  - {fileID: 1343068094}
+  - {fileID: 1355484468}
+  - {fileID: 1382345933}
+  - {fileID: 1071840119}
+  - {fileID: 2045079026}
+  - {fileID: 2109941183}
+  - {fileID: 2104844560}
+  - {fileID: 1410439634}
+  - {fileID: 1245730945}
+  - {fileID: 610225659}
+  - {fileID: 1986765908}
+  - {fileID: 1756348384}
 --- !u!1001 &338206960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2791,7 +2809,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 8 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -3177,7 +3195,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 5 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -3266,7 +3284,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 3 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -3355,7 +3373,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 8 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -3533,7 +3551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 6 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -3731,7 +3749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 2 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -4109,7 +4127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 6 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -4203,7 +4221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 2 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -4324,7 +4342,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_RootOrder
-      value: 34
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_LocalScale.x
@@ -4396,7 +4414,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 1 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -4668,7 +4686,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 2 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -4762,7 +4780,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 2 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -4993,6 +5011,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
   m_PrefabInstance: {fileID: 1995489756}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &610225659 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+  m_PrefabInstance: {fileID: 1995489756}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b958cb45e9040449921f30cefeb40ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &613087480 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
@@ -5098,7 +5127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 7 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -5441,7 +5470,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 8 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -6011,7 +6040,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 1 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -6199,7 +6228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 4 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -6382,7 +6411,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 4 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -6867,7 +6896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 8 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -7149,7 +7178,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 8 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -7331,7 +7360,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 7 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -7433,6 +7462,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
   m_PrefabInstance: {fileID: 1490042559}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1071840119 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+  m_PrefabInstance: {fileID: 503775555}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b958cb45e9040449921f30cefeb40ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1084502009 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
@@ -7806,7 +7846,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 9 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -7899,7 +7939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 7 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -8008,7 +8048,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 6 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -8299,7 +8339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 5 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -8388,7 +8428,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 9 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -8477,7 +8517,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 6 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -8664,7 +8704,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 3 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -8775,6 +8815,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+--- !u!114 &1245730945 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+  m_PrefabInstance: {fileID: 1221552391}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b958cb45e9040449921f30cefeb40ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1247875881 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
@@ -9231,7 +9282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 5 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -9353,7 +9404,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_RootOrder
-      value: 33
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_LocalScale.x
@@ -9425,7 +9476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 6 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -9438,11 +9489,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
   m_PrefabInstance: {fileID: 237261941}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1343068094 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+  m_PrefabInstance: {fileID: 273137612}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b958cb45e9040449921f30cefeb40ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1355484467 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
   m_PrefabInstance: {fileID: 1434424228}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1355484468 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+  m_PrefabInstance: {fileID: 1434424228}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b958cb45e9040449921f30cefeb40ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1358104160 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
@@ -9623,7 +9696,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 3 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -9636,6 +9709,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
   m_PrefabInstance: {fileID: 1505631335}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1382345933 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+  m_PrefabInstance: {fileID: 1505631335}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b958cb45e9040449921f30cefeb40ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1386274037 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
@@ -9830,6 +9914,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
   m_PrefabInstance: {fileID: 540532424}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1410439634 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+  m_PrefabInstance: {fileID: 540532424}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b958cb45e9040449921f30cefeb40ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1421679651 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
@@ -10019,7 +10114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 4 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -10358,7 +10453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 8 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -10740,7 +10835,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 5 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -10908,8 +11003,8 @@ Transform:
   - {fileID: 625561174}
   - {fileID: 1327109379}
   - {fileID: 12717578}
-  - {fileID: 1106946412}
   - {fileID: 274488687}
+  - {fileID: 1106946412}
   - {fileID: 1009400351}
   m_Father: {fileID: 492151418}
   m_RootOrder: 2
@@ -11542,7 +11637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 2 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -11652,7 +11747,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 9 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -11741,7 +11836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 4 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -11857,7 +11952,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 1 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -12610,6 +12705,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
   m_PrefabInstance: {fileID: 1778218123}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1756348384 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+  m_PrefabInstance: {fileID: 1778218123}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b958cb45e9040449921f30cefeb40ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1763646240 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
@@ -13650,7 +13756,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 9 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -13854,7 +13960,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 6 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -13943,7 +14049,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 9 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -14166,6 +14272,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
   m_PrefabInstance: {fileID: 200031620}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1986765908 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+  m_PrefabInstance: {fileID: 200031620}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b958cb45e9040449921f30cefeb40ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1995489756
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14247,7 +14364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Char Tile
+      value: 3 Char Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -14438,6 +14555,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
   m_PrefabInstance: {fileID: 413461090}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2045079026 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+  m_PrefabInstance: {fileID: 413461090}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b958cb45e9040449921f30cefeb40ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2050103112 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
@@ -14730,6 +14858,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
   m_PrefabInstance: {fileID: 509771758}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2104844560 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+  m_PrefabInstance: {fileID: 509771758}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b958cb45e9040449921f30cefeb40ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2109003692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14819,6 +14958,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+--- !u!114 &2109941183 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+  m_PrefabInstance: {fileID: 1321597714}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b958cb45e9040449921f30cefeb40ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2122174691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14997,7 +15147,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 7 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
@@ -15018,7 +15168,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.019999988
+      value: 0.019999985
+      objectReference: {fileID: 0}
+    - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.069999985
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_LocalScale.z
@@ -15026,11 +15180,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.368
+      value: -0.36799997
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.123
+      value: 0.12300001
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -15038,19 +15192,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710677
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.70710677
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -15086,7 +15240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_Name
-      value: Stick Tile
+      value: 1 Stick Tile
       objectReference: {fileID: 0}
     - target: {fileID: 8228665404231082851, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
       propertyPath: m_IsActive
