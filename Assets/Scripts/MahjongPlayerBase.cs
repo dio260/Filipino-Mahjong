@@ -45,6 +45,9 @@ public class MahjongPlayerBase : MonoBehaviour
     #endregion
 
     List<Tile> othertiles = new List<Tile>();
+    List<Tile> visitedTiles = new List<Tile>();
+    List<Tile> pair = new List<Tile>();
+    List<Tile> others = new List<Tile>();
 
     public Transform closedHandParent, openHandParent, flowersParent;
 
@@ -422,130 +425,78 @@ public class MahjongPlayerBase : MonoBehaviour
         //only one should not match and thats the one with the pair
         int notDivisible = 0;
         // List<Tile> othertiles = new List<Tile>();
-        otherTiles = new List<Tile>();
+        othertiles = new List<Tile>();
         List<Tile> pairGroup = new List<Tile>();
         if (balls.Count % 3 != 0)
         {
-            // Debug.Log("balls are even");
             pairGroup = balls;
             notDivisible += 1;
         }
         else
         {
-            // Debug.Log("balls are odd");
-
             othertiles.AddRange(balls);
         }
         if (sticks.Count % 3 != 0)
         {
-            // Debug.Log("sticks are even");
             pairGroup = sticks;
             notDivisible += 1;
         }
         else
         {
-            // Debug.Log("sticks are odd");
-
             othertiles.AddRange(sticks);
         }
         if (chars.Count % 3 != 0)
         {
-            // Debug.Log("chars are even");
             pairGroup = chars;
             notDivisible += 1;
         }
         else
         {
-            // Debug.Log("chars are odd");
-
             othertiles.AddRange(chars);
         }
         //only one suit collection can be not divisible by 3
         if (notDivisible > 1)
             return false;
 
-        List<Tile> visitedTiles = new List<Tile>();
+        visitedTiles = new List<Tile>();
 
-
-        bool MeldsAndPair = true;
+        bool MeldsAndPair = false;
         //make sure the evenTiles only have a meld and a single pair
         if (pairGroup.Count == 2)
         {
-            if (!MatchNumber(pairGroup[0], pairGroup[1]))
+            if (MatchNumber(pairGroup[0], pairGroup[1]))
             {
-                MeldsAndPair = false;
+                MeldsAndPair = true;
             }
         }
         else
         {
-            for (int x = 0; x < pairGroup.Count; x++)
+            //test every possible pair until a working pair is found
+            
+            for (int x = 0; x < pairGroup.Count - 1; x++)
             {
-
-            }
-        }
-
-
-        bool JustMelds = true;
-        //make sure the othertiles only have melds
-        int index = 0;
-        while (othertiles.Count > 2 && index < othertiles.Count)
-        {
-            int startListCount = othertiles.Count;
-
-            //check for pong
-            if (MatchNumber(othertiles[index], othertiles[index + 1]) && MatchSuit(othertiles[index], othertiles[index + 1]))
-            {
-                if (MatchNumber(othertiles[index + 1], othertiles[index + 2]) && MatchSuit(othertiles[index + 1], othertiles[index + 2]))
+                pair = new List<Tile>();
+                others = new List<Tile>();
+                if(MatchTile(pairGroup[x], pairGroup[x+1]))
                 {
-                    visitedTiles.AddRange(othertiles.GetRange(index, 3));
-                    othertiles.RemoveRange(index, 3);
-                }
-            }
-            //check for chow
-            else
-            {
-                int chowIndex1 = -1;
-                int chowIndex2 = -1;
-                for (int x = index + 1; x < othertiles.Count; x++)
-                {
-                    if (chowIndex1 == -1 && othertiles[index].number == othertiles[x].number - 1)
-                    {
-                        chowIndex1 = x;
-                    }
-                    if (chowIndex2 == -1 && othertiles[index].number == othertiles[x].number - 2)
-                    {
-                        chowIndex2 = x;
-                    }
+                    pair.Add(pairGroup[x]);
+                    pair.Add(pairGroup[x+1]);
+                    others.AddRange(pairGroup.GetRange(0, x));
+                    others.AddRange(pairGroup.GetRange(x + 2, pairGroup.Count - x - 2));
 
-                    if (chowIndex1 != -1 && chowIndex2 != -2)
+                    //do the meld check with the other tiles
+                    if(CheckForAllMelds(others))
                     {
+                        Debug.Log("All melds");
+                        MeldsAndPair = true;
                         break;
                     }
                 }
-
-                if (chowIndex1 != -1 && chowIndex2 != -1)
-                {
-                    visitedTiles.Add(othertiles[index]);
-                    visitedTiles.Add(othertiles[chowIndex1]);
-                    visitedTiles.Add(othertiles[chowIndex2]);
-                    othertiles.RemoveAt(index);
-                    othertiles.RemoveAt(chowIndex1);
-                    othertiles.RemoveAt(chowIndex2);
-                }
-
             }
-
-            if (othertiles.Count != startListCount)
-            {
-                index = 0;
-            }
-            else
-                index += 1;
         }
 
-        //if not every tile has been visited then the check fails.
-        if (othertiles.Count != 0)
-            JustMelds = false;
+        //make sure the othertiles only have melds
+        bool JustMelds = CheckForAllMelds(othertiles);
 
         Debug.Log("all melds: " + JustMelds);
         Debug.Log("one pair with all melds: " + MeldsAndPair);
@@ -553,6 +504,82 @@ public class MahjongPlayerBase : MonoBehaviour
         return MeldsAndPair && JustMelds;
     }
 
+    protected bool CheckForAllMelds(List<Tile> tiles)
+    {
+        bool result = true;
+        int index = 0;
+        while (tiles.Count > 2 && index < tiles.Count - 2)
+        {
+            int startListCount = tiles.Count;
+
+            //check for pong
+            if (MatchNumber(tiles[index], tiles[index + 1]) && MatchSuit(tiles[index], tiles[index + 1]))
+            {
+                Debug.Log("checking pong for " + tiles[index].ToString());
+                if (MatchNumber(tiles[index + 1], tiles[index + 2]) && MatchSuit(tiles[index + 1], tiles[index + 2]))
+                {
+                    visitedTiles.AddRange(tiles.GetRange(index, 3));
+                    tiles.RemoveRange(index, 3);
+                }
+            }
+            //check for chow
+            else if(MatchSuit(tiles[index], tiles[index + 1]))
+            {
+                Debug.Log("checking chow for " + tiles[index].ToString());
+                int chowIndex1 = -1;
+                int chowIndex2 = -1;
+                for (int x = index + 1; x < tiles.Count; x++)
+                {
+                    if (chowIndex1 == -1 && tiles[index].number == tiles[x].number - 1 && MatchSuit(tiles[x], tiles[index]))
+                    {
+                        Debug.Log("second sequence tile found at index " + x);
+                        chowIndex1 = x;
+                    }
+                    if (chowIndex2 == -1 && tiles[index].number == tiles[x].number - 2 && MatchSuit(tiles[x], tiles[index]))
+                    {
+                        Debug.Log("third sequence tile found at index " + x);
+                        chowIndex2 = x;
+                    }
+
+                    if (chowIndex1 != -1 && chowIndex2 != -1)
+                    {
+                    Debug.Log("chow found for " + tiles[index].ToString());
+
+                        break;
+                    }
+                }
+
+                if (chowIndex1 != -1 && chowIndex2 != -1)
+                {
+                    Debug.Log("adding chow to visited tiles");
+                    visitedTiles.Add(tiles[index]);
+                    visitedTiles.Add(tiles[chowIndex1]);
+                    visitedTiles.Add(tiles[chowIndex2]);
+                    tiles.RemoveAt(index);
+                    tiles.RemoveAt(chowIndex1 - 1);
+                    tiles.RemoveAt(chowIndex2 - 2);
+                }
+
+            }
+
+            if (tiles.Count != startListCount)
+            {
+                index = 0;
+            }
+            else
+                index += 1;
+        }
+
+        if (tiles.Count != 0)
+            result = false;
+
+        return result;
+    }
+
+    protected bool MatchTile(Tile a, Tile b)
+    {
+        return MatchNumber(a,b) && MatchSuit(a,b);
+    }
     protected bool MatchSuit(Tile a, Tile b)
     {
         return (a.tileType == b.tileType);

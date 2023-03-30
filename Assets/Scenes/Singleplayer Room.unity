@@ -2711,9 +2711,9 @@ MonoBehaviour:
   - {fileID: 1765381900}
   - {fileID: 425854296}
   debugFullClosedNormalWin:
-  - {fileID: 1952699762}
   - {fileID: 2087083246}
-  - {fileID: 1386274037}
+  - {fileID: 1952699762}
+  - {fileID: 2104498171}
   - {fileID: 1852784636}
   - {fileID: 1852784636}
   - {fileID: 1343068094}
@@ -14853,6 +14853,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
   m_PrefabInstance: {fileID: 1949848392}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2104498171 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8228665404231082845, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+  m_PrefabInstance: {fileID: 1949848392}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b958cb45e9040449921f30cefeb40ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2104844559 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
