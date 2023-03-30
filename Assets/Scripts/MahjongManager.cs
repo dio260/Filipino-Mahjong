@@ -11,7 +11,6 @@ public class MahjongManager : MonoBehaviour
 {
 
     public static MahjongManager mahjongManager;
-    // [SerializeField]
     protected List<Tile> board;
     public List<Tile> wall;
 
@@ -22,7 +21,7 @@ public class MahjongManager : MonoBehaviour
     protected GameState state;
 
     [SerializeField]
-    protected List<MahjongPlayerBase> players;// = new List<MahjongPlayerBase>(4);
+    protected List<MahjongPlayerBase> players;
 
     public MahjongPlayerBase dealer, currentPlayer, nextPlayer;
     public MahjongPlayerBase previousPlayer;

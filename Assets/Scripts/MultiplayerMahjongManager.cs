@@ -10,7 +10,6 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
 {
     public static MultiplayerMahjongManager multiMahjongManager;
     
-    
     void Awake()
     {
         if (multiMahjongManager != null && multiMahjongManager != this)
@@ -21,8 +20,6 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
         {
             multiMahjongManager = this;
         }
-
-        
     }
     void Start()
     {
@@ -30,9 +27,6 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     }
     public void MasterRPCCall(string command, object data = null)
     {
-        // Debug.Log("Calling RPC " + command);
-
-        // PhotonView photonView = PhotonView.Get(this);
         switch (command)
         {
             case "start":    
@@ -54,7 +48,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void StartGame()
     {
-        Debug.Log("starting game for all clients");
+        SendClientsMessage("Starting game...");
         MultiplayerGameManager.Instance.multiplayerCanvas.SetActive(false);
         MahjongManager.mahjongManager.InitializeGame();
     }
@@ -63,13 +57,6 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SendClientsMessage(string message)
     {
-        // foreach(MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
-        // {
-        //     if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
-        //     {
-        //         human.debugText.text = message;
-        //     }
-        // }
         MahjongManager.mahjongManager.SendPlayersMessage(message);
     }
 

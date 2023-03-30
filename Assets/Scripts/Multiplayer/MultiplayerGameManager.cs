@@ -66,7 +66,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
-            // PhotonNetwork.InstantiateRoomObject(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity, 0 , new object[]{ 7, suit.ball});
+           
             PhotonNetwork.InstantiateRoomObject(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity);
             // Let's instantiate the tiles
             for (int x = 0; x < 144; x++)
@@ -80,13 +80,13 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                     tileInstance.GetComponent<Tile>().RPCTileSet(x / 4 + 1, suit.ball);
                     continue;
                 }
-                // break;
+                
                 if (x < 72)
                 {
                     tileInstance.GetComponent<Tile>().RPCTileSet((x - 36) / 4 + 1, suit.character);
                     continue;
                 }
-                // break;
+                
                 if (x < 108)
                 {
                     tileInstance.GetComponent<Tile>().RPCTileSet((x - 72) / 4 + 1, suit.stick);
@@ -98,7 +98,6 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                     continue;
                 }
 
-                // tile.transform.Rotate(new Vector3(0, 0, -90));
             }
         }
         else
@@ -118,8 +117,6 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
 
             if (NetworkedPlayer.LocalPlayerInstance == null)
             {
-
-                
 
                 // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
                 // switch based on current player count
@@ -163,7 +160,6 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
             else
             {
                 Debug.Log("A networked player is joining. Current Players: " + PhotonNetwork.CurrentRoom.PlayerCount);
-                // Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
             }
 
         }
@@ -172,12 +168,6 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        // "back" button of phone equals "Escape". quit app if that's pressed
-        // if (Input.GetKeyDown(KeyCode.Escape))
-        // {
-        //     Debug.Log("byebye");
-        //     Application.Quit();
-        // }
     }
 
     public void HostStartGame()
