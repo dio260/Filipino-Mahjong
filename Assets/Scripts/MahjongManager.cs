@@ -492,6 +492,7 @@ public class MahjongManager : MonoBehaviour
         StartCoroutine(BetweenTurn());
     }
 
+    //the proper taketurn function
     IEnumerator TakeTurn(MahjongPlayerBase player)
     {
 
