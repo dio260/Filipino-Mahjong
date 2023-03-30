@@ -9,28 +9,23 @@ public enum decision { none, pass, pong, kang, chow }
 public enum PlayerState { waiting, deciding, discarding }
 public class MahjongPlayerBase : MonoBehaviour
 {
-    // int[,] hand = new int[,] {
-    //     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    //     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    //     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    //     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-    // };
+    #region Player Properties
     protected List<Tile> closedHand = new List<Tile>(), openHand = new List<Tile>();
-    private List<Tile> walls;
     private List<Tile> flowers = new List<Tile>();
-    //private Tile drawn;
-    private MahjongManager gameManager;
-    //private List<Tile> hand;
-    // Start is called before the first frame update
-    private int score;
     private static int maxHandSize = 17;
-
+    private int score;
     protected bool win, canWin, canPong, canKang, canChow;
-    private bool waiting;
     public decision currentDecision;
     protected Tile drawnTile;
     public Tile discardChoice;
     public PlayerState currentState;
+    public bool networked;
+    #endregion
+
+    #region Other Properties
+    private MahjongManager gameManager;
+    public Transform closedHandParent, openHandParent, flowersParent;
+    #endregion
 
     #region Internal Calculation Variables
     protected List<Tile> balls = new List<Tile>();
@@ -44,14 +39,13 @@ public class MahjongPlayerBase : MonoBehaviour
     protected List<Tile> selectedTiles = new List<Tile>();
     #endregion
 
+    #region Debugging 
     List<Tile> othertiles = new List<Tile>();
     List<Tile> visitedTiles = new List<Tile>();
     List<Tile> pair = new List<Tile>();
     List<Tile> others = new List<Tile>();
-
-    public Transform closedHandParent, openHandParent, flowersParent;
-
-    public bool networked;
+    #endregion
+    
 
     void Awake()
     {
@@ -67,18 +61,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
     protected void FixedUpdate()
     {
-        // if (currentState == PlayerState.de)
-        // {
 
-        // }
-
-        // if(Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     Debug.Log("sorting");
-        //     SortTilesBySuit();
-        // }
-
-        // CalculateHandOptions();
     }
     public virtual void CalculateHandOptions()
     {
@@ -89,7 +72,6 @@ public class MahjongPlayerBase : MonoBehaviour
         Tile discard = MahjongManager.mahjongManager.mostRecentDiscard;
         //most priority is a winning hand, takes precedence
         //edge case, closed hand size is 1, so waiting on the last pair
-
         if (closedHand.Count == 1 &&
         closedHand[0].number == discard.number &&
         closedHand[0].tileType == discard.tileType)
@@ -125,8 +107,6 @@ public class MahjongPlayerBase : MonoBehaviour
                 break;
         }
 
-        int matchCount = 0;
-        int seqCount = 0;
 
         pongMeld = new List<Tile> { discard };
         chowMeldLeft = new List<Tile> { discard };
@@ -504,6 +484,7 @@ public class MahjongPlayerBase : MonoBehaviour
         return MeldsAndPair && JustMelds;
     }
 
+    //helper function for win, checks for melds
     protected bool CheckForAllMelds(List<Tile> tiles)
     {
         bool result = true;
@@ -515,7 +496,6 @@ public class MahjongPlayerBase : MonoBehaviour
             //check for pong
             if (MatchNumber(tiles[index], tiles[index + 1]) && MatchSuit(tiles[index], tiles[index + 1]))
             {
-                Debug.Log("checking pong for " + tiles[index].ToString());
                 if (MatchNumber(tiles[index + 1], tiles[index + 2]) && MatchSuit(tiles[index + 1], tiles[index + 2]))
                 {
                     visitedTiles.AddRange(tiles.GetRange(index, 3));
@@ -525,33 +505,27 @@ public class MahjongPlayerBase : MonoBehaviour
             //check for chow
             else if(MatchSuit(tiles[index], tiles[index + 1]))
             {
-                Debug.Log("checking chow for " + tiles[index].ToString());
                 int chowIndex1 = -1;
                 int chowIndex2 = -1;
                 for (int x = index + 1; x < tiles.Count; x++)
                 {
                     if (chowIndex1 == -1 && tiles[index].number == tiles[x].number - 1 && MatchSuit(tiles[x], tiles[index]))
                     {
-                        Debug.Log("second sequence tile found at index " + x);
                         chowIndex1 = x;
                     }
                     if (chowIndex2 == -1 && tiles[index].number == tiles[x].number - 2 && MatchSuit(tiles[x], tiles[index]))
                     {
-                        Debug.Log("third sequence tile found at index " + x);
                         chowIndex2 = x;
                     }
 
                     if (chowIndex1 != -1 && chowIndex2 != -1)
                     {
-                    Debug.Log("chow found for " + tiles[index].ToString());
-
                         break;
                     }
                 }
 
                 if (chowIndex1 != -1 && chowIndex2 != -1)
                 {
-                    Debug.Log("adding chow to visited tiles");
                     visitedTiles.Add(tiles[index]);
                     visitedTiles.Add(tiles[chowIndex1]);
                     visitedTiles.Add(tiles[chowIndex2]);
@@ -576,6 +550,7 @@ public class MahjongPlayerBase : MonoBehaviour
         return result;
     }
 
+    //shorthand functions for tile comparison
     protected bool MatchTile(Tile a, Tile b)
     {
         return MatchNumber(a,b) && MatchSuit(a,b);
@@ -588,15 +563,17 @@ public class MahjongPlayerBase : MonoBehaviour
     {
         return (a.number == b.number);
     }
+
+    //internally arranges the tiles
     [PunRPC]
     protected void SortTilesBySuit()
     {
-        //first get suits
+        //first reset suits
         balls = new List<Tile>();
         sticks = new List<Tile>();
         chars = new List<Tile>();
-        // flowers = new List<Tile>();
 
+        //add tiles to each list based on suit
         foreach (Tile tile in closedHand)
         {
             switch (tile.tileType)
@@ -613,17 +590,20 @@ public class MahjongPlayerBase : MonoBehaviour
 
             }
         }
+
+        //sort all of them
         balls.Sort(CompareTileNumbers);
         sticks.Sort(CompareTileNumbers);
         chars.Sort(CompareTileNumbers);
 
+        //reset the closed hand and add the sorted tiles to it
         closedHand = new List<Tile>();
         closedHand.AddRange(balls);
         closedHand.AddRange(sticks);
         closedHand.AddRange(chars);
-
     }
 
+    // helper function for tile sorting
     private static int CompareTileNumbers(Tile x, Tile y)
     {
         if (x == null)
@@ -659,6 +639,7 @@ public class MahjongPlayerBase : MonoBehaviour
         }
     }
 
+    //physically arranges player tiles
     [PunRPC]
     public void ArrangeTiles()
     {
@@ -672,8 +653,29 @@ public class MahjongPlayerBase : MonoBehaviour
             tile.transform.localEulerAngles = closedHandParent.up * 90;
             placementReference -= sideOffset;
         }
+
+        localLeft = -1 * Vector3.Cross(flowersParent.forward.normalized, flowersParent.up.normalized);
+        sideOffset = 0.5f / (float)flowers.Count;
+        placementReference = 0.5f / -2.0f;
+        foreach (Tile tile in flowers)
+        {
+            tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
+            tile.transform.localEulerAngles = flowersParent.up * 90 + Vector3.forward * 90;// + tile.transform.forward * -90;
+            placementReference += sideOffset;
+        }
+
+        localLeft = -1 * Vector3.Cross(openHandParent.forward.normalized, openHandParent.up.normalized);
+        sideOffset = 0.5f / (float)flowers.Count;
+        placementReference = 0.5f / -2.0f;
+        foreach (Tile tile in openHand)
+        {
+            tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
+            tile.transform.localEulerAngles = closedHandParent.up * 90;
+            placementReference -= sideOffset;
+        }
     }
 
+    // RPC call for visual sorting
     public void VisuallySortTiles()
     {
         //first call the sorting function
@@ -692,7 +694,7 @@ public class MahjongPlayerBase : MonoBehaviour
     public int replaceInitialFlowerTiles()
     {
         List<Tile> flowersInHand = new List<Tile>();
-        // foreach(Tile tile in closedHand)
+
         for (int i = 0; i < closedHand.Count; i++)
         {
             if (closedHand[i].tileType == suit.flower)
@@ -727,11 +729,6 @@ public class MahjongPlayerBase : MonoBehaviour
 
     }
 
-    public bool IsWaiting()
-    {
-        return waiting;
-    }
-
     public void AddTile(Tile tile)
     {
         tile.owner = this;
@@ -751,16 +748,6 @@ public class MahjongPlayerBase : MonoBehaviour
         flowers.Add(flower);
         flower.transform.parent = flowersParent;
         closedHand.Remove(flower);
-
-        Vector3 localLeft = -1 * Vector3.Cross(flowersParent.forward.normalized, flowersParent.up.normalized);
-        float sideOffset = 0.5f / (float)flowers.Count;
-        float placementReference = 0.5f / -2.0f;
-        foreach (Tile tile in flowers)
-        {
-            tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
-            tile.transform.localEulerAngles = flowersParent.up * 90 + Vector3.forward * 90;// + tile.transform.forward * -90;
-            placementReference += sideOffset;
-        }
 
     }
     public Tile currentDrawnTile()
@@ -803,25 +790,27 @@ public class MahjongPlayerBase : MonoBehaviour
                 }
                 break;
             case decision.chow:
+                selectedTiles.Add(MahjongManager.mahjongManager.mostRecentDiscard);
+                selectedTiles.Sort(CompareTileNumbers);
                 openHand.AddRange(selectedTiles);
                 foreach (Tile tile in selectedTiles)
                 {
+                    if(tile != MahjongManager.mahjongManager.mostRecentDiscard)
                     closedHand.RemoveAt(closedHand.IndexOf(tile));
                 }
-                openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
                 break;
         }
 
-        // MahjongManager.mahjongManager.mostRecentDiscard = null;
     }
+
+    // draw a tile from the wall
     public void DrawTile()
     {
         drawnTile = MahjongManager.mahjongManager.wall[0];
         MahjongManager.mahjongManager.wall.RemoveAt(0);
-        // closedHand.Add(drawnTile);
-        // Debug.Log("drew tile " + drawnTile);
-        // ArrangeTiles();
     }
+
+    //draw a flower tile from the flower end of the wall
     public void DrawFlowerTile()
     {
         flowers.Add(drawnTile);
@@ -830,6 +819,8 @@ public class MahjongPlayerBase : MonoBehaviour
         MahjongManager.mahjongManager.wall.RemoveAt(MahjongManager.mahjongManager.wall.Count - 1);
         // ArrangeTiles();
     }
+
+    //declare a tile to discard on your turn
     public void DeclareDiscard()
     {
         if (networked)
@@ -841,6 +832,8 @@ public class MahjongPlayerBase : MonoBehaviour
             DiscardTile();
         }
     }
+
+    //networked call
     [PunRPC]
     public void DiscardTile()
     {
@@ -850,6 +843,7 @@ public class MahjongPlayerBase : MonoBehaviour
         drawnTile = null;
     }
 
+    //adding the drawn tile to closed hand after wards.
     public void AddDrawnTileToClosedHand()
     {
         drawnTile.owner = this;
@@ -858,18 +852,25 @@ public class MahjongPlayerBase : MonoBehaviour
         ArrangeTiles();
     }
 
+    //for the gamemanager to set the player state with
     public void SetPlayerState(PlayerState state)
     {
         currentState = state;
     }
+
+    //this might now be used anymore
     public void SetNullDrawnTile()
     {
         drawnTile = null;
     }
+
+    //a method used to network discard choice
     public void SetDiscardChoice(Tile tile)
     {
         discardChoice = tile;
     }
+
+    //to be called when the player runs out of time
     public void ForceDiscard()
     {
         if (drawnTile == null)

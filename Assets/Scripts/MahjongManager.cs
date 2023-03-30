@@ -40,9 +40,9 @@ public class MahjongManager : MonoBehaviour
     public List<Tile> debugFullClosedNormalWin;
 
 
-    // Start is called before the first frame update
     protected virtual void Awake()
     {
+        //Singleton thing
         if (mahjongManager != null && mahjongManager != this)
         {
             Destroy(gameObject);
@@ -52,6 +52,7 @@ public class MahjongManager : MonoBehaviour
             mahjongManager = this;
         }
 
+        // pass the network check
         if (GetComponent<PhotonView>() == null)
         {
             network = false;
@@ -61,11 +62,13 @@ public class MahjongManager : MonoBehaviour
             network = true;
         }
 
+        //this is called locally and networked for other players
         if (!network)
         {
             InitializeGame();
         }
         
+        //always load into the same scene, so find this object in the scene
         InitialTileParent = GameObject.Find("Tiles");
         DeadTileParent = GameObject.Find("Dead Tiles");
         TileBoundaries = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
@@ -74,65 +77,66 @@ public class MahjongManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!network && debug)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Debug.Log("StopAllCoroutines called");
+        // if (!network && debug)
+        // {
+        //     if (Input.GetKeyDown(KeyCode.Space))
+        //     {
+        //         Debug.Log("StopAllCoroutines called");
 
-                StopAllCoroutines();
-            }
+        //         StopAllCoroutines();
+        //     }
 
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                StopAllCoroutines();
-                Debug.Log("Testing Seven Pairs Fully Closed");
-                HumanPlayer human = FindObjectOfType<HumanPlayer>();
-                human.DebugClearHand();
-                foreach (Tile tile in debugFullClosedSevenPairs)
-                {
-                    human.AddTile(tile);
-                }
-                human.currentState = PlayerState.deciding;
-                human.CalculateHandOptions();
-            }
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                StopAllCoroutines();
-                Debug.Log("Testing Seven Pairs with one Meld");
-                HumanPlayer human = FindObjectOfType<HumanPlayer>();
-                human.DebugClearHand();
-                foreach (Tile tile in debugOneMeldSevenPairsClosedHand)
-                {
-                    human.AddTile(tile);
-                }
-                foreach (Tile tile in debugOneMeldSevenPairsOpenHand)
-                {
-                    human.DebugAddOpenHandTile(tile);
-                }
-                human.currentState = PlayerState.deciding;
-                human.CalculateHandOptions();
-            }
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                StopAllCoroutines();
-                Debug.Log("Testing Normal Win 1");
-                HumanPlayer human = FindObjectOfType<HumanPlayer>();
-                human.DebugClearHand();
-                foreach (Tile tile in debugFullClosedNormalWin)
-                {
-                    human.AddTile(tile);
-                }
-                human.currentState = PlayerState.deciding;
-                human.CalculateHandOptions();
-            }
-        }
+        //     if (Input.GetKeyDown(KeyCode.Q))
+        //     {
+        //         StopAllCoroutines();
+        //         Debug.Log("Testing Seven Pairs Fully Closed");
+        //         HumanPlayer human = FindObjectOfType<HumanPlayer>();
+        //         human.DebugClearHand();
+        //         foreach (Tile tile in debugFullClosedSevenPairs)
+        //         {
+        //             human.AddTile(tile);
+        //         }
+        //         human.currentState = PlayerState.deciding;
+        //         human.CalculateHandOptions();
+        //     }
+        //     if (Input.GetKeyDown(KeyCode.W))
+        //     {
+        //         StopAllCoroutines();
+        //         Debug.Log("Testing Seven Pairs with one Meld");
+        //         HumanPlayer human = FindObjectOfType<HumanPlayer>();
+        //         human.DebugClearHand();
+        //         foreach (Tile tile in debugOneMeldSevenPairsClosedHand)
+        //         {
+        //             human.AddTile(tile);
+        //         }
+        //         foreach (Tile tile in debugOneMeldSevenPairsOpenHand)
+        //         {
+        //             human.DebugAddOpenHandTile(tile);
+        //         }
+        //         human.currentState = PlayerState.deciding;
+        //         human.CalculateHandOptions();
+        //     }
+        //     if (Input.GetKeyDown(KeyCode.E))
+        //     {
+        //         StopAllCoroutines();
+        //         Debug.Log("Testing Normal Win 1");
+        //         HumanPlayer human = FindObjectOfType<HumanPlayer>();
+        //         human.DebugClearHand();
+        //         foreach (Tile tile in debugFullClosedNormalWin)
+        //         {
+        //             human.AddTile(tile);
+        //         }
+        //         human.currentState = PlayerState.deciding;
+        //         human.CalculateHandOptions();
+        //     }
+        // }
 
     }
 
     public void InitializeGame()
     {
-        Debug.Log("Starting game");
+        
+        //Send a debug message to inform players of game state
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Starting game");
@@ -141,12 +145,16 @@ public class MahjongManager : MonoBehaviour
         {
             SendPlayersMessage("Starting game");
         }
+
+        //Initialize the player list
         players = new List<MahjongPlayerBase>();
         if (!network)
             players.AddRange(FindObjectsOfType<MahjongPlayerBase>().ToList<MahjongPlayerBase>());
         else
             players = MultiplayerGameManager.Instance.players;
-        //initialize some stuff
+
+
+        //initialize game states, tile lists, and other relevant objects
         state = GameState.setup;
         board = new List<Tile>(MAXTILECOUNT);
         wall = new List<Tile>();
@@ -162,13 +170,17 @@ public class MahjongManager : MonoBehaviour
             {
                 board.Add(tile);
             }
+
+
+        
+        //now, start the board setup
         if (!network)
             StartCoroutine(BoardSetup());
         else
         {
+            //only do this on the master client, the rest will be networked across others
             if (PhotonNetwork.IsMasterClient)
             {
-                // Debug.Log("Trying Master Client Board Setup");
                 StartCoroutine(BoardSetup());
             }
         }
@@ -176,8 +188,6 @@ public class MahjongManager : MonoBehaviour
 
     public IEnumerator BoardSetup()
     {
-        Debug.Log("Setting board up");
-
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Shuffling Board and Creating Walls");
@@ -187,6 +197,8 @@ public class MahjongManager : MonoBehaviour
             SendPlayersMessage("Shuffling Board and Creating Walls");
         }
         yield return new WaitForSeconds(2);
+
+        //randomize the board
         System.Random rand = new System.Random();
         int n = board.Count;
         while (n > 1)
@@ -197,13 +209,10 @@ public class MahjongManager : MonoBehaviour
             board[k] = temp;
         }
 
-        // wall = board;
-        // Debug.Log(TileBoundaries.bounds.max);
-
+        //physically move the tiles
         float distanceReference = TileSizeReference.transform.localScale.z / 2;
         float heightReference = TileSizeReference.transform.localScale.y / 2.75f;
         int multiplier = 0;
-
         for (int x = 0; x < board.Count; x++)
         {
             board[x].transform.localRotation = Quaternion.Euler(0, 0, -90);
@@ -225,7 +234,7 @@ public class MahjongManager : MonoBehaviour
                 multiplier += 1;
                 continue;
             }
-            // break;
+
             if (x < 72)
             {
                 board[x].transform.Rotate(Vector3.left * 90);
@@ -242,10 +251,9 @@ public class MahjongManager : MonoBehaviour
                 continue;
 
             }
-            // break;
+
             if (x < 108)
             {
-                // board[x].transform.Rotate(Vector3.left  * 90);
                 if (x % 2 == 0)
                 {
                     board[x].transform.position = new Vector3(TileBoundaries.bounds.min.x, TileBoundaries.bounds.min.y + heightReference, TileBoundaries.bounds.min.z + (distanceReference * multiplier) + 0.01f);
@@ -258,6 +266,7 @@ public class MahjongManager : MonoBehaviour
                 multiplier += 1;
                 continue;
             }
+
             if (x < 144)
             {
                 board[x].transform.Rotate(Vector3.left * 90);
@@ -273,11 +282,12 @@ public class MahjongManager : MonoBehaviour
                 multiplier += 1;
                 continue;
             }
-            // tile.transform.Rotate(new Vector3(0, 0, -90));
+
         }
 
         yield return new WaitForSeconds(2);
 
+        //this needs to be RPCed for every other client to have their board updated
         if (network)
         {
             foreach (Tile tile in board)
@@ -285,16 +295,17 @@ public class MahjongManager : MonoBehaviour
                 tile.TileRPCCall("BoardAdd");
             }
         }
-
+        
         StartCoroutine(RollDice());
 
     }
 
     public IEnumerator RollDice()
     {
-        Debug.Log("Rolling dice for dealer");
+
         yield return new WaitForSeconds(2);
 
+        //random roll
         System.Random rand = new System.Random();
         int dieRoll = rand.Next(2, 13);
         int dieRollResult = (dieRoll - 1) % players.Count;
@@ -308,6 +319,7 @@ public class MahjongManager : MonoBehaviour
                 dealer = FindObjectOfType<HumanPlayer>();
         }
 
+        //send the network message to inform everyone of dealer
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall(
@@ -330,9 +342,8 @@ public class MahjongManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
+        //now do dealer things
         int dealerIndex = players.IndexOf(dealer);
-
-        //create walls
         int wallIndex = (MAXTILECOUNT / 4) * dealerIndex;
         wall.AddRange(board.GetRange(wallIndex, MAXTILECOUNT - wallIndex));
         wall.AddRange(board.GetRange(0, wallIndex));
@@ -346,25 +357,28 @@ public class MahjongManager : MonoBehaviour
             SendPlayersMessage("Distributing tiles to players");
         }
 
+
+        //now distribute the tiles to others.
         List<Tile> distributedTiles = wall.GetRange(0, 1 + (16 * players.Count));
         wall.RemoveRange(0, 1 + (16 * players.Count));
         dealer.GetComponent<MahjongPlayerBase>().AddTile(distributedTiles[0]);
 
         for (int i = 1; i < 1 + (16 * players.Count); i++)
         {
-
             players[(dealerIndex + ((i - 1) / 16)) % players.Count].AddTile(distributedTiles[i]);
         }
 
+        //arrange each player's tiles
+        //this needs to be done on the master client to avoid visual issues with the tiles
         if (!network || (network && PhotonNetwork.IsMasterClient))
             foreach (MahjongPlayerBase player in players)
             {
-                // player.VisuallySortTiles();
                 player.ArrangeTiles();
             }
 
         yield return new WaitForSeconds(2);
 
+        //replace drawn flower tiles
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Replacing flowers");
@@ -388,12 +402,10 @@ public class MahjongManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
-        Debug.Log("Flowers Finished");
-
+        //arrange tiles again
         if (!network || (network && PhotonNetwork.IsMasterClient))
             foreach (MahjongPlayerBase player in players)
             {
-                // player.VisuallySortTiles();
                 player.ArrangeTiles();
             }
 
@@ -401,6 +413,8 @@ public class MahjongManager : MonoBehaviour
         nextPlayer = players[(dealerIndex + 1) % players.Count];
 
         yield return new WaitForSeconds(2);
+
+        //now we may set the gamestate properly
         state = GameState.playing;
 
         if (network)
@@ -413,6 +427,7 @@ public class MahjongManager : MonoBehaviour
         }
     }
 
+    //a coroutine differentiating the first turn of every game
     IEnumerator FirstTurn(MahjongPlayerBase player)
     {
         if (network)
@@ -424,10 +439,10 @@ public class MahjongManager : MonoBehaviour
             SendPlayersMessage(player.gameObject.name + " is taking their turn.");
         }
 
+        //the current player's turn is set to discard
         player.SetPlayerState(PlayerState.discarding);
 
         yield return new WaitForSeconds(2);
-
 
         //do a time based implementation so people cannot stall out the turn;
         int time;
@@ -453,15 +468,12 @@ public class MahjongManager : MonoBehaviour
         }
         if (mostRecentDiscard == null)
         {
-            // player.SetDiscardChoice(player.currentDrawnTile());
-            // // player.SetNullDrawnTile();
-            // player.DiscardTile();
             player.ForceDiscard();
         }
         player.ArrangeTiles();
 
 
-        // Debug.Log(player.gameObject.name + " discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
+        
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Player Discarded " + mostRecentDiscard.ToString());
@@ -470,9 +482,10 @@ public class MahjongManager : MonoBehaviour
         {
             SendPlayersMessage(player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
         }
+
+        //the current player's turn is now set to wait
         player.SetPlayerState(PlayerState.waiting);
 
-        // if (!debug)
         mostRecentDiscard.transform.position = Vector3.zero;
         mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);
 

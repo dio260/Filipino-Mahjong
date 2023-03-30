@@ -53,6 +53,15 @@ public class HumanPlayer : MahjongPlayerBase
                 passButton.gameObject.SetActive(false);
             }
 
+            if(canWin)
+            {
+                todasButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                todasButton.gameObject.SetActive(false);
+            }
+
             if (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine))
             {
                 Vector2 hitPos;
@@ -143,14 +152,26 @@ public class HumanPlayer : MahjongPlayerBase
 
         Tile discard = MahjongManager.mahjongManager.mostRecentDiscard;
 
-        pongMeld = new List<Tile> { discard };
-        chowMeldLeft = new List<Tile> { discard };
-        chowMeldMiddle = new List<Tile> { discard };
-        chowMeldRight = new List<Tile> { discard };
-        kangMeld = new List<Tile> { discard };
-
-        // Debug.Log(CalculateSevenPairs());
-        Debug.Log(CalculateNormalWin());
+        //most priority is a winning hand, takes precedence
+        //edge case, closed hand size is 1, so waiting on the last pair
+        if (closedHand.Count == 1 &&
+        closedHand[0].number == discard.number &&
+        closedHand[0].tileType == discard.tileType)
+        {
+            //GUI stuff probably needs to be moved to Human as well
+            // todasButton.gameObject.SetActive(true);
+            canWin = true;
+        }
+        else if (CalculateSevenPairs())
+        {
+            // todasButton.gameObject.SetActive(true);
+            canWin = true;
+        }
+        else if (CalculateNormalWin())
+        {
+            // todasButton.gameObject.SetActive(true);
+            canWin = true;
+        }
 
         //auto calculate kang as a bandaid
         foreach (Tile tile in closedHand)
@@ -160,6 +181,12 @@ public class HumanPlayer : MahjongPlayerBase
                 kangMeld.Add(tile);
             }
         }
+
+        pongMeld = new List<Tile> { discard };
+        chowMeldLeft = new List<Tile> { discard };
+        chowMeldMiddle = new List<Tile> { discard };
+        chowMeldRight = new List<Tile> { discard };
+        kangMeld = new List<Tile> { discard };
 
         foreach (Tile tile in selectedTiles)
         {
