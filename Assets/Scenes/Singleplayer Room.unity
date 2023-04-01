@@ -2673,6 +2673,7 @@ MonoBehaviour:
   TileBoundaries: {fileID: 81549748}
   network: 0
   debug: 1
+  discardedTile: {fileID: 1492194371}
   debugFullClosedSevenPairs:
   - {fileID: 0}
   - {fileID: 0}
@@ -2727,7 +2728,6 @@ MonoBehaviour:
   - {fileID: 600659487}
   - {fileID: 2118593198}
   - {fileID: 1002942583}
-  - {fileID: 1492194371}
 --- !u!1001 &338206960
 PrefabInstance:
   m_ObjectHideFlags: 0

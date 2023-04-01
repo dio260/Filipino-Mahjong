@@ -45,7 +45,7 @@ public class MahjongPlayerBase : MonoBehaviour
     List<Tile> pair = new List<Tile>();
     List<Tile> others = new List<Tile>();
     #endregion
-    
+
 
     void Awake()
     {
@@ -260,6 +260,20 @@ public class MahjongPlayerBase : MonoBehaviour
 
     protected bool CalculateSevenPairs()
     {
+        //first, factor in the discarded tile during deciding
+        // List<Tile> hand = new List<Tile>();
+        // if(currentState == PlayerState.deciding)
+        // {
+        //     hand.AddRange(closedHand);
+        //     hand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
+        // }
+        // else
+        // {
+        //     hand = closedHand;
+        // }
+        if (currentState == PlayerState.deciding)
+            closedHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
+
         SortTilesBySuit();
 
         //check if theres more than one meld in the open hand
@@ -285,6 +299,8 @@ public class MahjongPlayerBase : MonoBehaviour
 
             }
             Debug.Log("One Meld Closed Hand Seven Pairs " + allPairs);
+
+            closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
             return allPairs;
 
         }
@@ -336,7 +352,10 @@ public class MahjongPlayerBase : MonoBehaviour
         }
         //only one suit collection can have an odd number
         if (oddSuits > 1)
+        {
+            closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
             return false;
+        }
 
         //check the even tiles for all pairs
         bool allEvenPairs = true;
@@ -388,6 +407,7 @@ public class MahjongPlayerBase : MonoBehaviour
                 oddPairsAndMeld = false;
         }
 
+        closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
         Debug.Log("Full Closed Hand Seven Pairs " + (oddPairsAndMeld && allEvenPairs));
         return (oddPairsAndMeld && allEvenPairs);
     }
@@ -395,8 +415,8 @@ public class MahjongPlayerBase : MonoBehaviour
     {
         //calculate only using tiles from the closed hand, since only melds can exist in the closed hand
 
-        //keep track of what tiles have been checked
-        List<Tile> checkedTiles = new List<Tile>();
+        if (currentState == PlayerState.deciding)
+            closedHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
 
         //take advantage of sorting function again
         SortTilesBySuit();
@@ -436,7 +456,10 @@ public class MahjongPlayerBase : MonoBehaviour
         }
         //only one suit collection can be not divisible by 3
         if (notDivisible > 1)
+        {
+            closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
             return false;
+        }
 
         visitedTiles = new List<Tile>();
 
@@ -452,20 +475,20 @@ public class MahjongPlayerBase : MonoBehaviour
         else
         {
             //test every possible pair until a working pair is found
-            
+
             for (int x = 0; x < pairGroup.Count - 1; x++)
             {
                 pair = new List<Tile>();
                 others = new List<Tile>();
-                if(MatchTile(pairGroup[x], pairGroup[x+1]))
+                if (MatchTile(pairGroup[x], pairGroup[x + 1]))
                 {
                     pair.Add(pairGroup[x]);
-                    pair.Add(pairGroup[x+1]);
+                    pair.Add(pairGroup[x + 1]);
                     others.AddRange(pairGroup.GetRange(0, x));
                     others.AddRange(pairGroup.GetRange(x + 2, pairGroup.Count - x - 2));
 
                     //do the meld check with the other tiles
-                    if(CheckForAllMelds(others))
+                    if (CheckForAllMelds(others))
                     {
                         Debug.Log("All melds");
                         MeldsAndPair = true;
@@ -480,6 +503,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
         Debug.Log("all melds: " + JustMelds);
         Debug.Log("one pair with all melds: " + MeldsAndPair);
+        closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
 
         return MeldsAndPair && JustMelds;
     }
@@ -503,7 +527,7 @@ public class MahjongPlayerBase : MonoBehaviour
                 }
             }
             //check for chow
-            else if(MatchSuit(tiles[index], tiles[index + 1]))
+            else if (MatchSuit(tiles[index], tiles[index + 1]))
             {
                 int chowIndex1 = -1;
                 int chowIndex2 = -1;
@@ -553,7 +577,7 @@ public class MahjongPlayerBase : MonoBehaviour
     //shorthand functions for tile comparison
     protected bool MatchTile(Tile a, Tile b)
     {
-        return MatchNumber(a,b) && MatchSuit(a,b);
+        return MatchNumber(a, b) && MatchSuit(a, b);
     }
     protected bool MatchSuit(Tile a, Tile b)
     {
@@ -795,8 +819,8 @@ public class MahjongPlayerBase : MonoBehaviour
                 openHand.AddRange(selectedTiles);
                 foreach (Tile tile in selectedTiles)
                 {
-                    if(tile != MahjongManager.mahjongManager.mostRecentDiscard)
-                    closedHand.RemoveAt(closedHand.IndexOf(tile));
+                    if (tile != MahjongManager.mahjongManager.mostRecentDiscard)
+                        closedHand.RemoveAt(closedHand.IndexOf(tile));
                 }
                 break;
         }

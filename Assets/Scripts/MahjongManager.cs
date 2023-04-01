@@ -33,6 +33,7 @@ public class MahjongManager : MonoBehaviour
 
     [Header("Debugging Tools")]
     public bool debug;
+    public Tile discardedTile;
     public List<Tile> debugFullClosedSevenPairs;
     public List<Tile> debugOneMeldSevenPairsClosedHand;
     public List<Tile> debugOneMeldSevenPairsOpenHand;
@@ -76,59 +77,73 @@ public class MahjongManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if (!network && debug)
-        // {
-        //     if (Input.GetKeyDown(KeyCode.Space))
-        //     {
-        //         Debug.Log("StopAllCoroutines called");
+        if (!network && debug)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log("StopAllCoroutines called");
 
-        //         StopAllCoroutines();
-        //     }
+                StopAllCoroutines();
+            }
 
-        //     if (Input.GetKeyDown(KeyCode.Q))
-        //     {
-        //         StopAllCoroutines();
-        //         Debug.Log("Testing Seven Pairs Fully Closed");
-        //         HumanPlayer human = FindObjectOfType<HumanPlayer>();
-        //         human.DebugClearHand();
-        //         foreach (Tile tile in debugFullClosedSevenPairs)
-        //         {
-        //             human.AddTile(tile);
-        //         }
-        //         human.currentState = PlayerState.deciding;
-        //         human.CalculateHandOptions();
-        //     }
-        //     if (Input.GetKeyDown(KeyCode.W))
-        //     {
-        //         StopAllCoroutines();
-        //         Debug.Log("Testing Seven Pairs with one Meld");
-        //         HumanPlayer human = FindObjectOfType<HumanPlayer>();
-        //         human.DebugClearHand();
-        //         foreach (Tile tile in debugOneMeldSevenPairsClosedHand)
-        //         {
-        //             human.AddTile(tile);
-        //         }
-        //         foreach (Tile tile in debugOneMeldSevenPairsOpenHand)
-        //         {
-        //             human.DebugAddOpenHandTile(tile);
-        //         }
-        //         human.currentState = PlayerState.deciding;
-        //         human.CalculateHandOptions();
-        //     }
-        //     if (Input.GetKeyDown(KeyCode.E))
-        //     {
-        //         StopAllCoroutines();
-        //         Debug.Log("Testing Normal Win 1");
-        //         HumanPlayer human = FindObjectOfType<HumanPlayer>();
-        //         human.DebugClearHand();
-        //         foreach (Tile tile in debugFullClosedNormalWin)
-        //         {
-        //             human.AddTile(tile);
-        //         }
-        //         human.currentState = PlayerState.deciding;
-        //         human.CalculateHandOptions();
-        //     }
-        // }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                StopAllCoroutines();
+                Debug.Log("Testing Seven Pairs Fully Closed");
+                HumanPlayer human = FindObjectOfType<HumanPlayer>();
+                human.DebugClearHand();
+                foreach (Tile tile in debugFullClosedSevenPairs)
+                {
+                    human.AddTile(tile);
+                }
+                human.currentState = PlayerState.deciding;
+                human.CalculateHandOptions();
+            }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                StopAllCoroutines();
+                Debug.Log("Testing Seven Pairs with one Meld");
+                HumanPlayer human = FindObjectOfType<HumanPlayer>();
+                human.DebugClearHand();
+                foreach (Tile tile in debugOneMeldSevenPairsClosedHand)
+                {
+                    human.AddTile(tile);
+                }
+                foreach (Tile tile in debugOneMeldSevenPairsOpenHand)
+                {
+                    human.DebugAddOpenHandTile(tile);
+                }
+                human.currentState = PlayerState.deciding;
+                human.CalculateHandOptions();
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                StopAllCoroutines();
+                Debug.Log("Testing Normal Win 1");
+                HumanPlayer human = FindObjectOfType<HumanPlayer>();
+                human.DebugClearHand();
+                foreach (Tile tile in debugFullClosedNormalWin)
+                {
+                    human.AddTile(tile);
+                }
+                human.currentState = PlayerState.deciding;
+                human.CalculateHandOptions();
+            }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                StopAllCoroutines();
+                Debug.Log("Testing Normal Win with discard");
+                HumanPlayer human = FindObjectOfType<HumanPlayer>();
+                human.DebugClearHand();
+                foreach (Tile tile in debugFullClosedNormalWin)
+                {
+                    human.AddTile(tile);
+                }
+                mostRecentDiscard = discardedTile;
+                human.currentState = PlayerState.deciding;
+                human.CalculateHandOptions();
+            }
+        }
 
     }
 
@@ -549,6 +564,7 @@ public class MahjongManager : MonoBehaviour
             player.AddDrawnTileToClosedHand();
 
         }
+        player.ArrangeTiles();
 
         yield return new WaitForSeconds(2);
 
