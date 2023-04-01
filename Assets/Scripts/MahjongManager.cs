@@ -38,7 +38,9 @@ public class MahjongManager : MonoBehaviour
     public List<Tile> debugOneMeldSevenPairsClosedHand;
     public List<Tile> debugOneMeldSevenPairsOpenHand;
     public List<Tile> debugFullClosedNormalWin;
-
+    public List<Tile> debugClosedHandArrangement;
+    public List<Tile> debugOpenHandArrangement;
+    public List<Tile> debugFlowerArrangement;
 
     protected virtual void Awake()
     {
@@ -142,6 +144,27 @@ public class MahjongManager : MonoBehaviour
                 mostRecentDiscard = discardedTile;
                 human.currentState = PlayerState.deciding;
                 human.CalculateHandOptions();
+            }
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                StopAllCoroutines();
+                Debug.Log("Testing Open Hand Tile arrangement");
+                HumanPlayer human = FindObjectOfType<HumanPlayer>();
+                human.DebugClearHand();
+                foreach (Tile tile in debugClosedHandArrangement)
+                {
+                    human.AddTile(tile);
+                }
+                foreach (Tile tile in debugOpenHandArrangement)
+                {
+                    human.DebugAddOpenHandTile(tile);
+                }
+                foreach (Tile tile in debugFlowerArrangement)
+                {
+                    human.DebugAddFlower(tile);
+                }
+
+                human.ArrangeTiles();
             }
         }
 

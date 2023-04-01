@@ -689,12 +689,12 @@ public class MahjongPlayerBase : MonoBehaviour
         }
 
         localLeft = -1 * Vector3.Cross(openHandParent.forward.normalized, openHandParent.up.normalized);
-        sideOffset = 0.5f / (float)flowers.Count;
+        sideOffset = 0.5f / (float)openHand.Count;
         placementReference = 0.5f / -2.0f;
         foreach (Tile tile in openHand)
         {
             tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
-            tile.transform.localEulerAngles = closedHandParent.up * 90;
+            tile.transform.localEulerAngles = openHandParent.up * 90 + Vector3.forward * 90;
             placementReference -= sideOffset;
         }
     }
@@ -764,15 +764,21 @@ public class MahjongPlayerBase : MonoBehaviour
     {
         tile.owner = this;
         openHand.Add(tile);
-        tile.transform.parent = closedHandParent;
+        tile.transform.parent = openHandParent;
 
+    }
+    public void DebugAddFlower(Tile tile)
+    {
+        tile.owner = this;
+        flowers.Add(tile);
+        tile.transform.parent = flowersParent;
     }
     public void AddFlower(Tile flower)
     {
+        flower.owner = this;
         flowers.Add(flower);
         flower.transform.parent = flowersParent;
         closedHand.Remove(flower);
-
     }
     public Tile currentDrawnTile()
     {
