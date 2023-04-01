@@ -10,7 +10,7 @@ public class HumanPlayer : MahjongPlayerBase
     //stuff to be moved to HumanPlayer child class
     public Camera playerCam;
     public GameObject playerCanvas;
-    public Button passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
+    public Button sortButton, passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
     public TMP_Text debugText;
 
     GameObject tileSwap;
@@ -22,6 +22,7 @@ public class HumanPlayer : MahjongPlayerBase
     {
         //move to Humanplayer
         playerCam = GetComponent<Camera>();
+        sortButton.onClick.AddListener(() => VisuallySortTiles());
         todasButton.onClick.AddListener(() => DeclareWin());
         pongButton.onClick.AddListener(() => MakeDecision(decision.pong));
         kangButton.onClick.AddListener(() => MakeDecision(decision.kang));

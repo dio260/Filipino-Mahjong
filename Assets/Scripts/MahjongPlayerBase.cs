@@ -667,35 +667,36 @@ public class MahjongPlayerBase : MonoBehaviour
     [PunRPC]
     public void ArrangeTiles()
     {
-        Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
-        float sideOffset = 1.25f / (float)closedHand.Count;
-        float placementReference = 1.25f / 2.0f;
+        float tileSideOffset = 0.06f;
 
+        Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
+        float handSize = tileSideOffset * (float) closedHand.Count;
+        float placementReference = handSize / 2.0f;
         foreach (Tile tile in closedHand)
         {
             tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
             tile.transform.localEulerAngles = closedHandParent.up * 90;
-            placementReference -= sideOffset;
+            placementReference -= tileSideOffset;
         }
 
-        localLeft = -1 * Vector3.Cross(flowersParent.forward.normalized, flowersParent.up.normalized);
-        sideOffset = 0.5f / (float)flowers.Count;
-        placementReference = 0.5f / -2.0f;
+        localLeft = 1 * Vector3.Cross(flowersParent.forward.normalized, flowersParent.up.normalized);
+        handSize = tileSideOffset * (float) flowers.Count;
+        placementReference = handSize / 2.0f;
         foreach (Tile tile in flowers)
         {
             tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
             tile.transform.localEulerAngles = flowersParent.up * 90 + Vector3.forward * 90;// + tile.transform.forward * -90;
-            placementReference += sideOffset;
+            placementReference -= tileSideOffset;
         }
 
-        localLeft = -1 * Vector3.Cross(openHandParent.forward.normalized, openHandParent.up.normalized);
-        sideOffset = 0.5f / (float)openHand.Count;
-        placementReference = 0.5f / -2.0f;
+        localLeft = 1 * Vector3.Cross(openHandParent.forward.normalized, openHandParent.up.normalized);
+        handSize = tileSideOffset * (float) openHand.Count;
+        placementReference = handSize / 2.0f;
         foreach (Tile tile in openHand)
         {
             tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
             tile.transform.localEulerAngles = openHandParent.up * 90 + Vector3.forward * 90;
-            placementReference -= sideOffset;
+            placementReference -= tileSideOffset;
         }
     }
 
@@ -709,8 +710,8 @@ public class MahjongPlayerBase : MonoBehaviour
             GetComponent<PhotonView>().RPC("SortTilesBySuit", RpcTarget.All);
         }
         {
-            ArrangeTiles();
             SortTilesBySuit();
+            ArrangeTiles();
         }
 
     }

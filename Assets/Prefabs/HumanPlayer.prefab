@@ -351,12 +351,13 @@ MonoBehaviour:
   currentDecision: 0
   discardChoice: {fileID: 0}
   currentState: 0
+  networked: 0
   closedHandParent: {fileID: 6886725867946563188}
   openHandParent: {fileID: 8121919785658311191}
   flowersParent: {fileID: 8814427028177514817}
-  networked: 0
   playerCam: {fileID: 0}
   playerCanvas: {fileID: 0}
+  sortButton: {fileID: 3404571014828561871}
   passButton: {fileID: 6061086919708227439}
   chowButton: {fileID: 5928578118657907067}
   pongButton: {fileID: 6196842197194693162}

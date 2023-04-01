@@ -491,12 +491,13 @@ MonoBehaviour:
   currentDecision: 3
   discardChoice: {fileID: 0}
   currentState: 0
+  networked: 1
   closedHandParent: {fileID: 6886725867946563188}
   openHandParent: {fileID: 8121919785658311191}
   flowersParent: {fileID: 8814427028177514817}
-  networked: 1
   playerCam: {fileID: 0}
   playerCanvas: {fileID: 4265425483241202447}
+  sortButton: {fileID: 8171514336333986494}
   passButton: {fileID: 8717354414462581563}
   chowButton: {fileID: 5569791294172372113}
   pongButton: {fileID: 6556713184122407136}
@@ -1669,19 +1670,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 86057728781555465}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7234042182143124440}
-        m_TargetAssemblyTypeName: MahjongPlayerBase, Assembly-CSharp
-        m_MethodName: VisuallySortTiles
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
+      m_Calls: []
 --- !u!1 &3814721495181396242
 GameObject:
   m_ObjectHideFlags: 0

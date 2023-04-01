@@ -163,7 +163,8 @@ public class MahjongManager : MonoBehaviour
                 {
                     human.DebugAddFlower(tile);
                 }
-
+                state = GameState.playing;
+                human.currentState = PlayerState.waiting;
                 human.ArrangeTiles();
             }
         }
