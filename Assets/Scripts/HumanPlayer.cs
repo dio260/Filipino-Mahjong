@@ -9,18 +9,29 @@ public class HumanPlayer : MahjongPlayerBase
 {
     //stuff to be moved to HumanPlayer child class
     public Camera playerCam;
-    public GameObject playerCanvas;
-    public Button sortButton, passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
+    GameObject playerCanvas;
+    Button sortButton, passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
     public TMP_Text debugText;
     Vector3 camRotation, camPosition;
     GameObject tileSwap;
 
-    void Start()
+    void Awake()
     {
         //move to Humanplayer
         playerCam = GetComponentInChildren<Camera>();
         camRotation = playerCam.transform.eulerAngles;
         camPosition = playerCam.transform.localPosition;
+
+        playerCanvas = GetComponentInChildren<Canvas>().gameObject;
+        sortButton = playerCanvas.transform.Find("Sort Tiles").GetComponent<Button>();
+        passButton = playerCanvas.transform.Find("Pass").GetComponent<Button>();
+        discardButton = playerCanvas.transform.Find("Discard Button").GetComponent<Button>();
+        pongButton = playerCanvas.transform.Find("Pong").GetComponentInChildren<Button>();
+        kangButton = playerCanvas.transform.Find("Kang").GetComponentInChildren<Button>();
+        chowButton = playerCanvas.transform.Find("Chow").GetComponentInChildren<Button>();
+        todasButton = playerCanvas.transform.Find("Todas").GetComponentInChildren<Button>();
+
+        
         sortButton.onClick.AddListener(() => VisuallySortTiles());
         todasButton.onClick.AddListener(() => DeclareWin());
         pongButton.onClick.AddListener(() => MakeDecision(decision.pong));
@@ -28,9 +39,24 @@ public class HumanPlayer : MahjongPlayerBase
         chowButton.onClick.AddListener(() => MakeDecision(decision.chow));
         passButton.onClick.AddListener(() => MakeDecision(decision.pass));
         discardButton.onClick.AddListener(() => DeclareDiscard());
+        
+
+        //button debugs
+        sortButton.onClick.AddListener(() => DebugButtonClick(sortButton.gameObject.name));
+        todasButton.onClick.AddListener(() => DebugButtonClick(todasButton.gameObject.name));
+        pongButton.onClick.AddListener(() => DebugButtonClick(pongButton.gameObject.name));
+        kangButton.onClick.AddListener(() => DebugButtonClick(kangButton.gameObject.name));
+        chowButton.onClick.AddListener(() => DebugButtonClick(chowButton.gameObject.name));
+        passButton.onClick.AddListener(() => DebugButtonClick(passButton.gameObject.name));
+        discardButton.onClick.AddListener(() => DebugButtonClick(discardButton.gameObject.name));
 
         HideUI();
         discardButton.gameObject.SetActive(false);
+    }
+
+    public void DebugButtonClick(string button)
+    {
+        Debug.Log(button + "pressed");
     }
 
     // Update is called once per frame
@@ -320,10 +346,22 @@ public class HumanPlayer : MahjongPlayerBase
 
     public void HideUI()
     {
-        chowButton.gameObject.SetActive(false);
-        todasButton.gameObject.SetActive(false);
-        pongButton.gameObject.SetActive(false);
-        kangButton.gameObject.SetActive(false);
+        if(chowButton.transform.parent.GetComponent<ButtonFlip>().open)
+        {
+            StartCoroutine(chowButton.transform.parent.GetComponent<ButtonFlip>().Flip());
+        }
+        if(pongButton.transform.parent.GetComponent<ButtonFlip>().open)
+        {
+            StartCoroutine(pongButton.transform.parent.GetComponent<ButtonFlip>().Flip());
+        }
+        if(kangButton.transform.parent.GetComponent<ButtonFlip>().open)
+        {
+            StartCoroutine(kangButton.transform.parent.GetComponent<ButtonFlip>().Flip());
+        }
+        if(todasButton.transform.parent.GetComponent<ButtonFlip>().open)
+        {
+            StartCoroutine(todasButton.transform.parent.GetComponent<ButtonFlip>().Flip());
+        }
         discardButton.gameObject.SetActive(false);
     }
 
