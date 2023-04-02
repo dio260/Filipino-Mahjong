@@ -43,6 +43,15 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
             case "turn1":
                 photonView.RPC("StartFirstTurn", RpcTarget.Others);
                 break;
+            case "discardSound":
+                photonView.RPC("StartFirstTurn", RpcTarget.Others);
+                break;
+            case "shuffleSound":
+                photonView.RPC("StartFirstTurn", RpcTarget.Others);
+                break;
+            case "winSound":
+                photonView.RPC("StartFirstTurn", RpcTarget.Others);
+                break;
         }
     }
     [PunRPC]
