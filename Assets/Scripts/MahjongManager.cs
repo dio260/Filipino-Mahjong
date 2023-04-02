@@ -63,17 +63,17 @@ public class MahjongManager : MonoBehaviour
         {
             network = true;
         }
+        
+        //always load into the same scene, so find this object in the scene
+        InitialTileParent = GameObject.Find("Tiles");
+        DeadTileParent = GameObject.Find("Dead Tiles");
+        TileBoundaries = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
 
         //this is called locally and networked for other players
         if (!network)
         {
             InitializeGame();
         }
-        
-        //always load into the same scene, so find this object in the scene
-        InitialTileParent = GameObject.Find("Tiles");
-        DeadTileParent = GameObject.Find("Dead Tiles");
-        TileBoundaries = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
     }
 
     // Update is called once per frame
@@ -174,17 +174,6 @@ public class MahjongManager : MonoBehaviour
 
     public void InitializeGame()
     {
-        
-        //Send a debug message to inform players of game state
-        if (network)
-        {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Starting game");
-        }
-        else
-        {
-            SendPlayersMessage("Starting game");
-        }
-
         //Initialize the player list
         players = new List<MahjongPlayerBase>();
         if (!network)
@@ -227,6 +216,17 @@ public class MahjongManager : MonoBehaviour
 
     public IEnumerator BoardSetup()
     {
+        //Send a debug message to inform players of game state
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Starting game");
+        }
+        else
+        {
+            SendPlayersMessage("Starting game");
+        }
+        yield return new WaitForSeconds(2);
+
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Shuffling Board and Creating Walls");
@@ -355,11 +355,26 @@ public class MahjongManager : MonoBehaviour
             AudioHandler.audioHandler.PlayDiceRoll();
         }
         //random roll
-        System.Random rand = new System.Random();
-        int dieRoll = rand.Next(2, 13);
-        int dieRollResult = (dieRoll - 1) % players.Count;
+        // System.Random rand = new System.Random();
+        // int dieRoll = rand.Next(2, 13);
+        
 
+        //newand improved real actual dice roll
         //play diceroll animation
+        int dieRoll = 0;
+        List<Dice> die = FindObjectsOfType<Dice>().ToList<Dice>();
+        foreach (Dice dice in die)
+        {
+            StartCoroutine(dice.DiceRoll());
+        }
+        yield return new WaitForSeconds(1f);
+        foreach(Dice dice in die)
+        {
+            dieRoll += dice.rollResult;
+        }
+        
+        Debug.Log("Completed die roll: " + dieRoll);
+        int dieRollResult = (dieRoll - 1) % players.Count;
 
         yield return new WaitForSeconds(2);
 
@@ -827,6 +842,7 @@ public class MahjongManager : MonoBehaviour
         {
             if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
             {
+                Debug.Log(message);
                 human.debugText.text = message;
             }
         }

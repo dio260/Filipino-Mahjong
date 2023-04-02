@@ -31,8 +31,6 @@ public class HumanPlayer : MahjongPlayerBase
 
         HideUI();
         discardButton.gameObject.SetActive(false);
-
-        debugText.text = currentState.ToString();
     }
 
     // Update is called once per frame
@@ -78,8 +76,6 @@ public class HumanPlayer : MahjongPlayerBase
 
             if (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine))
             {
-                Vector2 hitPos;
-
                 // Debug.Log(new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0));
                 Vector3 mouseWorldPos = playerCam.ViewportToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCam.nearClipPlane));
 

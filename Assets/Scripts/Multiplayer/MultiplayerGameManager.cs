@@ -33,6 +33,9 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     [Tooltip("The tile prefab")]
     [SerializeField]
     private GameObject tilePrefab;
+    [Tooltip("The dice prefab")]
+    [SerializeField]
+    private GameObject dicePrefab;
     public GameObject multiplayerCanvas;
 
     public Button gameStart;
