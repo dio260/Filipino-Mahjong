@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
 {
     public static MultiplayerMahjongManager multiMahjongManager;
-    
+
     void Awake()
     {
         if (multiMahjongManager != null && multiMahjongManager != this)
@@ -29,28 +29,31 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     {
         switch (command)
         {
-            case "start":    
+            case "start":
                 photonView.RPC("StartGame", RpcTarget.All);
                 break;
             case "message":
-                string message = (string) data;
+                string message = (string)data;
                 photonView.RPC("SendClientsMessage", RpcTarget.All, message);
                 break;
             case "dealer":
-                int dealer = (int) data;
+                int dealer = (int)data;
                 photonView.RPC("RemoteSetDealer", RpcTarget.All, data);
                 break;
             case "turn1":
                 photonView.RPC("StartFirstTurn", RpcTarget.Others);
                 break;
             case "discardSound":
-                photonView.RPC("StartFirstTurn", RpcTarget.Others);
+                photonView.RPC("PlayAudio", RpcTarget.Others, command);
                 break;
             case "shuffleSound":
-                photonView.RPC("StartFirstTurn", RpcTarget.Others);
+                photonView.RPC("PlayAudio", RpcTarget.Others, command);
                 break;
             case "winSound":
-                photonView.RPC("StartFirstTurn", RpcTarget.Others);
+                photonView.RPC("PlayAudio", RpcTarget.Others, command);
+                break;
+            case "diceSound":
+                photonView.RPC("PlayAudio", RpcTarget.Others, command);
                 break;
         }
     }
@@ -85,9 +88,28 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     {
         MahjongManager.mahjongManager.FirstNetworkedTurn();
     }
+    [PunRPC]
+    public void PlayAudio(string audioClip)
+    {
+        switch (audioClip)
+        {
+            case "discardSound":
+                AudioHandler.audioHandler.PlayDiscard();
+                break;
+            case "shuffleSound":
+                AudioHandler.audioHandler.PlayShuffle();
+                break;
+            case "winSound":
+                AudioHandler.audioHandler.PlayWin();
+                break;
+            case "diceSound":
+                AudioHandler.audioHandler.PlayDiceRoll();
+                break;
+        }
+    }
 
     #region 
-    
+
 
     #endregion
 }

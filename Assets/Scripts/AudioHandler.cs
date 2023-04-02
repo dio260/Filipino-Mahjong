@@ -4,40 +4,51 @@ using UnityEngine;
 
 public class AudioHandler : MonoBehaviour
 {
-    public static AudioHandler audio;
-    public AudioClip discardSound, winSound, shuffleSound;
+    public static AudioHandler audioHandler;
+    public AudioClip discardSound, winSound, shuffleSound, diceSound;
     public AudioSource source;
     bool networked;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        if(audio != null && audio != this)
+        if(audioHandler != null && audioHandler != this)
         {
             Destroy(gameObject);
         }
         else
         {
-            audio = this;
+            audioHandler = this;
         }
-
+        source = GetComponent<AudioSource>();
     }
 
     public void PlayDiscard()
     {
-        source.PlayOneShot(discardSound);
+        Debug.Log("discard noise");
+        // source.PlayOneShot(discardSound);
     }
 
     public void PlayShuffle()
     {
-        source.PlayOneShot(shuffleSound);
+        Debug.Log("shuffle noise");
+
+        // source.PlayOneShot(shuffleSound);
 
     }
 
     public void PlayWin()
     {
-        source.PlayOneShot(winSound);
+        Debug.Log("win noise");
 
+        // source.PlayOneShot(winSound);
+
+    }
+    public void PlayDiceRoll()
+    {
+        Debug.Log("dice sound");
+
+        // source.PlayOneShot(diceSound);
     }
 
 }

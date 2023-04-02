@@ -12,16 +12,15 @@ public class HumanPlayer : MahjongPlayerBase
     public GameObject playerCanvas;
     public Button sortButton, passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
     public TMP_Text debugText;
-
+    Vector3 camRotation, camPosition;
     GameObject tileSwap;
 
-
-
-    // List<Tile> selectedTiles = new List<Tile>();
     void Start()
     {
         //move to Humanplayer
-        playerCam = GetComponent<Camera>();
+        playerCam = GetComponentInChildren<Camera>();
+        camRotation = playerCam.transform.eulerAngles;
+        camPosition = playerCam.transform.localPosition;
         sortButton.onClick.AddListener(() => VisuallySortTiles());
         todasButton.onClick.AddListener(() => DeclareWin());
         pongButton.onClick.AddListener(() => MakeDecision(decision.pong));
@@ -41,6 +40,20 @@ public class HumanPlayer : MahjongPlayerBase
     {
         if (MahjongManager.mahjongManager.GetGameState() == GameState.playing)
         {
+            //bird's eye board view;
+            if(Input.GetKey(KeyCode.Space))
+            {
+                playerCam.transform.rotation = Quaternion.Euler(Vector3.left * -90);
+                playerCam.transform.position = new Vector3(0,1.5f,0);
+
+            }
+            else
+            {
+                playerCam.transform.rotation = Quaternion.Euler(camRotation);
+                playerCam.transform.localPosition = camPosition;
+            }
+
+            //setting buttons active when conditions are fulfilled
             if (discardChoice != null)
             {
                 discardButton.gameObject.SetActive(true);

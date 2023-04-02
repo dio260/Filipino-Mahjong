@@ -81,11 +81,12 @@ public class MahjongManager : MonoBehaviour
     {
         if (!network && debug)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Tab))
             {
                 Debug.Log("StopAllCoroutines called");
 
                 StopAllCoroutines();
+                state = GameState.playing;
             }
 
             if (Input.GetKeyDown(KeyCode.Q))
@@ -229,12 +230,13 @@ public class MahjongManager : MonoBehaviour
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Shuffling Board and Creating Walls");
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("shuffleSound");
         }
         else
         {
             SendPlayersMessage("Shuffling Board and Creating Walls");
+            AudioHandler.audioHandler.PlayShuffle();
         }
-        yield return new WaitForSeconds(2);
 
         //randomize the board
         System.Random rand = new System.Random();
@@ -246,6 +248,8 @@ public class MahjongManager : MonoBehaviour
             board[n] = board[k];
             board[k] = temp;
         }
+
+        yield return new WaitForSeconds(2);
 
         //physically move the tiles
         float distanceReference = TileSizeReference.transform.localScale.z / 2;
@@ -340,13 +344,26 @@ public class MahjongManager : MonoBehaviour
 
     public IEnumerator RollDice()
     {
-
-        yield return new WaitForSeconds(2);
-
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Rolling dice for dealer");
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("diceSound");
+        }
+        else
+        {
+            SendPlayersMessage("Rolling dice for dealer");
+            AudioHandler.audioHandler.PlayDiceRoll();
+        }
         //random roll
         System.Random rand = new System.Random();
         int dieRoll = rand.Next(2, 13);
         int dieRollResult = (dieRoll - 1) % players.Count;
+
+        //play diceroll animation
+
+        yield return new WaitForSeconds(2);
+
+        
         if (!debug)
             dealer = players[dieRollResult];
         else
