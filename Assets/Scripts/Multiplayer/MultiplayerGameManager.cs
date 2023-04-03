@@ -39,7 +39,6 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     public GameObject multiplayerCanvas;
 
     public Button gameStart;
-    public List<int> playerIds;
     public List<MahjongPlayerBase> players;
     public Material[] playerColors;
 
@@ -176,7 +175,15 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     public void HostStartGame()
     {
         if(PhotonNetwork.CurrentRoom.PlayerCount > 1)
+        {
+            Tile[] tiles = GameObject.Find("Tiles").transform.GetComponentsInChildren<Tile>();
+            foreach(Tile tile in tiles)
+            {
+                Destroy(tile.GetComponent<Rigidbody>());
+            }
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("start");
+            
+        }
     }
 
     /// <summary>
