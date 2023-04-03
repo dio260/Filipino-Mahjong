@@ -124,6 +124,12 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     {
         switch (animClip)
         {
+            case "drawAnim":
+                foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+                {
+                    player.currentAvatar.PlayDrawAnim();
+                }
+                break;
             case "discardAnim":
                 foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
                 {

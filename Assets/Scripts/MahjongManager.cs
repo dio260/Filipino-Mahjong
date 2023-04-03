@@ -427,6 +427,7 @@ public class MahjongManager : MonoBehaviour
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Distributing tiles to players");
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("shuffleAnim");
         }
         else
         {
@@ -458,10 +459,15 @@ public class MahjongManager : MonoBehaviour
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Replacing flowers");
+            
         }
         else
         {
             SendPlayersMessage("Replacing flowers");
+            foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+            {
+                player.currentAvatar.PlayShuffleAnim();
+            }
         }
 
         int needFlowers = -1;
