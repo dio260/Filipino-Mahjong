@@ -1200,7 +1200,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 9112660172887497234, guid: b19dfc1fdfa7c7f43aa3e232600d70a3, type: 3}
-  - {fileID: 6215233678259635050, guid: b19dfc1fdfa7c7f43aa3e232600d70a3, type: 3}
+  - {fileID: 2100000, guid: b589e18a421c0354294834ba81a0536e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1399,6 +1399,7 @@ GameObject:
   - component: {fileID: 5532557201403774705}
   - component: {fileID: 7621263907112244324}
   - component: {fileID: 4136059083647560651}
+  - component: {fileID: 5705206696753444314}
   m_Layer: 0
   m_Name: SM_CeilingFanRot
   m_TagString: Untagged
@@ -1472,6 +1473,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5705206696753444314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362833293661361364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db5f3bedf8e776549a39e8bbcede56db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1379098207702254426
 GameObject:
   m_ObjectHideFlags: 0
@@ -3913,7 +3926,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3721939983831754315}
-  - component: {fileID: 6359336759824316540}
   m_Layer: 0
   m_Name: CeilingFan
   m_TagString: Untagged
@@ -3939,18 +3951,6 @@ Transform:
   m_Father: {fileID: 4838563034224997035}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6359336759824316540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4101983345266474225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db5f3bedf8e776549a39e8bbcede56db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4377956910472536024
 GameObject:
   m_ObjectHideFlags: 0
@@ -6777,10 +6777,10 @@ BoxCollider:
   m_GameObject: {fileID: 6974750189951470795}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.053707745, y: 0.05348599, z: 0.049081247}
-  m_Center: {x: -0.000049795162, y: -0.0000010040135, z: 0.011519351}
+  m_Size: {x: 0.05370775, y: 0.05348599, z: 0.048482213}
+  m_Center: {x: -0.000049794515, y: -0.000001004537, z: 0.011818897}
 --- !u!64 &6169830458129192516
 MeshCollider:
   m_ObjectHideFlags: 0

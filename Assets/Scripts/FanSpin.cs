@@ -7,6 +7,7 @@ public class FanSpin : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(Vector3.up);
+        //spin
+        transform.Rotate(Vector3.up * 0.25f);
     }
 }

@@ -86,7 +86,7 @@ public class MahjongManager : MonoBehaviour
                 Debug.Log("StopAllCoroutines called");
 
                 StopAllCoroutines();
-                // state = GameState.playing;
+                state = GameState.playing;
             }
 
             if (Input.GetKeyDown(KeyCode.Q))
