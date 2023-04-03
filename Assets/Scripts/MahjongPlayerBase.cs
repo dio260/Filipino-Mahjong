@@ -22,6 +22,13 @@ public class MahjongPlayerBase : MonoBehaviour
     public bool networked;
     #endregion
 
+    #region Avatar and Animations  
+
+    public PlayerAnimations currentAvatar;
+    PlayerAnimations male, female;
+
+    #endregion
+
     #region Other Properties
     private MahjongManager gameManager;
     public Transform closedHandParent, openHandParent, flowersParent;
@@ -55,7 +62,18 @@ public class MahjongPlayerBase : MonoBehaviour
         flowersParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * 0.4f;
         openHandParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * -0.4f;
 
-
+        male = transform.Find("Male").GetComponent<PlayerAnimations>();
+        female = transform.Find("Female").GetComponent<PlayerAnimations>();
+        if (Random.Range(0, 10) % 2 == 0)
+        {
+            currentAvatar = male;
+            female.gameObject.SetActive(false);
+        }
+        else
+        {
+            currentAvatar = female;
+            male.gameObject.SetActive(false);
+        }
     }
 
 
@@ -670,7 +688,7 @@ public class MahjongPlayerBase : MonoBehaviour
         float tileSideOffset = 0.06f;
 
         Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
-        float handSize = tileSideOffset * (float) closedHand.Count;
+        float handSize = tileSideOffset * (float)closedHand.Count;
         float placementReference = handSize / 2.0f;
         foreach (Tile tile in closedHand)
         {
@@ -680,7 +698,7 @@ public class MahjongPlayerBase : MonoBehaviour
         }
 
         localLeft = 1 * Vector3.Cross(flowersParent.forward.normalized, flowersParent.up.normalized);
-        handSize = tileSideOffset * (float) flowers.Count;
+        handSize = tileSideOffset * (float)flowers.Count;
         placementReference = handSize / 2.0f;
         foreach (Tile tile in flowers)
         {
@@ -690,7 +708,7 @@ public class MahjongPlayerBase : MonoBehaviour
         }
 
         localLeft = 1 * Vector3.Cross(openHandParent.forward.normalized, openHandParent.up.normalized);
-        handSize = tileSideOffset * (float) openHand.Count;
+        handSize = tileSideOffset * (float)openHand.Count;
         placementReference = handSize / 2.0f;
         foreach (Tile tile in openHand)
         {

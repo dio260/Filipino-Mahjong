@@ -55,6 +55,18 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
             case "diceSound":
                 photonView.RPC("PlayAudio", RpcTarget.Others, command);
                 break;
+            case "discardAnim":
+                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
+                break;
+            case "shuffleAnim":
+                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
+                break;
+            case "winAnim":
+                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
+                break;
+            case "stealAnim":
+                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
+                break;
         }
     }
     [PunRPC]
@@ -104,6 +116,37 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 break;
             case "diceSound":
                 AudioHandler.audioHandler.PlayDiceRoll();
+                break;
+        }
+    }
+    [PunRPC]
+    public void PlayAnimation(string animClip)
+    {
+        switch (animClip)
+        {
+            case "discardAnim":
+                foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+                {
+                    player.currentAvatar.PlayDiscardAnim();
+                }
+                break;
+            case "shuffleAnim":
+                foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+                {
+                    player.currentAvatar.PlayShuffleAnim();
+                }
+                break;
+            case "winAnim":
+                foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+                {
+                    player.currentAvatar.PlayWinAnim();
+                }
+                break;
+            case "stealAnim":
+                foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+                {
+                    player.currentAvatar.PlayStealAnim();
+                }
                 break;
         }
     }

@@ -63,7 +63,7 @@ public class MahjongManager : MonoBehaviour
         {
             network = true;
         }
-        
+
         //always load into the same scene, so find this object in the scene
         InitialTileParent = GameObject.Find("Tiles");
         DeadTileParent = GameObject.Find("Dead Tiles");
@@ -200,7 +200,7 @@ public class MahjongManager : MonoBehaviour
             }
 
 
-        
+
         //now, start the board setup
         if (!network)
             StartCoroutine(BoardSetup());
@@ -231,11 +231,16 @@ public class MahjongManager : MonoBehaviour
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Shuffling Board and Creating Walls");
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("shuffleSound");
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("shuffleAnim");
         }
         else
         {
             SendPlayersMessage("Shuffling Board and Creating Walls");
             AudioHandler.audioHandler.PlayShuffle();
+            foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+            {
+                player.currentAvatar.PlayShuffleAnim();
+            }
         }
 
         //randomize the board
@@ -249,7 +254,7 @@ public class MahjongManager : MonoBehaviour
             board[k] = temp;
         }
 
-        yield return new WaitForSeconds(2);
+        // yield return new WaitForSeconds(2);
 
         //physically move the tiles
         float distanceReference = TileSizeReference.transform.localScale.z / 2;
@@ -261,6 +266,7 @@ public class MahjongManager : MonoBehaviour
             if (x % 36 == 0)
             {
                 multiplier = 0;
+                yield return new WaitForSeconds(1);
             }
             if (x < 36)
             {
@@ -337,7 +343,7 @@ public class MahjongManager : MonoBehaviour
                 tile.TileRPCCall("BoardAdd");
             }
         }
-        
+
         StartCoroutine(RollDice());
 
     }
@@ -357,7 +363,7 @@ public class MahjongManager : MonoBehaviour
         //random roll
         // System.Random rand = new System.Random();
         // int dieRoll = rand.Next(2, 13);
-        
+
 
         //newand improved real actual dice roll
         //play diceroll animation
@@ -368,17 +374,17 @@ public class MahjongManager : MonoBehaviour
             StartCoroutine(dice.DiceRoll());
         }
         yield return new WaitForSeconds(1f);
-        foreach(Dice dice in die)
+        foreach (Dice dice in die)
         {
             dieRoll += dice.rollResult;
         }
-        
+
         Debug.Log("Completed die roll: " + dieRoll);
         int dieRollResult = (dieRoll - 1) % players.Count;
 
         yield return new WaitForSeconds(2);
 
-        
+
         if (!debug)
             dealer = players[dieRollResult];
         else
@@ -543,7 +549,7 @@ public class MahjongManager : MonoBehaviour
         player.ArrangeTiles();
 
 
-        
+
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Player Discarded " + mostRecentDiscard.ToString());
