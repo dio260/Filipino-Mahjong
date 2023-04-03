@@ -47,10 +47,10 @@ public class MahjongPlayerBase : MonoBehaviour
     #endregion
 
 
-    void Awake()
+    public virtual void Awake()
     {
         currentDecision = decision.none;
-        closedHandParent.position = transform.position + transform.forward * 0.65f + transform.up * -0.15f;
+        closedHandParent.position = transform.position + transform.forward * 0.6f + transform.up * -0.15f;
         Vector3 left = Vector3.Cross(transform.forward.normalized, transform.up.normalized);
         flowersParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * 0.4f;
         openHandParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * -0.4f;

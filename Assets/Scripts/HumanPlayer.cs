@@ -15,8 +15,9 @@ public class HumanPlayer : MahjongPlayerBase
     Vector3 camRotation, camPosition;
     GameObject tileSwap;
 
-    void Awake()
+    public override void Awake()
     {
+        base.Awake();
         //move to Humanplayer
         playerCam = GetComponentInChildren<Camera>();
         camRotation = playerCam.transform.eulerAngles;
