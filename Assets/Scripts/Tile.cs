@@ -103,6 +103,9 @@ public class Tile : MonoBehaviour
         PhotonView photonView = PhotonView.Get(this);
         switch (command)
         {
+            case "RemoveRB":
+                photonView.RPC("RemoveRigidbody", RpcTarget.All);
+                break;
             case "BoardAdd":
                 photonView.RPC("AddToBoard", RpcTarget.All);
                 break;
@@ -119,6 +122,11 @@ public class Tile : MonoBehaviour
                 photonView.RPC("SetAsDead", RpcTarget.All);
                 break;
         }
+    }
+    [PunRPC]
+    public void RemoveRigidbody()
+    {
+        Destroy(GetComponent<Rigidbody>());
     }
 
     [PunRPC]

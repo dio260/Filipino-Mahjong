@@ -185,7 +185,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
             Tile[] tiles = GameObject.Find("Tiles").transform.GetComponentsInChildren<Tile>();
             foreach(Tile tile in tiles)
             {
-                Destroy(tile.GetComponent<Rigidbody>());
+                tile.TileRPCCall("RemoveRB");
             }
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("start");
             
