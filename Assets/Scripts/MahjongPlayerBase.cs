@@ -839,7 +839,6 @@ public class MahjongPlayerBase : MonoBehaviour
                     if (tile != MahjongManager.mahjongManager.mostRecentDiscard)
                         closedHand.RemoveAt(closedHand.IndexOf(tile));
                 }
-                DrawKangTile();
                 break;
             case decision.chow:
                 selectedTiles.Add(MahjongManager.mahjongManager.mostRecentDiscard);
