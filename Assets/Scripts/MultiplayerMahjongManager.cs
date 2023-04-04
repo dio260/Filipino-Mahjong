@@ -75,7 +75,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void StartGame()
     {
-        SendClientsMessage("Starting game...");
+        // SendClientsMessage("Starting game...");
         MultiplayerGameManager.Instance.multiplayerCanvas.SetActive(false);
         MahjongManager.mahjongManager.InitializeGame();
     }
