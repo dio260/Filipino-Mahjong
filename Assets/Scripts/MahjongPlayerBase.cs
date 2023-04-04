@@ -61,8 +61,8 @@ public class MahjongPlayerBase : MonoBehaviour
         currentDecision = decision.none;
         closedHandParent.position = transform.position + transform.forward * 0.6f + transform.up * -0.15f;
         Vector3 left = Vector3.Cross(transform.forward.normalized, transform.up.normalized);
-        flowersParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * 0.4f;
-        openHandParent.position = transform.position + transform.forward * 0.8f + transform.up * -0.15f + left * -0.4f;
+        flowersParent.position = transform.position + transform.forward * 0.8f + transform.up * 0.065f + left * 0.4f;
+        openHandParent.position = transform.position + transform.forward * 0.8f + transform.up * 0.065f + left * -0.4f;
 
         male = transform.Find("Male").GetComponent<PlayerAnimations>();
         female = transform.Find("Female").GetComponent<PlayerAnimations>();

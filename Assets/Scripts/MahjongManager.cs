@@ -585,7 +585,7 @@ public class MahjongManager : MonoBehaviour
         //place the discard in the middle of the table
         mostRecentDiscard.transform.position =
                 new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 1, TileBoundaries.bounds.max.x - 1),
-                0.07f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 1, TileBoundaries.bounds.max.z - 1));
+                0.065f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 1, TileBoundaries.bounds.max.z - 1));
 
         yield return new WaitForSeconds(2);
 
