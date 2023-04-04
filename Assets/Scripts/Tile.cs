@@ -26,6 +26,7 @@ public class Tile : MonoBehaviour
     }   
     void Start()
     {
+        Debug.Log("Tile Start Called");
         if(this.transform.parent != null)
             return;
         if (tileType == suit.flower)
@@ -137,6 +138,8 @@ public class Tile : MonoBehaviour
     [PunRPC]
     public void SetTile(int num, suit suit)
     {
+        Debug.Log("Tile Set Called");
+
         this.number = num;
         this.tileType = suit;
         if (tileType == suit.flower)
