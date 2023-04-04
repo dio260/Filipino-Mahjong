@@ -87,7 +87,7 @@ public class HumanPlayer : MahjongPlayerBase
             }
             else
             {
-                discardButton.gameObject.SetActive(true);
+                discardButton.gameObject.SetActive(false);
             }
 
             if (currentState == PlayerState.deciding)
@@ -326,7 +326,7 @@ public class HumanPlayer : MahjongPlayerBase
         {
             StartCoroutine(chowButton.GetComponentInParent<ButtonFlip>().Flip());
         }
-        else if(!canChow && !chowButton.transform.parent.GetComponent<ButtonFlip>().open)
+        else if(!canChow && chowButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(chowButton.GetComponentInParent<ButtonFlip>().Flip());
         }
@@ -335,7 +335,7 @@ public class HumanPlayer : MahjongPlayerBase
         {
             StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }
-        else if(!canWin && !todasButton.transform.parent.GetComponent<ButtonFlip>().open)
+        else if(!canWin && todasButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }

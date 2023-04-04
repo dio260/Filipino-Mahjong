@@ -58,6 +58,10 @@ public class MahjongPlayerBase : MonoBehaviour
     public virtual void Awake()
     {
         win = false;
+        canPong = false;
+        canKang = false;
+        canChow = false;
+        canWin = false;
         currentDecision = decision.none;
         closedHandParent.position = transform.position + transform.forward * 0.6f + transform.up * -0.15f;
         Vector3 left = Vector3.Cross(transform.forward.normalized, transform.up.normalized);
