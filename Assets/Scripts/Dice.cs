@@ -37,7 +37,7 @@ public class Dice : MonoBehaviour
         {
             yield return new WaitForSeconds(0.1f);
         }
-        if(Physics.Raycast(transform.position, Vector3.up, out RaycastHit hit, 1) && hit.collider.isTrigger && hit.collider.gameObject.tag == "Dice")
+        if(Physics.Raycast(transform.position, Vector3.up, out RaycastHit hit, 1, 1 << 6) && hit.collider.isTrigger )
         {
             Debug.Log(hit.collider.gameObject.name);
             rollResult = int.Parse(hit.collider.gameObject.name);
