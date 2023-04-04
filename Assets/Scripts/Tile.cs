@@ -20,9 +20,12 @@ public class Tile : MonoBehaviour
     bool selectedForMeld;
     public MahjongPlayerBase owner;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         tileImage = GetComponentInChildren<Image>();
+    }
+    void Start()
+    {
         if (tileType == suit.flower)
         {
             gameObject.name = tileType.ToString();
@@ -35,34 +38,38 @@ public class Tile : MonoBehaviour
             debugText.text = number + " " + tileType.ToString();
         }
 
-        switch (tileType)
+        if (tileImage.sprite != null)
         {
-            case suit.ball:
-                tileImage.sprite = TileSpriteCaller.sprites.ballsprites[number - 1];
-                break;
-            case suit.stick:
-                tileImage.sprite = TileSpriteCaller.sprites.sticksprites[number - 1];
-                break;
-            case suit.character:
-                tileImage.sprite = TileSpriteCaller.sprites.charsprites[number - 1];
-                break;
-            case suit.flower:
+            switch (tileType)
+            {
+                case suit.ball:
+                    tileImage.sprite = TileSpriteCaller.sprites.ballsprites[number - 1];
+                    break;
+                case suit.stick:
+                    tileImage.sprite = TileSpriteCaller.sprites.sticksprites[number - 1];
+                    break;
+                case suit.character:
+                    tileImage.sprite = TileSpriteCaller.sprites.charsprites[number - 1];
+                    break;
+                case suit.flower:
 
-                if (number == 9)
-                {
-                    tileImage.sprite = TileSpriteCaller.sprites.GetFlower2();
-                }
-                else if (number == 8)
-                {
-                    tileImage.sprite = TileSpriteCaller.sprites.GetFlower1();
-                }
-                else
-                {
-                    tileImage.sprite = TileSpriteCaller.sprites.winddragonsprites[number - 1];
-                }
+                    if (number == 9)
+                    {
+                        tileImage.sprite = TileSpriteCaller.sprites.GetFlower2();
+                    }
+                    else if (number == 8)
+                    {
+                        tileImage.sprite = TileSpriteCaller.sprites.GetFlower1();
+                    }
+                    else
+                    {
+                        tileImage.sprite = TileSpriteCaller.sprites.winddragonsprites[number - 1];
+                    }
 
-                break;
+                    break;
+            }
         }
+
 
     }
 
