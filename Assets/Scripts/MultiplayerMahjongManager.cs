@@ -145,10 +145,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 MahjongManager.mahjongManager.currentPlayer.currentAvatar.PlayWinAnim();
                 break;
             case "stealAnim":
-                foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
-                {
-                    player.currentAvatar.PlayStealAnim();
-                }
+                MahjongManager.mahjongManager.currentPlayer.currentAvatar.PlayStealAnim();
                 break;
         }
     }

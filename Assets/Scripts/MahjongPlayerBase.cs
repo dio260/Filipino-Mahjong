@@ -828,14 +828,16 @@ public class MahjongPlayerBase : MonoBehaviour
                 openHand.AddRange(pongMeld);
                 foreach (Tile tile in pongMeld)
                 {
-                    closedHand.RemoveAt(closedHand.IndexOf(tile));
+                    if (tile != MahjongManager.mahjongManager.mostRecentDiscard)
+                        closedHand.RemoveAt(closedHand.IndexOf(tile));
                 }
                 break;
             case decision.kang:
                 openHand.AddRange(kangMeld);
                 foreach (Tile tile in kangMeld)
                 {
-                    closedHand.RemoveAt(closedHand.IndexOf(tile));
+                    if (tile != MahjongManager.mahjongManager.mostRecentDiscard)
+                        closedHand.RemoveAt(closedHand.IndexOf(tile));
                 }
                 break;
             case decision.chow:
