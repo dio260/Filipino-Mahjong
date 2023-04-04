@@ -200,17 +200,17 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("OnPlayerEnteredRoom() " + other.NickName); // not seen if you're the player connecting
 
-        if (PhotonNetwork.IsMasterClient)
-        {
+        // if (PhotonNetwork.IsMasterClient)
+        // {
 
-            Debug.Log("updating tileset for joined player");
-            //have to do this so everyone has the same tileset
-            foreach (Tile tile in networkedTiles)
-            {
-                tile.RPCTileSet(tile.number, tile.tileType);
-                tile.transform.parent = GameObject.Find("Tiles").transform;
-            }
-        }
+        //     Debug.Log("updating tileset for joined player");
+        //     //have to do this so everyone has the same tileset
+        //     foreach (Tile tile in networkedTiles)
+        //     {
+        //         tile.RPCTileSet(tile.number, tile.tileType);
+        //         tile.transform.parent = GameObject.Find("Tiles").transform;
+        //     }
+        // }
 
 
     }
