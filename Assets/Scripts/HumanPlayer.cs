@@ -302,7 +302,7 @@ public class HumanPlayer : MahjongPlayerBase
         {
             StartCoroutine(pongButton.GetComponentInParent<ButtonFlip>().Flip());
         }
-        else
+        else if (!canPong && pongButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(pongButton.GetComponentInParent<ButtonFlip>().Flip());
         }
@@ -310,7 +310,7 @@ public class HumanPlayer : MahjongPlayerBase
         {
             StartCoroutine(kangButton.GetComponentInParent<ButtonFlip>().Flip());
         }
-        else
+        else if(!canKang && kangButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(kangButton.GetComponentInParent<ButtonFlip>().Flip());
         }
@@ -318,7 +318,7 @@ public class HumanPlayer : MahjongPlayerBase
         {
             StartCoroutine(chowButton.GetComponentInParent<ButtonFlip>().Flip());
         }
-        else
+        else if(!canChow && !chowButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(chowButton.GetComponentInParent<ButtonFlip>().Flip());
         }
