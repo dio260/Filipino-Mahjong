@@ -26,8 +26,9 @@ public class NetworkedPlayer : MonoBehaviourPunCallbacks
         {
             Debug.Log("not mine");
 
-            GetComponent<Camera>().enabled = false;
-            GetComponent<AudioListener>().enabled = false;
+            GetComponent<HumanPlayer>().playerCam.gameObject.SetActive(false);
+            // GetComponent<Camera>().enabled = false;
+            // GetComponent<AudioListener>().enabled = false;
 
             playerCanvas = GetComponentInChildren<Canvas>();
             playerCanvas.gameObject.SetActive(false);
