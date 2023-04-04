@@ -373,7 +373,7 @@ public class MahjongManager : MonoBehaviour
         {
             StartCoroutine(dice.DiceRoll());
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         foreach (Dice dice in die)
         {
             dieRoll += dice.rollResult;
