@@ -51,7 +51,7 @@ public class HumanPlayer : MahjongPlayerBase
         passButton.onClick.AddListener(() => DebugButtonClick(passButton.gameObject.name));
         discardButton.onClick.AddListener(() => DebugButtonClick(discardButton.gameObject.name));
 
-        HideUI();
+        FlipUI();
         discardButton.gameObject.SetActive(false);
     }
 
@@ -374,7 +374,7 @@ public class HumanPlayer : MahjongPlayerBase
     }
     
 
-    public void HideUI()
+    public void FlipUI()
     {
         if (chowButton.transform.parent.GetComponent<ButtonFlip>().open)
         {

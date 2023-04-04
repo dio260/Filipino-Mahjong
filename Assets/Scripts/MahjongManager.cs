@@ -925,6 +925,7 @@ public class MahjongManager : MonoBehaviour
             if (player != currentPlayer)
             {
                 player.currentDecision = decision.none;
+                player.GetComponent<HumanPlayer>().FlipUI();
             }
         }
 
