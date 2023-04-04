@@ -65,19 +65,23 @@ public class HumanPlayer : MahjongPlayerBase
     {
         if (MahjongManager.mahjongManager.GetGameState() == GameState.playing)
         {
-            //bird's eye board view;
-            if (Input.GetKey(KeyCode.Space))
+            if (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine))
             {
-                playerCam.transform.rotation = Quaternion.Euler(Vector3.left * -90);
-                playerCam.transform.position = new Vector3(0, 1.5f, 0);
-                playerCanvas.SetActive(false);
+                //bird's eye board view;
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    playerCam.transform.rotation = Quaternion.Euler(Vector3.left * -90);
+                    playerCam.transform.position = new Vector3(0, 1.5f, 0);
+                    playerCanvas.SetActive(false);
+                }
+                else
+                {
+                    playerCam.transform.rotation = Quaternion.Euler(camRotation);
+                    playerCam.transform.localPosition = camPosition;
+                    playerCanvas.SetActive(true);
+                }
             }
-            else
-            {
-                playerCam.transform.rotation = Quaternion.Euler(camRotation);
-                playerCam.transform.localPosition = camPosition;
-                playerCanvas.SetActive(true);
-            }
+
 
             //setting buttons active when conditions are fulfilled
             if (discardChoice != null)
