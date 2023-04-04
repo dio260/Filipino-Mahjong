@@ -87,10 +87,11 @@ public class HumanPlayer : MahjongPlayerBase
             }
             else
             {
+                Debug.Log("discard button off");
                 discardButton.gameObject.SetActive(false);
             }
 
-            if (currentState == PlayerState.deciding)
+            if (currentState == PlayerState.deciding && currentDecision == decision.none)
             {
                 passButton.gameObject.SetActive(true);
             }
@@ -140,7 +141,8 @@ public class HumanPlayer : MahjongPlayerBase
                                 }
                                 else
                                 {
-                                    discardChoice = hit.transform.GetComponent<Tile>();
+                                    SelectDiscardTile(hit.transform.GetComponent<Tile>());
+                                    // discardChoice = hit.transform.GetComponent<Tile>();
                                 }
                                 break;
                         }
@@ -165,8 +167,8 @@ public class HumanPlayer : MahjongPlayerBase
     {
         if (tileSwap != null && tile != tileSwap)
         {
-            Vector3 newPos = tile.transform.position;
-            tile.transform.position = tileSwap.transform.position;
+            Vector3 newPos = new Vector3(tile.transform.position.x, tileSwap.transform.position.y, tile.transform.position.z);
+            tile.transform.position = new Vector3(tileSwap.transform.position.x, tile.transform.position.y, tileSwap.transform.position.z);
             tileSwap.transform.position = newPos;
             tileSwap = null;
             return;
@@ -318,7 +320,7 @@ public class HumanPlayer : MahjongPlayerBase
         {
             StartCoroutine(kangButton.GetComponentInParent<ButtonFlip>().Flip());
         }
-        else if(!canKang && kangButton.transform.parent.GetComponent<ButtonFlip>().open)
+        else if (!canKang && kangButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(kangButton.GetComponentInParent<ButtonFlip>().Flip());
         }
@@ -326,7 +328,7 @@ public class HumanPlayer : MahjongPlayerBase
         {
             StartCoroutine(chowButton.GetComponentInParent<ButtonFlip>().Flip());
         }
-        else if(!canChow && chowButton.transform.parent.GetComponent<ButtonFlip>().open)
+        else if (!canChow && chowButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(chowButton.GetComponentInParent<ButtonFlip>().Flip());
         }
@@ -335,7 +337,7 @@ public class HumanPlayer : MahjongPlayerBase
         {
             StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }
-        else if(!canWin && todasButton.transform.parent.GetComponent<ButtonFlip>().open)
+        else if (!canWin && todasButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }
@@ -345,7 +347,7 @@ public class HumanPlayer : MahjongPlayerBase
     {
         StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
     }
-    
+
     public void SelectMeldTile(Tile clicked)
     {
         Debug.Log("Selected " + clicked.ToString() + " for a Meld");
@@ -369,6 +371,7 @@ public class HumanPlayer : MahjongPlayerBase
             CalculateHandOptions();
         }
     }
+    
 
     public void HideUI()
     {

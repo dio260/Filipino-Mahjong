@@ -920,6 +920,18 @@ public class MahjongPlayerBase : MonoBehaviour
         discardChoice = tile;
     }
 
+    public void SelectDiscardTile(Tile clicked)
+    {
+        Debug.Log("Selected " + clicked.ToString() + " to discard");
+
+        if (discardChoice != null)
+        {
+            discardChoice.transform.position -= Vector3.up * 0.025f;
+        }
+        discardChoice = clicked;
+        clicked.transform.position += Vector3.up * 0.025f;
+    }
+
     //to be called when the player runs out of time
     public void ForceDiscard()
     {
