@@ -23,9 +23,11 @@ public class Tile : MonoBehaviour
     void Awake()
     {
         tileImage = GetComponentInChildren<Image>();
-    }
+    }   
     void Start()
     {
+        if(GetComponent<PhotonView>() != null)
+            return;
         if (tileType == suit.flower)
         {
             gameObject.name = tileType.ToString();
@@ -37,39 +39,35 @@ public class Tile : MonoBehaviour
             gameObject.name = number + " " + tileType.ToString();
             debugText.text = number + " " + tileType.ToString();
         }
-
-        if (tileImage.sprite != null)
+        
+        switch (tileType)
         {
-            switch (tileType)
-            {
-                case suit.ball:
-                    tileImage.sprite = TileSpriteCaller.sprites.ballsprites[number - 1];
-                    break;
-                case suit.stick:
-                    tileImage.sprite = TileSpriteCaller.sprites.sticksprites[number - 1];
-                    break;
-                case suit.character:
-                    tileImage.sprite = TileSpriteCaller.sprites.charsprites[number - 1];
-                    break;
-                case suit.flower:
+            case suit.ball:
+                tileImage.sprite = TileSpriteCaller.sprites.ballsprites[number - 1];
+                break;
+            case suit.stick:
+                tileImage.sprite = TileSpriteCaller.sprites.sticksprites[number - 1];
+                break;
+            case suit.character:
+                tileImage.sprite = TileSpriteCaller.sprites.charsprites[number - 1];
+                break;
+            case suit.flower:
 
-                    if (number == 9)
-                    {
-                        tileImage.sprite = TileSpriteCaller.sprites.GetFlower2();
-                    }
-                    else if (number == 8)
-                    {
-                        tileImage.sprite = TileSpriteCaller.sprites.GetFlower1();
-                    }
-                    else
-                    {
-                        tileImage.sprite = TileSpriteCaller.sprites.winddragonsprites[number - 1];
-                    }
+                if (number == 9)
+                {
+                    tileImage.sprite = TileSpriteCaller.sprites.GetFlower2();
+                }
+                else if (number == 8)
+                {
+                    tileImage.sprite = TileSpriteCaller.sprites.GetFlower1();
+                }
+                else
+                {
+                    tileImage.sprite = TileSpriteCaller.sprites.winddragonsprites[number - 1];
+                }
 
-                    break;
-            }
+                break;
         }
-
 
     }
 
