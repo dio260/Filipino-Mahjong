@@ -26,49 +26,49 @@ public class Tile : MonoBehaviour
     }   
     void Start()
     {
-        Debug.Log("Tile Start Called");
-        if(!PhotonNetwork.IsMasterClient)
-            return;
-        if (tileType == suit.flower)
-        {
-            gameObject.name = tileType.ToString();
-            debugText.text = tileType.ToString();
+        // Debug.Log("Tile Start Called");
+        // if(!PhotonNetwork.IsMasterClient)
+        //     return;
+        // if (tileType == suit.flower)
+        // {
+        //     gameObject.name = tileType.ToString();
+        //     debugText.text = tileType.ToString();
 
-        }
-        else
-        {
-            gameObject.name = number + " " + tileType.ToString();
-            debugText.text = number + " " + tileType.ToString();
-        }
+        // }
+        // else
+        // {
+        //     gameObject.name = number + " " + tileType.ToString();
+        //     debugText.text = number + " " + tileType.ToString();
+        // }
         
-        switch (tileType)
-        {
-            case suit.ball:
-                tileImage.sprite = TileSpriteCaller.sprites.ballsprites[number - 1];
-                break;
-            case suit.stick:
-                tileImage.sprite = TileSpriteCaller.sprites.sticksprites[number - 1];
-                break;
-            case suit.character:
-                tileImage.sprite = TileSpriteCaller.sprites.charsprites[number - 1];
-                break;
-            case suit.flower:
+        // switch (tileType)
+        // {
+        //     case suit.ball:
+        //         tileImage.sprite = TileSpriteCaller.sprites.ballsprites[number - 1];
+        //         break;
+        //     case suit.stick:
+        //         tileImage.sprite = TileSpriteCaller.sprites.sticksprites[number - 1];
+        //         break;
+        //     case suit.character:
+        //         tileImage.sprite = TileSpriteCaller.sprites.charsprites[number - 1];
+        //         break;
+        //     case suit.flower:
 
-                if (number == 9)
-                {
-                    tileImage.sprite = TileSpriteCaller.sprites.GetFlower2();
-                }
-                else if (number == 8)
-                {
-                    tileImage.sprite = TileSpriteCaller.sprites.GetFlower1();
-                }
-                else
-                {
-                    tileImage.sprite = TileSpriteCaller.sprites.winddragonsprites[number - 1];
-                }
+        //         if (number == 9)
+        //         {
+        //             tileImage.sprite = TileSpriteCaller.sprites.GetFlower2();
+        //         }
+        //         else if (number == 8)
+        //         {
+        //             tileImage.sprite = TileSpriteCaller.sprites.GetFlower1();
+        //         }
+        //         else
+        //         {
+        //             tileImage.sprite = TileSpriteCaller.sprites.winddragonsprites[number - 1];
+        //         }
 
-                break;
-        }
+        //         break;
+        // }
 
     }
 
