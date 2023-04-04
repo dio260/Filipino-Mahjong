@@ -822,6 +822,7 @@ public class MahjongPlayerBase : MonoBehaviour
         //add stolen tile and its meld to the open hand
         // openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
         MahjongManager.mahjongManager.mostRecentDiscard.owner = this;
+        // MahjongManager.mahjongManager.mostRecentDiscard.transform.parent = openHandParent.transform;
         switch (currentDecision)
         {
             case decision.pong:
@@ -830,6 +831,7 @@ public class MahjongPlayerBase : MonoBehaviour
                 {
                     if (tile != MahjongManager.mahjongManager.mostRecentDiscard)
                         closedHand.RemoveAt(closedHand.IndexOf(tile));
+                    tile.transform.parent = openHandParent.transform;
                 }
                 break;
             case decision.kang:
@@ -838,6 +840,7 @@ public class MahjongPlayerBase : MonoBehaviour
                 {
                     if (tile != MahjongManager.mahjongManager.mostRecentDiscard)
                         closedHand.RemoveAt(closedHand.IndexOf(tile));
+                    tile.transform.parent = openHandParent.transform;
                 }
                 break;
             case decision.chow:
@@ -848,6 +851,7 @@ public class MahjongPlayerBase : MonoBehaviour
                 {
                     if (tile != MahjongManager.mahjongManager.mostRecentDiscard)
                         closedHand.RemoveAt(closedHand.IndexOf(tile));
+                    tile.transform.parent = openHandParent.transform;
                 }
                 break;
         }
@@ -896,6 +900,7 @@ public class MahjongPlayerBase : MonoBehaviour
     {
         MahjongManager.mahjongManager.mostRecentDiscard = discardChoice;
         closedHand.RemoveAt(closedHand.IndexOf(discardChoice));
+        discardChoice.transform.parent = null;
         discardChoice.owner = null;
         drawnTile = null;
         discardChoice = null;

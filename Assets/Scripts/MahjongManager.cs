@@ -584,8 +584,8 @@ public class MahjongManager : MonoBehaviour
         mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);
         //place the discard in the middle of the table
         mostRecentDiscard.transform.position =
-                new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 1, TileBoundaries.bounds.max.x - 1),
-                0.065f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 1, TileBoundaries.bounds.max.z - 1));
+                new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 1.5f, TileBoundaries.bounds.max.x - 1.5f),
+                0.065f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 1.5f, TileBoundaries.bounds.max.z - 1.5f));
 
         yield return new WaitForSeconds(2);
 
@@ -796,7 +796,7 @@ public class MahjongManager : MonoBehaviour
         //place the discard in the middle of the table
         mostRecentDiscard.transform.position =
                 new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 1.5f, TileBoundaries.bounds.max.x - 1.5f),
-                0.07f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 1.5f, TileBoundaries.bounds.max.z - 1.5f));
+                0.065f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 1.5f, TileBoundaries.bounds.max.z - 1.5f));
 
         StartCoroutine(BetweenTurn());
     }
