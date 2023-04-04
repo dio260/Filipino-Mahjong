@@ -740,6 +740,8 @@ public class MahjongManager : MonoBehaviour
 
         //set to wait
         player.SetPlayerState(PlayerState.waiting);
+        
+        yield return new WaitForSeconds(2);
 
         //flip it up to be visible
         mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);
@@ -748,7 +750,6 @@ public class MahjongManager : MonoBehaviour
                 new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 1, TileBoundaries.bounds.max.x - 1),
                 0.07f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 1, TileBoundaries.bounds.max.z - 1));
 
-        yield return new WaitForSeconds(2);
 
         StartCoroutine(BetweenTurn());
     }
@@ -764,6 +765,10 @@ public class MahjongManager : MonoBehaviour
             {
                 player.SetPlayerState(PlayerState.deciding);
                 player.CalculateHandOptions();
+            }
+            else
+            {
+                player.currentDecision = decision.pass;
             }
         }
 

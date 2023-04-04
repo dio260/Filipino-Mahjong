@@ -87,7 +87,6 @@ public class HumanPlayer : MahjongPlayerBase
             }
             else
             {
-                Debug.Log("discard button off");
                 discardButton.gameObject.SetActive(false);
             }
 
