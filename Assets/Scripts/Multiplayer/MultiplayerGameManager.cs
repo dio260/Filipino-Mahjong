@@ -131,21 +131,21 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                     case 1:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, -1.5f), Quaternion.identity, 0);
                         player.name = PhotonNetwork.NickName;
-                        player.GetComponentInChildren<MeshRenderer>().material = playerColors[0];
+                        // player.GetComponentInChildren<MeshRenderer>().material = playerColors[0];
                         players.Add(player.GetComponent<MahjongPlayerBase>());
                         Debug.Log("We are spawning player " + PhotonNetwork.NickName + " at position: " + player.transform.position + " Current Players: " + PhotonNetwork.CurrentRoom.PlayerCount);
                         break;
                     case 2:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(1.5f, 0.25f, 0f), Quaternion.AngleAxis(-90, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
-                        player.GetComponentInChildren<MeshRenderer>().material = playerColors[1];
+                        // player.GetComponentInChildren<MeshRenderer>().material = playerColors[1];
                         players.Add(player.GetComponent<MahjongPlayerBase>());
                         Debug.Log("We are spawning player " + PhotonNetwork.NickName + " at position: " + player.transform.position + " Current Players: " + PhotonNetwork.CurrentRoom.PlayerCount);
                         break;
                     case 3:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, 1.5f), Quaternion.AngleAxis(-180, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
-                        player.GetComponentInChildren<MeshRenderer>().material = playerColors[2];
+                        // player.GetComponentInChildren<MeshRenderer>().material = playerColors[2];
                         players.Add(player.GetComponent<MahjongPlayerBase>());
                         Debug.Log("We are spawning player " + PhotonNetwork.NickName + " at position: " + player.transform.position + " Current Players: " + PhotonNetwork.CurrentRoom.PlayerCount);
 
@@ -153,7 +153,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
                     case 4:
                         player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(-1.5f, 0.25f, 0f), Quaternion.AngleAxis(-270, Vector3.up), 0);
                         player.name = PhotonNetwork.NickName;
-                        player.GetComponentInChildren<MeshRenderer>().material = playerColors[3];
+                        // player.GetComponentInChildren<MeshRenderer>().material = playerColors[3];
                         players.Add(player.GetComponent<MahjongPlayerBase>());
                         Debug.Log("We are spawning player " + PhotonNetwork.NickName + " at position: " + player.transform.position + " Current Players: " + PhotonNetwork.CurrentRoom.PlayerCount);
 
@@ -253,7 +253,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
             if(players[x].gameObject.name != PhotonNetwork.PlayerList[x].NickName)
             {
                 players[x].gameObject.name = PhotonNetwork.PlayerList[x].NickName;
-                players[x].gameObject.GetComponentInChildren<MeshRenderer>().material = playerColors[x];
+                // players[x].gameObject.GetComponentInChildren<MeshRenderer>().material = playerColors[x];
                 
             }
             multiplayerCanvas.transform.Find("Player List").Find("Player List Text").GetComponent<TMP_Text>().text += players[x].gameObject.name + '\n';

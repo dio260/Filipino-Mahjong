@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f4b62422ca9344e972ae719c1924da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  win: 0
   currentDecision: 0
   discardChoice: {fileID: 0}
   currentState: 0
@@ -2602,7 +2603,7 @@ GameObject:
   - component: {fileID: 3475310055815371804}
   - component: {fileID: 8773363633530811762}
   m_Layer: 5
-  m_Name: Player Canvas (1)
+  m_Name: Player Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
