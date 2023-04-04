@@ -55,7 +55,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         // photonView = PhotonView.Get(this);
         multiplayerCanvas = GameObject.Find("Multiplayer Canvas");
         multiplayerCanvas.transform.Find("Room Title").GetComponent<TMP_Text>().text = "Room Name: " + PhotonNetwork.CurrentRoom.Name;
-        multiplayerCanvas.transform.Find("Game Start Button").gameObject.SetActive(true);
+        multiplayerCanvas.transform.Find("GameStartButton").gameObject.SetActive(true);
         multiplayerCanvas.transform.Find("RestartButton").gameObject.SetActive(false);
         multiplayerCanvas.transform.Find("QuitLobbyButton").gameObject.SetActive(false);
         
