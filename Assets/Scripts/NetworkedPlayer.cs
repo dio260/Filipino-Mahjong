@@ -9,6 +9,8 @@ public class NetworkedPlayer : MonoBehaviourPunCallbacks
     [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
     public static GameObject LocalPlayerInstance;
     public bool playAgain;
+
+    Canvas playerCanvas;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +28,9 @@ public class NetworkedPlayer : MonoBehaviourPunCallbacks
 
             GetComponent<Camera>().enabled = false;
             GetComponent<AudioListener>().enabled = false;
-            GetComponentInChildren<Canvas>().gameObject.SetActive(false);
+
+            playerCanvas = GetComponentInChildren<Canvas>();
+            playerCanvas.gameObject.SetActive(false);
             // Destroy(this);
         }
     }
