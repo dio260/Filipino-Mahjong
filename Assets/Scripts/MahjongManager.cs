@@ -385,15 +385,12 @@ public class MahjongManager : MonoBehaviour
         yield return new WaitForSeconds(2);
 
 
-        if (!debug)
+
+        if (network)
             dealer = players[dieRollResult];
         else
-        {
-            if (network)
-                dealer = players[0];
-            else
-                dealer = FindObjectOfType<HumanPlayer>();
-        }
+            dealer = FindObjectOfType<HumanPlayer>();
+
 
         //send the network message to inform everyone of dealer
         if (network)
@@ -527,9 +524,9 @@ public class MahjongManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
-        if(player.CalculateNormalWin() && player.CalculateSevenPairs())
+        if (player.CalculateNormalWin() && player.CalculateSevenPairs())
         {
-            if(player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
+            if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
             {
                 human.FlipWinButton();
             }
@@ -537,10 +534,8 @@ public class MahjongManager : MonoBehaviour
 
         //do a time based implementation so people cannot stall out the turn;
         int time;
-        if (!debug)
-            time = 60;
-        else
-            time = 300;
+        // time = 60;
+        time = 300;
         for (int i = time; i > 0; i--)
         {
             if (network)
@@ -553,7 +548,7 @@ public class MahjongManager : MonoBehaviour
             }
             yield return new WaitForSeconds(1);
 
-            if(player.win)
+            if (player.win)
             {
                 StartCoroutine(GameWin());
             }
@@ -588,8 +583,8 @@ public class MahjongManager : MonoBehaviour
         //flip it up to be visible
         mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);
         //place the discard in the middle of the table
-        mostRecentDiscard.transform.position = 
-                new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 1, TileBoundaries.bounds.max.x - 1), 
+        mostRecentDiscard.transform.position =
+                new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 1, TileBoundaries.bounds.max.x - 1),
                 0.07f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 1, TileBoundaries.bounds.max.z - 1));
 
         yield return new WaitForSeconds(2);
@@ -690,9 +685,9 @@ public class MahjongManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
-        if(player.CalculateNormalWin() && player.CalculateSevenPairs())
+        if (player.CalculateNormalWin() && player.CalculateSevenPairs())
         {
-            if(player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
+            if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
             {
                 human.FlipWinButton();
             }
@@ -706,10 +701,8 @@ public class MahjongManager : MonoBehaviour
 
         //do a time based implementation so people cannot stall out the turn;
         int time;
-        if (!debug)
-            time = 60;
-        else
-            time = 300;
+        // time = 60;
+        time = 300;
         for (int i = time; i > 0; i--)
         {
             if (network)
@@ -751,8 +744,8 @@ public class MahjongManager : MonoBehaviour
         //flip it up to be visible
         mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);
         //place the discard in the middle of the table
-        mostRecentDiscard.transform.position = 
-                new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 1, TileBoundaries.bounds.max.x - 1), 
+        mostRecentDiscard.transform.position =
+                new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 1, TileBoundaries.bounds.max.x - 1),
                 0.07f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 1, TileBoundaries.bounds.max.z - 1));
 
         yield return new WaitForSeconds(2);
@@ -776,10 +769,8 @@ public class MahjongManager : MonoBehaviour
 
         bool allDone = true;
         int time;
-        if (!debug)
-            time = 30;
-        else
-            time = 300;
+        // time = 30;
+        time = 300;
         for (int i = time; i > 0; i--)
         {
             allDone = true;
@@ -870,7 +861,7 @@ public class MahjongManager : MonoBehaviour
 
         currentPlayer = nextPlayer;
 
-        if(nextPlayer.currentDecision == decision.pass)
+        if (nextPlayer.currentDecision == decision.pass)
         {
             mostRecentDiscard.transform.parent = DeadTileParent.transform;
             mostRecentDiscard = null;
