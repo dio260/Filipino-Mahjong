@@ -63,25 +63,22 @@ public class HumanPlayer : MahjongPlayerBase
     // Update is called once per frame
     void Update()
     {
-        if (MahjongManager.mahjongManager.GetGameState() == GameState.playing)
+        if (MahjongManager.mahjongManager.GetGameState() == GameState.playing && (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine)))
         {
-            if (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine))
-            {
-                //bird's eye board view;
-                if (Input.GetKey(KeyCode.Space))
-                {
-                    playerCam.transform.rotation = Quaternion.Euler(Vector3.left * -90);
-                    playerCam.transform.position = new Vector3(0, 1.5f, 0);
-                    playerCanvas.SetActive(false);
-                }
-                else
-                {
-                    playerCam.transform.rotation = Quaternion.Euler(camRotation);
-                    playerCam.transform.localPosition = camPosition;
-                    playerCanvas.SetActive(true);
-                }
-            }
 
+            //bird's eye board view;
+            if (Input.GetKey(KeyCode.Space))
+            {
+                playerCam.transform.rotation = Quaternion.Euler(Vector3.left * -90);
+                playerCam.transform.position = new Vector3(0, 1.5f, 0);
+                playerCanvas.SetActive(false);
+            }
+            else
+            {
+                playerCam.transform.rotation = Quaternion.Euler(camRotation);
+                playerCam.transform.localPosition = camPosition;
+                playerCanvas.SetActive(true);
+            }
 
             //setting buttons active when conditions are fulfilled
             if (discardChoice != null)
@@ -92,7 +89,7 @@ public class HumanPlayer : MahjongPlayerBase
             {
                 discardButton.gameObject.SetActive(true);
             }
-            
+
             if (currentState == PlayerState.deciding)
             {
                 passButton.gameObject.SetActive(true);
@@ -102,69 +99,61 @@ public class HumanPlayer : MahjongPlayerBase
                 passButton.gameObject.SetActive(false);
             }
 
-            // if(canWin)
-            // {
-            //     todasButton.gameObject.SetActive(true);
-            // }
-            // else
-            // {
-            //     todasButton.gameObject.SetActive(false);
-            // }
 
-            if (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine))
+            // if (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine))
+            // {
+            // Debug.Log(new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0));
+            Vector3 mouseWorldPos = playerCam.ViewportToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCam.nearClipPlane));
+
+            Ray mouseWorldRay = playerCam.ScreenPointToRay(Input.mousePosition);
+            Debug.DrawRay(mouseWorldRay.origin, mouseWorldRay.direction, Color.blue * Vector3.Distance(transform.position, closedHandParent.position), 0f);
+            if (Physics.Raycast(mouseWorldRay, out RaycastHit hit, Vector3.Distance(transform.position, closedHandParent.position))
+                && hit.transform.GetComponent<Tile>())
+            // if (Physics.Raycast(mouseWorldRay, out RaycastHit hit, 5f))
             {
-                // Debug.Log(new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0));
-                Vector3 mouseWorldPos = playerCam.ViewportToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCam.nearClipPlane));
-
-                Ray mouseWorldRay = playerCam.ScreenPointToRay(Input.mousePosition);
-                Debug.DrawRay(mouseWorldRay.origin, mouseWorldRay.direction, Color.blue * Vector3.Distance(transform.position, closedHandParent.position), 0f);
-                if (Physics.Raycast(mouseWorldRay, out RaycastHit hit, Vector3.Distance(transform.position, closedHandParent.position))
-                    && hit.transform.GetComponent<Tile>())
-                // if (Physics.Raycast(mouseWorldRay, out RaycastHit hit, 5f))
+                // Debug.Log("touched tile at " + hit.point);
+                if (closedHandParent.Find(hit.transform.name) != null)
                 {
-                    // Debug.Log("touched tile at " + hit.point);
-                    if (closedHandParent.Find(hit.transform.name) != null)
+                    if (Input.GetMouseButtonDown(0) && currentState != PlayerState.waiting)
                     {
-                        if (Input.GetMouseButtonDown(0) && currentState != PlayerState.waiting)
+                        switch (currentState)
                         {
-                            switch (currentState)
-                            {
-                                case PlayerState.deciding:
+                            case PlayerState.deciding:
 
-                                    if (this != MahjongManager.mahjongManager.currentPlayer)
-                                    {
-                                        if (networked)
-                                        {
-                                            hit.transform.GetComponent<Tile>().TileRPCCall("SelectForMeld");
-                                        }
-                                        else
-                                        {
-                                            SelectMeldTile(hit.transform.GetComponent<Tile>());
-                                        }
-                                    }
-                                    break;
-                                case PlayerState.discarding:
-                                    Debug.Log("Selected " + hit.transform.GetComponent<Tile>().ToString() + " to discard");
+                                if (this != MahjongManager.mahjongManager.currentPlayer)
+                                {
                                     if (networked)
                                     {
-                                        hit.transform.GetComponent<Tile>().TileRPCCall("PlayerDiscard");
+                                        hit.transform.GetComponent<Tile>().TileRPCCall("SelectForMeld");
                                     }
                                     else
                                     {
-                                        discardChoice = hit.transform.GetComponent<Tile>();
+                                        SelectMeldTile(hit.transform.GetComponent<Tile>());
                                     }
-                                    break;
-                            }
-
-                        }
-                        else if (Input.GetMouseButtonDown(1))
-                        {
-                            Debug.Log("holding tile to swap");
-                            SwapTilePosition(hit.transform.gameObject);
+                                }
+                                break;
+                            case PlayerState.discarding:
+                                Debug.Log("Selected " + hit.transform.GetComponent<Tile>().ToString() + " to discard");
+                                if (networked)
+                                {
+                                    hit.transform.GetComponent<Tile>().TileRPCCall("PlayerDiscard");
+                                }
+                                else
+                                {
+                                    discardChoice = hit.transform.GetComponent<Tile>();
+                                }
+                                break;
                         }
 
                     }
+                    else if (Input.GetMouseButtonDown(1))
+                    {
+                        Debug.Log("holding tile to swap");
+                        SwapTilePosition(hit.transform.gameObject);
+                    }
+
                 }
+                // }
             }
 
         }
@@ -284,9 +273,17 @@ public class HumanPlayer : MahjongPlayerBase
         {
             canPong = true;
         }
+        else
+        {
+            canPong = false;
+        }
         if (kangMeld.Count == 4)
         {
             canKang = true;
+        }
+        else
+        {
+            canKang = false;
         }
         if (chowMeldLeft.Count == 3
         || chowMeldMiddle.Count == 3
@@ -296,16 +293,32 @@ public class HumanPlayer : MahjongPlayerBase
         {
             canChow = true;
         }
+        else
+        {
+            canChow = false;
+        }
 
-        if (canPong)
+        if (canPong && !pongButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(pongButton.GetComponentInParent<ButtonFlip>().Flip());
         }
-        if (canKang)
+        else
+        {
+            StartCoroutine(pongButton.GetComponentInParent<ButtonFlip>().Flip());
+        }
+        if (canKang && !kangButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(kangButton.GetComponentInParent<ButtonFlip>().Flip());
         }
-        if (canChow)
+        else
+        {
+            StartCoroutine(kangButton.GetComponentInParent<ButtonFlip>().Flip());
+        }
+        if (canChow && !chowButton.transform.parent.GetComponent<ButtonFlip>().open)
+        {
+            StartCoroutine(chowButton.GetComponentInParent<ButtonFlip>().Flip());
+        }
+        else
         {
             StartCoroutine(chowButton.GetComponentInParent<ButtonFlip>().Flip());
         }
