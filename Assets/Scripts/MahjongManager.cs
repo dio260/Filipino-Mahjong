@@ -941,7 +941,7 @@ public class MahjongManager : MonoBehaviour
         {
             if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
             {
-                Debug.Log(message);
+                // Debug.Log(message);
                 human.debugText.text = message;
             }
         }
