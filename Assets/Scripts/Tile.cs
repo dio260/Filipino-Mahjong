@@ -26,7 +26,7 @@ public class Tile : MonoBehaviour
     }   
     void Start()
     {
-        if(GetComponent<PhotonView>() != null)
+        if(this.transform.parent != null)
             return;
         if (tileType == suit.flower)
         {
