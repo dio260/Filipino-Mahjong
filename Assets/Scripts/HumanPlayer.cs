@@ -214,6 +214,14 @@ public class HumanPlayer : MahjongPlayerBase
             canWin = true;
             // StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }
+        
+        
+
+        pongMeld = new List<Tile> { discard };
+        chowMeldLeft = new List<Tile> { discard };
+        chowMeldMiddle = new List<Tile> { discard };
+        chowMeldRight = new List<Tile> { discard };
+        kangMeld = new List<Tile> { discard };
 
         //auto calculate kang as a bandaid
         foreach (Tile tile in closedHand)
@@ -223,12 +231,6 @@ public class HumanPlayer : MahjongPlayerBase
                 kangMeld.Add(tile);
             }
         }
-
-        pongMeld = new List<Tile> { discard };
-        chowMeldLeft = new List<Tile> { discard };
-        chowMeldMiddle = new List<Tile> { discard };
-        chowMeldRight = new List<Tile> { discard };
-        kangMeld = new List<Tile> { discard };
 
         foreach (Tile tile in selectedTiles)
         {

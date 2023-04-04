@@ -839,6 +839,7 @@ public class MahjongPlayerBase : MonoBehaviour
                     if (tile != MahjongManager.mahjongManager.mostRecentDiscard)
                         closedHand.RemoveAt(closedHand.IndexOf(tile));
                 }
+                DrawKangTile();
                 break;
             case decision.chow:
                 selectedTiles.Add(MahjongManager.mahjongManager.mostRecentDiscard);
@@ -869,6 +870,12 @@ public class MahjongPlayerBase : MonoBehaviour
         // closedHand.Add(drawnTile);
         MahjongManager.mahjongManager.wall.RemoveAt(MahjongManager.mahjongManager.wall.Count - 1);
         // ArrangeTiles();
+    }
+    //draw a flower tile from the flower end of the wall
+    public void DrawKangTile()
+    {
+        drawnTile = MahjongManager.mahjongManager.wall[MahjongManager.mahjongManager.wall.Count - 1];
+        MahjongManager.mahjongManager.wall.RemoveAt(MahjongManager.mahjongManager.wall.Count - 1);
     }
 
     //declare a tile to discard on your turn
