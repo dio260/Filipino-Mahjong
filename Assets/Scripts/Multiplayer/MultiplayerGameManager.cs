@@ -222,6 +222,15 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player other)
     {
         Debug.Log("OnPlayerLeftRoom() " + other.NickName); // seen when other disconnects
+        
+        for(int x = 0; x < MahjongManager.mahjongManager.players.Count; x++)
+        {
+            if(MahjongManager.mahjongManager.players[x] == null)
+            {
+                MahjongManager.mahjongManager.players.RemoveAt(x);
+                x--;
+            }
+        }
     }
 
     /// <summary>

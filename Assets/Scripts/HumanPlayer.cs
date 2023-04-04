@@ -88,6 +88,11 @@ public class HumanPlayer : MahjongPlayerBase
             {
                 discardButton.gameObject.SetActive(true);
             }
+            else
+            {
+                discardButton.gameObject.SetActive(true);
+            }
+            
             if (currentState == PlayerState.deciding)
             {
                 passButton.gameObject.SetActive(true);
