@@ -85,7 +85,7 @@ public class Tile : MonoBehaviour
     public void RPCTileSet(int num, suit suit)
     {
         PhotonView photonView = PhotonView.Get(this);
-        photonView.RPC("SetTile", RpcTarget.Others, num, suit);
+        photonView.RPC("SetTile", RpcTarget.All, num, suit);
     }
 
     // public void RPCTileAdd()
