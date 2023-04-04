@@ -73,6 +73,9 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         {
            
             PhotonNetwork.InstantiateRoomObject(this.gameManagerPrefab.name, Vector3.zero, Quaternion.identity);
+            GameObject dice = PhotonNetwork.InstantiateRoomObject(this.dicePrefab.name, Vector3.zero, Quaternion.identity);
+            PhotonNetwork.InstantiateRoomObject(this.dicePrefab.name, Vector3.zero, Quaternion.identity);
+
             // Let's instantiate the tiles
             for (int x = 0; x < 144; x++)
             {

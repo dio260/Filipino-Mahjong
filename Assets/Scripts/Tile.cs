@@ -22,6 +22,7 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        tileImage = GetComponentInChildren<Image>();
         if (tileType == suit.flower)
         {
             gameObject.name = tileType.ToString();
