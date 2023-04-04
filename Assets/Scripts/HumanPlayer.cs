@@ -32,7 +32,7 @@ public class HumanPlayer : MahjongPlayerBase
         chowButton = playerCanvas.transform.Find("Chow").GetComponentInChildren<Button>();
         todasButton = playerCanvas.transform.Find("Todas").GetComponentInChildren<Button>();
 
-        
+
         sortButton.onClick.AddListener(() => VisuallySortTiles());
         todasButton.onClick.AddListener(() => DeclareWin());
         pongButton.onClick.AddListener(() => MakeDecision(decision.pong));
@@ -40,7 +40,7 @@ public class HumanPlayer : MahjongPlayerBase
         chowButton.onClick.AddListener(() => MakeDecision(decision.chow));
         passButton.onClick.AddListener(() => MakeDecision(decision.pass));
         discardButton.onClick.AddListener(() => DeclareDiscard());
-        
+
 
         //button debugs
         sortButton.onClick.AddListener(() => DebugButtonClick(sortButton.gameObject.name));
@@ -66,10 +66,10 @@ public class HumanPlayer : MahjongPlayerBase
         if (MahjongManager.mahjongManager.GetGameState() == GameState.playing)
         {
             //bird's eye board view;
-            if(Input.GetKey(KeyCode.Space))
+            if (Input.GetKey(KeyCode.Space))
             {
                 playerCam.transform.rotation = Quaternion.Euler(Vector3.left * -90);
-                playerCam.transform.position = new Vector3(0,1.5f,0);
+                playerCam.transform.position = new Vector3(0, 1.5f, 0);
                 playerCanvas.SetActive(false);
             }
             else
@@ -197,18 +197,15 @@ public class HumanPlayer : MahjongPlayerBase
         closedHand[0].tileType == discard.tileType)
         {
             //GUI stuff probably needs to be moved to Human as well
-            // todasButton.gameObject.SetActive(true);
-            canWin = true;
+            StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }
         else if (CalculateSevenPairs())
         {
-            // todasButton.gameObject.SetActive(true);
-            canWin = true;
+            StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }
         else if (CalculateNormalWin())
         {
-            // todasButton.gameObject.SetActive(true);
-            canWin = true;
+            StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }
 
         //auto calculate kang as a bandaid
@@ -293,18 +290,22 @@ public class HumanPlayer : MahjongPlayerBase
 
         if (canPong)
         {
-            pongButton.gameObject.SetActive(true);
+            StartCoroutine(pongButton.GetComponentInParent<ButtonFlip>().Flip());
         }
         if (canKang)
         {
-            kangButton.gameObject.SetActive(true);
+            StartCoroutine(kangButton.GetComponentInParent<ButtonFlip>().Flip());
         }
         if (canChow)
         {
-            chowButton.gameObject.SetActive(true);
+            StartCoroutine(chowButton.GetComponentInParent<ButtonFlip>().Flip());
         }
     }
 
+    public void FlipWinButton()
+    {
+        StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
+    }
     // protected override void DeclarePong()
     // {
     //     openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
@@ -348,19 +349,19 @@ public class HumanPlayer : MahjongPlayerBase
 
     public void HideUI()
     {
-        if(chowButton.transform.parent.GetComponent<ButtonFlip>().open)
+        if (chowButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(chowButton.transform.parent.GetComponent<ButtonFlip>().Flip());
         }
-        if(pongButton.transform.parent.GetComponent<ButtonFlip>().open)
+        if (pongButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(pongButton.transform.parent.GetComponent<ButtonFlip>().Flip());
         }
-        if(kangButton.transform.parent.GetComponent<ButtonFlip>().open)
+        if (kangButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(kangButton.transform.parent.GetComponent<ButtonFlip>().Flip());
         }
-        if(todasButton.transform.parent.GetComponent<ButtonFlip>().open)
+        if (todasButton.transform.parent.GetComponent<ButtonFlip>().open)
         {
             StartCoroutine(todasButton.transform.parent.GetComponent<ButtonFlip>().Flip());
         }

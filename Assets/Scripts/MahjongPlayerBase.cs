@@ -14,7 +14,8 @@ public class MahjongPlayerBase : MonoBehaviour
     private List<Tile> flowers = new List<Tile>();
     private static int maxHandSize = 17;
     private int score;
-    protected bool win, canWin, canPong, canKang, canChow;
+    public bool win;
+    protected bool canWin, canPong, canKang, canChow;
     public decision currentDecision;
     protected Tile drawnTile;
     public Tile discardChoice;
@@ -56,6 +57,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
     public virtual void Awake()
     {
+        win = false;
         currentDecision = decision.none;
         closedHandParent.position = transform.position + transform.forward * 0.6f + transform.up * -0.15f;
         Vector3 left = Vector3.Cross(transform.forward.normalized, transform.up.normalized);
@@ -230,8 +232,7 @@ public class MahjongPlayerBase : MonoBehaviour
     }
     protected void DeclareWin()
     {
-        //if conditions are fulfilled
-
+        win = true;
     }
     void DeclareSevenPairs()
     {
@@ -276,7 +277,7 @@ public class MahjongPlayerBase : MonoBehaviour
         currentDecision = decision.pass;
     }
 
-    protected bool CalculateSevenPairs()
+    public bool CalculateSevenPairs()
     {
         //first, factor in the discarded tile during deciding
 
@@ -420,7 +421,7 @@ public class MahjongPlayerBase : MonoBehaviour
         Debug.Log("Full Closed Hand Seven Pairs " + (oddPairsAndMeld && allEvenPairs));
         return (oddPairsAndMeld && allEvenPairs);
     }
-    protected bool CalculateNormalWin()
+    public bool CalculateNormalWin()
     {
         //calculate only using tiles from the closed hand, since only melds can exist in the closed hand
 

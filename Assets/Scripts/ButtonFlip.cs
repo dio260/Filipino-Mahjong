@@ -37,6 +37,7 @@ public class ButtonFlip : MonoBehaviour
                 }
             }
             transform.rotation = Quaternion.Euler(Vector3.zero);
+            open = true;
         }
         else
         {
@@ -53,6 +54,7 @@ public class ButtonFlip : MonoBehaviour
                 }
             }
             transform.rotation = Quaternion.Euler(Vector3.up * 180);
+            open = false;
         }
 
     }

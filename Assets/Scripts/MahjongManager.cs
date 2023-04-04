@@ -427,7 +427,7 @@ public class MahjongManager : MonoBehaviour
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Distributing tiles to players");
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("shuffleAnim");
+            // MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("shuffleAnim");
         }
         else
         {
@@ -527,6 +527,14 @@ public class MahjongManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
+        if(player.CalculateNormalWin() && player.CalculateSevenPairs())
+        {
+            if(player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
+            {
+                human.FlipWinButton();
+            }
+        }
+
         //do a time based implementation so people cannot stall out the turn;
         int time;
         if (!debug)
@@ -544,6 +552,12 @@ public class MahjongManager : MonoBehaviour
                 SendPlayersMessage(player.gameObject.name + " is taking their turn." + "\nTurn time remaining: " + i + " seconds left");
             }
             yield return new WaitForSeconds(1);
+
+            if(player.win)
+            {
+                StartCoroutine(GameWin());
+            }
+
             if (mostRecentDiscard != null)
             {
                 break;
@@ -559,24 +573,31 @@ public class MahjongManager : MonoBehaviour
 
         if (network)
         {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Player Discarded " + mostRecentDiscard.ToString());
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("discardAnim");
         }
         else
         {
             SendPlayersMessage(player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
+            player.currentAvatar.PlayDiscardAnim();
         }
 
         //the current player's turn is now set to wait
         player.SetPlayerState(PlayerState.waiting);
 
-        mostRecentDiscard.transform.position = Vector3.zero;
+        //flip it up to be visible
         mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);
+        //place the discard in the middle of the table
+        mostRecentDiscard.transform.position = 
+                new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 1, TileBoundaries.bounds.max.x - 1), 
+                0.07f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 1, TileBoundaries.bounds.max.z - 1));
+
+        yield return new WaitForSeconds(2);
 
         StartCoroutine(BetweenTurn());
     }
 
-    //the proper taketurn function
+    //the proper take turn function
     IEnumerator TakeTurn(MahjongPlayerBase player)
     {
 
@@ -596,13 +617,13 @@ public class MahjongManager : MonoBehaviour
         {
             if (network)
             {
-                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " stole the discard for a "  + player.currentDecision.ToString());
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " stole the discard for a " + player.currentDecision.ToString());
                 MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("stealAnim");
 
             }
             else
             {
-                SendPlayersMessage(player.gameObject.name + " stole the discard for a "  + player.currentDecision.ToString());
+                SendPlayersMessage(player.gameObject.name + " stole the discard for a " + player.currentDecision.ToString());
                 player.currentAvatar.PlayStealAnim();
             }
 
@@ -622,10 +643,12 @@ public class MahjongManager : MonoBehaviour
             if (network)
             {
                 MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is drawing a tile");
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
             }
             else
             {
                 SendPlayersMessage(player.gameObject.name + " is drawing a tile");
+                player.currentAvatar.PlayDrawAnim();
             }
             player.DrawTile();
 
@@ -635,14 +658,31 @@ public class MahjongManager : MonoBehaviour
             {
                 while (player.currentDrawnTile().tileType == suit.flower)
                 {
-                    Debug.Log(player.gameObject.name + " drew flower");
+                    // Debug.Log(player.gameObject.name + " drew flower");
                     player.DrawFlowerTile();
+                    if (network)
+                    {
+                        MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " drew a flower");
+                        MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
+                    }
+                    else
+                    {
+                        SendPlayersMessage(player.gameObject.name + " drew a flower");
+                        player.currentAvatar.PlayDrawAnim();
+                    }
                     yield return new WaitForSeconds(1);
                 }
             }
 
+            if (network)
+            {
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " finished drawing.");
+            }
+            else
+            {
+                SendPlayersMessage(player.gameObject.name + " finished drawing");
+            }
 
-            Debug.Log(player.gameObject.name + " finished drawing");
             player.AddDrawnTileToClosedHand();
 
         }
@@ -650,6 +690,13 @@ public class MahjongManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
+        if(player.CalculateNormalWin() && player.CalculateSevenPairs())
+        {
+            if(player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
+            {
+                human.FlipWinButton();
+            }
+        }
 
         //set most recent discard as null after the player has drawn so they can make the decision
         foreach (MahjongPlayerBase user in players)
@@ -681,29 +728,33 @@ public class MahjongManager : MonoBehaviour
         }
         if (mostRecentDiscard == null)
         {
-
             player.ForceDiscard();
-
-            // mostRecentDiscard = player.currentDrawnTile();
-            // player.SetNullDrawnTile();
         }
 
         player.ArrangeTiles();
 
 
-        Debug.Log(player.gameObject.name + " discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("discardAnim");
         }
         else
         {
             SendPlayersMessage(player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
+            player.currentAvatar.PlayDiscardAnim();
         }
+
+        //set to wait
         player.SetPlayerState(PlayerState.waiting);
 
-        if (!debug)
-            mostRecentDiscard.transform.position = Vector3.up * 0.5f;
+        //flip it up to be visible
+        mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);
+        //place the discard in the middle of the table
+        mostRecentDiscard.transform.position = 
+                new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 1, TileBoundaries.bounds.max.x - 1), 
+                0.07f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 1, TileBoundaries.bounds.max.z - 1));
+
         yield return new WaitForSeconds(2);
 
         StartCoroutine(BetweenTurn());
@@ -734,11 +785,11 @@ public class MahjongManager : MonoBehaviour
             allDone = true;
             if (network)
             {
-                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Player Discarded " + mostRecentDiscard.ToString() + "\nDecision time remaining: " + i + " seconds left");
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", previousPlayer.gameObject.name + " discarded " + mostRecentDiscard.ToString() + "\nDecision time remaining: " + i + " seconds left");
             }
             else
             {
-                SendPlayersMessage("Player Discarded " + mostRecentDiscard.ToString() + "\nDecision time remaining: " + i + " seconds left");
+                SendPlayersMessage(previousPlayer.gameObject.name + " discarded " + mostRecentDiscard.ToString() + "\nDecision time remaining: " + i + " seconds left");
             }
             yield return new WaitForSeconds(1);
 
@@ -772,7 +823,8 @@ public class MahjongManager : MonoBehaviour
             player.SetPlayerState(PlayerState.waiting);
         }
 
-        string message = "All players passed up the discard";
+        // string message = "All players passed up the discard";
+        string message = "All players done making a decision";
 
 
         // MahjongPlayerBase next = players[];
@@ -790,22 +842,22 @@ public class MahjongManager : MonoBehaviour
                 if (player.currentDecision == decision.kang)
                 {
                     nextPlayer = player;
-                    message = nextPlayer.gameObject.name + " calls kang";
+                    // message = nextPlayer.gameObject.name + " calls kang";
                     break;
                 }
                 //same with pong, but kang get priority so its lower
                 if (player.currentDecision == decision.pong)
                 {
                     nextPlayer = player;
-                    message = nextPlayer.gameObject.name + " calls pong";
+                    // message = nextPlayer.gameObject.name + " calls pong";
                     break;
                 }
 
             }
         }
 
-        if (nextPlayer.currentDecision == decision.chow)
-            message = nextPlayer.gameObject.name + " calls pong";
+        // if (nextPlayer.currentDecision == decision.chow)
+        //     message = nextPlayer.gameObject.name + " calls pong";
 
         if (network)
         {
@@ -817,6 +869,13 @@ public class MahjongManager : MonoBehaviour
         }
 
         currentPlayer = nextPlayer;
+
+        if(nextPlayer.currentDecision == decision.pass)
+        {
+            mostRecentDiscard.transform.parent = DeadTileParent.transform;
+            mostRecentDiscard = null;
+        }
+
         //reset everyone else's decisions
         foreach (MahjongPlayerBase player in players)
         {
@@ -831,10 +890,24 @@ public class MahjongManager : MonoBehaviour
         StartCoroutine(TakeTurn(currentPlayer));
     }
 
-    public void FinishGame()
+    IEnumerator GameWin()
     {
         state = GameState.finished;
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("winAnim");
+        }
+        else
+        {
+            currentPlayer.currentAvatar.PlayWinAnim();
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        MultiplayerGameManager.Instance.EnableCanvas();
+        StopAllCoroutines();
     }
+
     public GameState GetGameState()
     {
         return state;

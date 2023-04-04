@@ -55,6 +55,9 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         // photonView = PhotonView.Get(this);
         multiplayerCanvas = GameObject.Find("Multiplayer Canvas");
         multiplayerCanvas.transform.Find("Room Title").GetComponent<TMP_Text>().text = "Room Name: " + PhotonNetwork.CurrentRoom.Name;
+        multiplayerCanvas.transform.Find("Game Start Button").gameObject.SetActive(true);
+        multiplayerCanvas.transform.Find("RestartButton").gameObject.SetActive(false);
+        multiplayerCanvas.transform.Find("QuitLobbyButton").gameObject.SetActive(false);
         
         tilebounds = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
 
@@ -257,9 +260,12 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    // public void AddPlayerID(int id)
-    // {
-    //     playerIds.Append(id);
-    //     photonView.RPC("RemotePlayerListUpdate", RpcTarget.All, );
-    // }
+    public void EnableCanvas()
+    {
+        multiplayerCanvas.SetActive(true);
+        multiplayerCanvas.transform.Find("Room Title").gameObject.SetActive(false);
+        multiplayerCanvas.transform.Find("Game Start Button").gameObject.SetActive(false);
+        multiplayerCanvas.transform.Find("RestartButton").gameObject.SetActive(true);
+        multiplayerCanvas.transform.Find("QuitLobbyButton").gameObject.SetActive(true);
+    }
 }

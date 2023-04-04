@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 
 public class NetworkedPlayer : MonoBehaviourPunCallbacks
 {
     [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
     public static GameObject LocalPlayerInstance;
+    public bool playAgain;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,7 +16,9 @@ public class NetworkedPlayer : MonoBehaviourPunCallbacks
         {
             Debug.Log("mine");
             LocalPlayerInstance = gameObject;
-            
+            MultiplayerGameManager.Instance.multiplayerCanvas.
+            transform.Find("RestartButton").GetComponent<Button>().
+            onClick.AddListener(() => photonView.RPC("VoteToPlayAgain", RpcTarget.All));
         }
         else
         {
@@ -27,9 +31,8 @@ public class NetworkedPlayer : MonoBehaviourPunCallbacks
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void VoteToPlayAgain()
     {
-
+        playAgain = true;
     }
 }

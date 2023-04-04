@@ -128,14 +128,12 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
         switch (animClip)
         {
             case "drawAnim":
-                foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
-                {
-                    player.currentAvatar.PlayDrawAnim();
-                }
+                MahjongManager.mahjongManager.currentPlayer.currentAvatar.PlayDrawAnim();
+
                 break;
             case "discardAnim":
-                    MahjongManager.mahjongManager.currentPlayer.currentAvatar.PlayDiscardAnim();
-                
+                MahjongManager.mahjongManager.currentPlayer.currentAvatar.PlayDiscardAnim();
+
                 break;
             case "shuffleAnim":
                 foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
@@ -144,10 +142,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 }
                 break;
             case "winAnim":
-                foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
-                {
-                    player.currentAvatar.PlayWinAnim();
-                }
+                MahjongManager.mahjongManager.currentPlayer.currentAvatar.PlayWinAnim();
                 break;
             case "stealAnim":
                 foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())

@@ -114,6 +114,9 @@ public class Tile : MonoBehaviour
             case "SelectForMeld":
                 photonView.RPC("SetMeldforPlayer", RpcTarget.All);
                 break;
+            case "SetAsDead":
+                photonView.RPC("SetAsDead", RpcTarget.All);
+                break;
         }
     }
 
