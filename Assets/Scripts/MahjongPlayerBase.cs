@@ -279,16 +279,7 @@ public class MahjongPlayerBase : MonoBehaviour
     protected bool CalculateSevenPairs()
     {
         //first, factor in the discarded tile during deciding
-        // List<Tile> hand = new List<Tile>();
-        // if(currentState == PlayerState.deciding)
-        // {
-        //     hand.AddRange(closedHand);
-        //     hand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
-        // }
-        // else
-        // {
-        //     hand = closedHand;
-        // }
+
         if (currentState == PlayerState.deciding)
             closedHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
 

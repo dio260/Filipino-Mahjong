@@ -44,28 +44,31 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 photonView.RPC("StartFirstTurn", RpcTarget.Others);
                 break;
             case "discardSound":
-                photonView.RPC("PlayAudio", RpcTarget.Others, command);
+                photonView.RPC("PlayAudio", RpcTarget.All, command);
                 break;
             case "shuffleSound":
-                photonView.RPC("PlayAudio", RpcTarget.Others, command);
+                photonView.RPC("PlayAudio", RpcTarget.All, command);
                 break;
             case "winSound":
-                photonView.RPC("PlayAudio", RpcTarget.Others, command);
+                photonView.RPC("PlayAudio", RpcTarget.All, command);
                 break;
             case "diceSound":
-                photonView.RPC("PlayAudio", RpcTarget.Others, command);
+                photonView.RPC("PlayAudio", RpcTarget.All, command);
                 break;
             case "discardAnim":
-                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
+                photonView.RPC("PlayAnimation", RpcTarget.All, command);
                 break;
             case "shuffleAnim":
-                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
+                photonView.RPC("PlayAnimation", RpcTarget.All, command);
                 break;
             case "winAnim":
-                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
+                photonView.RPC("PlayAnimation", RpcTarget.All, command);
                 break;
             case "stealAnim":
-                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
+                photonView.RPC("PlayAnimation", RpcTarget.All, command);
+                break;
+            case "drawAnim":
+                photonView.RPC("PlayAnimation", RpcTarget.All, command);
                 break;
         }
     }
@@ -131,10 +134,8 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 }
                 break;
             case "discardAnim":
-                foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
-                {
-                    player.currentAvatar.PlayDiscardAnim();
-                }
+                    MahjongManager.mahjongManager.currentPlayer.currentAvatar.PlayDiscardAnim();
+                
                 break;
             case "shuffleAnim":
                 foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())

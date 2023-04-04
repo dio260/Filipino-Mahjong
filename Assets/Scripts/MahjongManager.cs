@@ -459,14 +459,15 @@ public class MahjongManager : MonoBehaviour
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Replacing flowers");
-            
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
+
         }
         else
         {
             SendPlayersMessage("Replacing flowers");
             foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
             {
-                player.currentAvatar.PlayShuffleAnim();
+                player.currentAvatar.PlayDrawAnim();
             }
         }
 
@@ -559,6 +560,7 @@ public class MahjongManager : MonoBehaviour
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Player Discarded " + mostRecentDiscard.ToString());
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("discardAnim");
         }
         else
         {
@@ -594,11 +596,23 @@ public class MahjongManager : MonoBehaviour
         {
             if (network)
             {
-                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " stole the discard");
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " stole the discard for a "  + player.currentDecision.ToString());
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("stealAnim");
+
             }
             else
             {
-                SendPlayersMessage(player.gameObject.name + " stole the discard");
+                SendPlayersMessage(player.gameObject.name + " stole the discard for a "  + player.currentDecision.ToString());
+                player.currentAvatar.PlayStealAnim();
+            }
+
+            if (network)
+            {
+                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Player Discarded " + mostRecentDiscard.ToString());
+            }
+            else
+            {
+                SendPlayersMessage(player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
             }
             player.StealTile();
         }

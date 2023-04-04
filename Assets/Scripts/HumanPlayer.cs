@@ -93,14 +93,14 @@ public class HumanPlayer : MahjongPlayerBase
                 passButton.gameObject.SetActive(false);
             }
 
-            if(canWin)
-            {
-                todasButton.gameObject.SetActive(true);
-            }
-            else
-            {
-                todasButton.gameObject.SetActive(false);
-            }
+            // if(canWin)
+            // {
+            //     todasButton.gameObject.SetActive(true);
+            // }
+            // else
+            // {
+            //     todasButton.gameObject.SetActive(false);
+            // }
 
             if (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine))
             {
