@@ -363,7 +363,8 @@ public class MahjongPlayerBase : MonoBehaviour
         //only one suit collection can have an odd number
         if (oddSuits > 1)
         {
-            closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
+            if (currentState == PlayerState.deciding)
+                closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
             return false;
         }
 
@@ -417,7 +418,8 @@ public class MahjongPlayerBase : MonoBehaviour
                 oddPairsAndMeld = false;
         }
 
-        closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
+        if (currentState == PlayerState.deciding)
+            closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
         Debug.Log("Full Closed Hand Seven Pairs " + (oddPairsAndMeld && allEvenPairs));
         return (oddPairsAndMeld && allEvenPairs);
     }
@@ -467,7 +469,8 @@ public class MahjongPlayerBase : MonoBehaviour
         //only one suit collection can be not divisible by 3
         if (notDivisible > 1)
         {
-            closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
+            if (currentState == PlayerState.deciding)
+                closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
             return false;
         }
 
@@ -513,7 +516,8 @@ public class MahjongPlayerBase : MonoBehaviour
 
         Debug.Log("all melds: " + JustMelds);
         Debug.Log("one pair with all melds: " + MeldsAndPair);
-        closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
+        if (currentState == PlayerState.deciding)
+            closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
 
         return MeldsAndPair && JustMelds;
     }

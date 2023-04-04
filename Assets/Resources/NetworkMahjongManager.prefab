@@ -63,7 +63,7 @@ MonoBehaviour:
   DeadTileParent: {fileID: 0}
   TileBoundaries: {fileID: 0}
   network: 1
-  debug: 1
+  debug: 0
   discardedTile: {fileID: 0}
   debugFullClosedSevenPairs: []
   debugOneMeldSevenPairsClosedHand: []
