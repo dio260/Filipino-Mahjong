@@ -21,7 +21,7 @@ public class MahjongManager : MonoBehaviour
     protected GameState state;
 
     [SerializeField]
-    protected List<MahjongPlayerBase> players;
+    public List<MahjongPlayerBase> players;
 
     public MahjongPlayerBase dealer, currentPlayer, nextPlayer;
     public MahjongPlayerBase previousPlayer;

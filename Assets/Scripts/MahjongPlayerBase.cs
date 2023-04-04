@@ -886,6 +886,7 @@ public class MahjongPlayerBase : MonoBehaviour
         closedHand.RemoveAt(closedHand.IndexOf(discardChoice));
         discardChoice.owner = null;
         drawnTile = null;
+        discardChoice = null;
     }
 
     //adding the drawn tile to closed hand after wards.
