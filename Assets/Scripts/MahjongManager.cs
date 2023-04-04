@@ -459,16 +459,16 @@ public class MahjongManager : MonoBehaviour
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Replacing flowers");
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
+            // MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
 
         }
         else
         {
             SendPlayersMessage("Replacing flowers");
-            foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
-            {
-                player.currentAvatar.PlayDrawAnim();
-            }
+            // foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+            // {
+            //     player.currentAvatar.PlayDrawAnim();
+            // }
         }
 
         int needFlowers = -1;
