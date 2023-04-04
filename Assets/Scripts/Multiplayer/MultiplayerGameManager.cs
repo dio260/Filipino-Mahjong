@@ -79,7 +79,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
             // Let's instantiate the tiles
             for (int x = 0; x < 144; x++)
             {
-                GameObject tileInstance = PhotonNetwork.Instantiate(this.tilePrefab.name,
+                GameObject tileInstance = PhotonNetwork.InstantiateRoomObject(this.tilePrefab.name,
                 new Vector3(Random.Range(tilebounds.bounds.min.x, tilebounds.bounds.max.x), Random.Range(0, tilebounds.bounds.max.y), Random.Range(tilebounds.bounds.min.z, tilebounds.bounds.max.z)), Quaternion.identity);
                 tileInstance.transform.parent = GameObject.Find("Tiles").transform;
                 networkedTiles.Add(tileInstance.GetComponent<Tile>());
