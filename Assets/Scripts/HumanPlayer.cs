@@ -186,6 +186,11 @@ public class HumanPlayer : MahjongPlayerBase
         // base.CalculateHandOptions();
         Debug.Log("Calculating Hand Options");
 
+        canPong = false;
+        canKang = false;
+        canChow = false;
+        canWin = false;
+
         Tile discard = MahjongManager.mahjongManager.mostRecentDiscard;
 
         //most priority is a winning hand, takes precedence
@@ -195,15 +200,18 @@ public class HumanPlayer : MahjongPlayerBase
         closedHand[0].tileType == discard.tileType)
         {
             //GUI stuff probably needs to be moved to Human as well
-            StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
+            canWin = true;
+            // StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }
         else if (CalculateSevenPairs())
         {
-            StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
+            canWin = true;
+            // StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }
         else if (CalculateNormalWin())
         {
-            StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
+            canWin = true;
+            // StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }
 
         //auto calculate kang as a bandaid
@@ -322,29 +330,22 @@ public class HumanPlayer : MahjongPlayerBase
         {
             StartCoroutine(chowButton.GetComponentInParent<ButtonFlip>().Flip());
         }
+
+        if (canWin && !todasButton.transform.parent.GetComponent<ButtonFlip>().open)
+        {
+            StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
+        }
+        else if(!canWin && !todasButton.transform.parent.GetComponent<ButtonFlip>().open)
+        {
+            StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
+        }
     }
 
     public void FlipWinButton()
     {
         StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
     }
-    // protected override void DeclarePong()
-    // {
-    //     openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
-    //     openHand.AddRange(selectedTiles);
-
-    // }
-    // protected override void DeclareKang()
-    // {
-    //     openHand.AddRange(kangMeld);
-    //     canKang = false;
-    // }
-
-    // protected override void DeclareChow()
-    // {
-    //     openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
-    //     openHand.AddRange(selectedTiles);
-    // }
+    
     public void SelectMeldTile(Tile clicked)
     {
         Debug.Log("Selected " + clicked.ToString() + " for a Meld");
