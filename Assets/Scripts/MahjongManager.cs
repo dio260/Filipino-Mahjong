@@ -622,6 +622,8 @@ public class MahjongManager : MonoBehaviour
                 player.currentAvatar.PlayStealAnim();
             }
 
+            player.StealTile();
+
             //draw like normal if kang
             if (player.currentDecision == decision.kang)
             {
