@@ -27,7 +27,7 @@ public class Tile : MonoBehaviour
     void Start()
     {
         Debug.Log("Tile Start Called");
-        if(this.transform.parent != null)
+        if(!PhotonNetwork.IsMasterClient)
             return;
         if (tileType == suit.flower)
         {
