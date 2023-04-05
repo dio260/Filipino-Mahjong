@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using Photon.Realtime;
 using Photon.Pun;
+using TMPro;
 
 public class GameLauncher : MonoBehaviourPunCallbacks
 {
@@ -10,7 +11,7 @@ public class GameLauncher : MonoBehaviourPunCallbacks
     [SerializeField]
     private Text feedbackText;
     [SerializeField]
-    private InputField roomName;
+    private TMP_InputField roomName;
 
     [Tooltip("The maximum number of players per room")]
     // [SerializeField]
@@ -92,7 +93,7 @@ public class GameLauncher : MonoBehaviourPunCallbacks
 
     IEnumerator DelayedJoin(string name, RoomOptions options, TypedLobby lobby)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
         PhotonNetwork.JoinOrCreateRoom(name, options, lobby);
     }
 

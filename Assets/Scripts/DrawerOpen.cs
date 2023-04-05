@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DrawerOpen : MonoBehaviour
 {
-    public TMPro.TMP_InputField roomInput;
+    public TMPro.TMP_InputField roomInput, nameInput;
     public Animator anim;
     public bool open;
     // Start is called before the first frame update
@@ -16,15 +16,15 @@ public class DrawerOpen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (roomInput.text.Length > 0 && !open)
+        if (roomInput.text.Length > 0 && nameInput.text.Length > 0 && !open)
         {
-            Debug.Log("roomname exists");
+            Debug.Log("roomname and player name exists");
             anim.SetTrigger("OpenTrigger");
             open = true;
         }
-        else if (roomInput.text.Length == 0 && open)
+        else if ((roomInput.text.Length == 0 || nameInput.text.Length == 0) && open)
         {
-            Debug.Log("no room name");
+            Debug.Log("no room name or player name");
             anim.SetTrigger("OpenTrigger");
             open = false;
         }
