@@ -345,7 +345,8 @@ public class HumanPlayer : MahjongPlayerBase
             StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }
     }
-
+    
+    [PunRPC]
     public override void ArrangeTiles()
     {
         if (discardChoice != null)
