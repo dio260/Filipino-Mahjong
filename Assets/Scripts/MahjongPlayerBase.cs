@@ -518,8 +518,7 @@ public class MahjongPlayerBase : MonoBehaviour
         //make sure the othertiles only have melds
         bool JustMelds = CheckForAllMelds(othertiles);
 
-        Debug.Log("all melds: " + JustMelds);
-        Debug.Log("one pair with all melds: " + MeldsAndPair);
+        Debug.Log("all melds: " + JustMelds + " one pair with all melds: " + MeldsAndPair);
         if (currentState == PlayerState.deciding)
             closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
 

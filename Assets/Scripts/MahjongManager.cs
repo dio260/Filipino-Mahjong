@@ -812,11 +812,24 @@ public class MahjongManager : MonoBehaviour
             if (player != currentPlayer)
             {
                 player.SetPlayerState(PlayerState.deciding);
-                player.CalculateHandOptions();
+
+                //this is causing a tile to be added to the open hand for some reason
+                // player.CalculateHandOptions();
             }
             else
             {
                 player.currentDecision = decision.pass;
+            }
+        }
+
+
+        foreach (MahjongPlayerBase player in players)
+        {
+            if (player != currentPlayer)
+            {
+                //this is causing a tile to be added to the open hand for some reason
+                //separating its execution order to see what happens
+                player.CalculateHandOptions();
             }
         }
 

@@ -236,7 +236,7 @@ public class HumanPlayer : MahjongPlayerBase
         {
             if (tile.tileType == discard.tileType)
             {
-                Debug.Log("Passed suit check");
+                // Debug.Log("Passed suit check");
 
                 if (tile.number == discard.number)
                 {
