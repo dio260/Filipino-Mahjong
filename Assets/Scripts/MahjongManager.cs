@@ -521,17 +521,16 @@ public class MahjongManager : MonoBehaviour
     //a coroutine differentiating the first turn of every game
     IEnumerator FirstTurn(MahjongPlayerBase player)
     {
-        if (network)
-        {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn.");
-        }
-        else
-        {
-            SendPlayersMessage(player.gameObject.name + " is taking their turn.");
-        }
+        // if (network)
+        // {
+        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn.");
+        // }
+        // else
+        // {
+        //     SendPlayersMessage(player.gameObject.name + " is taking their turn.");
+        // }
 
         //the current player's turn is set to discard
-        player.SetPlayerState(PlayerState.discarding);
 
         yield return new WaitForSeconds(2);
 
@@ -542,6 +541,8 @@ public class MahjongManager : MonoBehaviour
                 human.FlipWinButton();
             }
         }
+
+        player.SetPlayerState(PlayerState.discarding);
 
         //do a time based implementation so people cannot stall out the turn;
         int time;
@@ -575,6 +576,7 @@ public class MahjongManager : MonoBehaviour
         }
         player.ArrangeTiles();
 
+        player.SetPlayerState(PlayerState.waiting);
 
 
         if (network)
@@ -589,7 +591,6 @@ public class MahjongManager : MonoBehaviour
         }
 
         //the current player's turn is now set to wait
-        player.SetPlayerState(PlayerState.waiting);
 
         yield return new WaitForSeconds(2);
 
@@ -607,18 +608,17 @@ public class MahjongManager : MonoBehaviour
     IEnumerator TakeTurn(MahjongPlayerBase player)
     {
 
-        if (network)
-        {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn.");
-        }
-        else
-        {
-            SendPlayersMessage(player.gameObject.name + " is taking their turn.");
-        }
+        // if (network)
+        // {
+        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn.");
+        // }
+        // else
+        // {
+        //     SendPlayersMessage(player.gameObject.name + " is taking their turn.");
+        // }
 
         yield return new WaitForSeconds(2);
 
-        player.SetPlayerState(PlayerState.discarding);
         if (player.currentDecision != decision.none && player.currentDecision != decision.pass)
         {
             if (network)
@@ -754,6 +754,7 @@ public class MahjongManager : MonoBehaviour
         foreach (MahjongPlayerBase user in players)
             user.ResetMelds();
         player.currentDecision = decision.none;
+        player.SetPlayerState(PlayerState.discarding);
         mostRecentDiscard = null;
 
         //do a time based implementation so people cannot stall out the turn;
@@ -788,7 +789,7 @@ public class MahjongManager : MonoBehaviour
         }
 
         player.ArrangeTiles();
-
+        player.SetPlayerState(PlayerState.waiting);
 
         if (network)
         {
@@ -802,7 +803,6 @@ public class MahjongManager : MonoBehaviour
         }
 
         //set to wait
-        player.SetPlayerState(PlayerState.waiting);
 
         yield return new WaitForSeconds(2);
 

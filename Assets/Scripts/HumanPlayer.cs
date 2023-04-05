@@ -11,7 +11,8 @@ public class HumanPlayer : MahjongPlayerBase
     public Camera playerCam;
     public GameObject playerCanvas;
     Button sortButton, passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
-    public TMP_Text debugText;
+    public TMP_Text debugText, tileText;
+    public Image tileImage1, tileImage2;
     Vector3 camRotation, camPosition;
     GameObject tileSwap;
 
@@ -182,6 +183,12 @@ public class HumanPlayer : MahjongPlayerBase
         tileSwap = tile;
     }
 
+    protected override void MakeDecision(decision dec)
+    {
+        base.MakeDecision(dec);
+        FlipUI();
+    }
+
     public override void CalculateHandOptions()
     {
         // base.CalculateHandOptions();
@@ -214,8 +221,8 @@ public class HumanPlayer : MahjongPlayerBase
             canWin = true;
             // StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }
-        
-        
+
+
 
         pongMeld = new List<Tile> { discard };
         chowMeldLeft = new List<Tile> { discard };
@@ -339,9 +346,96 @@ public class HumanPlayer : MahjongPlayerBase
         }
     }
 
+    public override void ArrangeTiles()
+    {
+        if (discardChoice != null)
+        {
+            discardChoice.transform.position -= Vector3.up * 0.025f;
+        }
+
+        if (selectedTiles.Count != 0)
+        {
+            foreach (Tile tile in selectedTiles)
+            {
+                discardChoice.transform.position -= Vector3.up * 0.025f;
+            }
+        }
+
+        base.VisuallySortTiles();
+
+        if (discardChoice != null)
+        {
+            discardChoice.transform.position += Vector3.up * 0.025f;
+        }
+
+        if (selectedTiles.Count != 0)
+        {
+            foreach (Tile tile in selectedTiles)
+            {
+                discardChoice.transform.position += Vector3.up * 0.025f;
+            }
+        }
+    }
+
+    public override void VisuallySortTiles()
+    {
+        if (discardChoice != null)
+        {
+            discardChoice.transform.position -= Vector3.up * 0.025f;
+        }
+
+        if (selectedTiles.Count != 0)
+        {
+            foreach (Tile tile in selectedTiles)
+            {
+                discardChoice.transform.position -= Vector3.up * 0.025f;
+            }
+        }
+
+        base.VisuallySortTiles();
+
+        if (discardChoice != null)
+        {
+            discardChoice.transform.position += Vector3.up * 0.025f;
+        }
+
+        if (selectedTiles.Count != 0)
+        {
+            foreach (Tile tile in selectedTiles)
+            {
+                discardChoice.transform.position += Vector3.up * 0.025f;
+            }
+        }
+    }
+
+    
+
     public void FlipWinButton()
     {
         StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
+    }
+
+    public void SelectDiscardTile(Tile clicked)
+    {
+
+        if (discardChoice != null)
+        {
+            discardChoice.transform.position -= Vector3.up * 0.025f;
+            if (discardChoice == clicked)
+            {
+                Debug.Log("Deselected " + clicked.ToString() + " as discard");
+                discardChoice = null;
+                tileImage2.sprite = null;
+                tileImage2.enabled = false;
+                return;
+            }
+        }
+
+        Debug.Log("Selected " + clicked.ToString() + " to discard");
+
+
+        discardChoice = clicked;
+        clicked.transform.position += Vector3.up * 0.025f;
     }
 
     public void SelectMeldTile(Tile clicked)
@@ -367,7 +461,7 @@ public class HumanPlayer : MahjongPlayerBase
             CalculateHandOptions();
         }
     }
-    
+
 
     public void FlipUI()
     {
@@ -394,4 +488,6 @@ public class HumanPlayer : MahjongPlayerBase
     {
         closedHand = new List<Tile>();
     }
+
+    // public void 
 }

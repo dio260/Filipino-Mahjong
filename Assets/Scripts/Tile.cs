@@ -203,7 +203,10 @@ public class Tile : MonoBehaviour
     {
         // MahjongManager.mahjongManager.currentPlayer.SetDiscardChoice(this);
         // owner.SetDiscardChoice(this);
-        owner.SelectDiscardTile(this);
+        if(owner.GetComponent<HumanPlayer>() != null)
+        {
+            owner.GetComponent<HumanPlayer>().SelectDiscardTile(this);
+        }
     }
     [PunRPC]
     public void SetMeldforPlayer()

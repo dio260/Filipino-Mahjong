@@ -209,7 +209,7 @@ public class MahjongPlayerBase : MonoBehaviour
         return false;
     }
 
-    protected void MakeDecision(decision dec)
+    protected virtual void MakeDecision(decision dec)
     {
         //if conditions are fulfilled
         if (networked)
@@ -694,7 +694,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
     //physically arranges player tiles
     [PunRPC]
-    public void ArrangeTiles()
+    public virtual void ArrangeTiles()
     {
         float tileSideOffset = 0.06f;
 
@@ -730,7 +730,7 @@ public class MahjongPlayerBase : MonoBehaviour
     }
 
     // RPC call for visual sorting
-    public void VisuallySortTiles()
+    public virtual void VisuallySortTiles()
     {
         //first call the sorting function
         if (networked)
@@ -891,7 +891,7 @@ public class MahjongPlayerBase : MonoBehaviour
         drawnTile = MahjongManager.mahjongManager.wall[MahjongManager.mahjongManager.wall.Count - 1];
         MahjongManager.mahjongManager.wall.RemoveAt(MahjongManager.mahjongManager.wall.Count - 1);
     }
-
+    
     //declare a tile to discard on your turn
     public void DeclareDiscard()
     {
@@ -909,6 +909,7 @@ public class MahjongPlayerBase : MonoBehaviour
     [PunRPC]
     public void DiscardTile()
     {
+        discardChoice.transform.localPosition = new Vector3(0, 0.05f, 0);
         MahjongManager.mahjongManager.mostRecentDiscard = discardChoice;
         closedHand.RemoveAt(closedHand.IndexOf(discardChoice));
         discardChoice.transform.parent = null;
@@ -944,17 +945,7 @@ public class MahjongPlayerBase : MonoBehaviour
         discardChoice = tile;
     }
 
-    public void SelectDiscardTile(Tile clicked)
-    {
-        Debug.Log("Selected " + clicked.ToString() + " to discard");
 
-        if (discardChoice != null)
-        {
-            discardChoice.transform.position -= Vector3.up * 0.025f;
-        }
-        discardChoice = clicked;
-        clicked.transform.position += Vector3.up * 0.025f;
-    }
 
     //to be called when the player runs out of time
     public void ForceDiscard()
