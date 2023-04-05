@@ -179,7 +179,16 @@ public class MahjongManager : MonoBehaviour
         if (!network)
             players.AddRange(FindObjectsOfType<MahjongPlayerBase>().ToList<MahjongPlayerBase>());
         else
+        {
             players = MultiplayerGameManager.Instance.players;
+            foreach (MahjongPlayerBase player in players)
+            {
+                if (player.GetComponent<HumanPlayer>() != null)
+                {
+                    player.GetComponent<HumanPlayer>().playerCanvas.SetActive(true);
+                }
+            }
+        }
 
 
         //initialize game states, tile lists, and other relevant objects
@@ -360,7 +369,7 @@ public class MahjongManager : MonoBehaviour
             SendPlayersMessage("Rolling dice for dealer");
             AudioHandler.audioHandler.PlayDiceRoll();
         }
-        
+
 
         //dice roll message for debugging
         int diceIndex = 1;
@@ -762,6 +771,12 @@ public class MahjongManager : MonoBehaviour
                 SendPlayersMessage(player.gameObject.name + " is deciding on a discard" + "\nTurn time remaining: " + i + " seconds left");
             }
             yield return new WaitForSeconds(1);
+
+            if (player.win)
+            {
+                StartCoroutine(GameWin());
+            }
+
             if (mostRecentDiscard != null)
             {
                 break;
@@ -957,6 +972,14 @@ public class MahjongManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(2f);
+
+        foreach (MahjongPlayerBase player in players)
+        {
+            if (player.GetComponent<HumanPlayer>() != null)
+            {
+                player.GetComponent<HumanPlayer>().playerCanvas.SetActive(false);
+            }
+        }
 
         MultiplayerGameManager.Instance.EnableCanvas();
         StopAllCoroutines();

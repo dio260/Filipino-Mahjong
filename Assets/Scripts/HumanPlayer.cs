@@ -9,7 +9,7 @@ public class HumanPlayer : MahjongPlayerBase
 {
     //stuff to be moved to HumanPlayer child class
     public Camera playerCam;
-    GameObject playerCanvas;
+    public GameObject playerCanvas;
     Button sortButton, passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
     public TMP_Text debugText;
     Vector3 camRotation, camPosition;
@@ -53,6 +53,8 @@ public class HumanPlayer : MahjongPlayerBase
 
         FlipUI();
         discardButton.gameObject.SetActive(false);
+
+        playerCanvas.SetActive(false);
     }
 
     // public void DebugButtonClick(string button)
