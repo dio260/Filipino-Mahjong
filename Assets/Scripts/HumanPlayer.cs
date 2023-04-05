@@ -54,7 +54,8 @@ public class HumanPlayer : MahjongPlayerBase
 
         FlipUI();
         discardButton.gameObject.SetActive(false);
-
+        tileImage1.enabled = false;
+        tileImage2.enabled = false;
         playerCanvas.SetActive(false);
     }
 
@@ -105,7 +106,7 @@ public class HumanPlayer : MahjongPlayerBase
             switch(currentState)
             {
                 case PlayerState.discarding:
-                    if(drawnTile == null)
+                    if(drawnTile != null)
                     {
                         tileText.text = "Drawn:    Discard:";
                     }
