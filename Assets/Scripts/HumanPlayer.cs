@@ -42,23 +42,23 @@ public class HumanPlayer : MahjongPlayerBase
         discardButton.onClick.AddListener(() => DeclareDiscard());
 
 
-        //button debugs
-        sortButton.onClick.AddListener(() => DebugButtonClick(sortButton.gameObject.name));
-        todasButton.onClick.AddListener(() => DebugButtonClick(todasButton.gameObject.name));
-        pongButton.onClick.AddListener(() => DebugButtonClick(pongButton.gameObject.name));
-        kangButton.onClick.AddListener(() => DebugButtonClick(kangButton.gameObject.name));
-        chowButton.onClick.AddListener(() => DebugButtonClick(chowButton.gameObject.name));
-        passButton.onClick.AddListener(() => DebugButtonClick(passButton.gameObject.name));
-        discardButton.onClick.AddListener(() => DebugButtonClick(discardButton.gameObject.name));
+        // //button debugs
+        // sortButton.onClick.AddListener(() => DebugButtonClick(sortButton.gameObject.name));
+        // todasButton.onClick.AddListener(() => DebugButtonClick(todasButton.gameObject.name));
+        // pongButton.onClick.AddListener(() => DebugButtonClick(pongButton.gameObject.name));
+        // kangButton.onClick.AddListener(() => DebugButtonClick(kangButton.gameObject.name));
+        // chowButton.onClick.AddListener(() => DebugButtonClick(chowButton.gameObject.name));
+        // passButton.onClick.AddListener(() => DebugButtonClick(passButton.gameObject.name));
+        // discardButton.onClick.AddListener(() => DebugButtonClick(discardButton.gameObject.name));
 
         FlipUI();
         discardButton.gameObject.SetActive(false);
     }
 
-    public void DebugButtonClick(string button)
-    {
-        Debug.Log(button + "pressed");
-    }
+    // public void DebugButtonClick(string button)
+    // {
+    //     Debug.Log(button + "pressed");
+    // }
 
     // Update is called once per frame
     void Update()
@@ -133,7 +133,6 @@ public class HumanPlayer : MahjongPlayerBase
                                 }
                                 break;
                             case PlayerState.discarding:
-                                Debug.Log("Selected " + hit.transform.GetComponent<Tile>().ToString() + " to discard");
                                 if (networked)
                                 {
                                     hit.transform.GetComponent<Tile>().TileRPCCall("PlayerDiscard");
@@ -149,7 +148,6 @@ public class HumanPlayer : MahjongPlayerBase
                     }
                     else if (Input.GetMouseButtonDown(1))
                     {
-                        Debug.Log("holding tile to swap");
                         SwapTilePosition(hit.transform.gameObject);
                     }
 
@@ -249,19 +247,15 @@ public class HumanPlayer : MahjongPlayerBase
                 //outermost number
                 if (tile.number == discard.number - 2 && !HasNumber(chowMeldLeft, tile.number))
                 {
-                    Debug.Log("Tile is 2 lower");
                     chowMeldLeft.Add(tile);
                 }
                 if (tile.number == discard.number + 2 && !HasNumber(chowMeldRight, tile.number))
                 {
-                    Debug.Log("Tile is 2 higher");
                     chowMeldRight.Add(tile);
                 }
 
                 if (tile.number == discard.number - 1)
                 {
-                    Debug.Log("Tile is 1 lower");
-
                     if (!HasNumber(chowMeldLeft, tile.number))
                         chowMeldLeft.Add(tile);
                     if (!HasNumber(chowMeldMiddle, tile.number))
@@ -270,8 +264,6 @@ public class HumanPlayer : MahjongPlayerBase
 
                 if (tile.number == discard.number + 1)
                 {
-                    Debug.Log("Tile is 1 higher");
-
                     if (!HasNumber(chowMeldRight, tile.number))
                         chowMeldRight.Add(tile);
                     if (!HasNumber(chowMeldMiddle, tile.number))

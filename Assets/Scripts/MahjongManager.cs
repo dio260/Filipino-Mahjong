@@ -360,10 +360,11 @@ public class MahjongManager : MonoBehaviour
             SendPlayersMessage("Rolling dice for dealer");
             AudioHandler.audioHandler.PlayDiceRoll();
         }
-        //random roll
-        // System.Random rand = new System.Random();
-        // int dieRoll = rand.Next(2, 13);
+        
 
+        //dice roll message for debugging
+        int diceIndex = 1;
+        string dieMessage = "";
 
         //newand improved real actual dice roll
         //play diceroll animation
@@ -376,10 +377,11 @@ public class MahjongManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         foreach (Dice dice in die)
         {
+            dieMessage += "Dice " + diceIndex + " roll: " + dice.rollResult + " ";
             dieRoll += dice.rollResult;
         }
 
-        Debug.Log("Completed die roll: " + dieRoll);
+        Debug.Log(dieMessage + "Total roll: " + dieRoll);
         int dieRollResult = (dieRoll - 1) % players.Count;
 
         yield return new WaitForSeconds(2);
@@ -648,7 +650,6 @@ public class MahjongManager : MonoBehaviour
                 {
                     while (player.currentDrawnTile().tileType == suit.flower)
                     {
-                        // Debug.Log(player.gameObject.name + " drew flower");
                         player.DrawFlowerTile();
                         if (network)
                         {
@@ -701,7 +702,6 @@ public class MahjongManager : MonoBehaviour
             {
                 while (player.currentDrawnTile().tileType == suit.flower)
                 {
-                    // Debug.Log(player.gameObject.name + " drew flower");
                     player.DrawFlowerTile();
                     if (network)
                     {
@@ -859,9 +859,7 @@ public class MahjongManager : MonoBehaviour
             }
             if (allDone)
             {
-                Debug.Log("all players finished");
                 break;
-
             }
         }
 
@@ -885,7 +883,6 @@ public class MahjongManager : MonoBehaviour
 
         // MahjongPlayerBase next = players[];
         nextPlayer = players[(players.IndexOf(currentPlayer) + 1) % players.Count];
-        Debug.Log("set next player but lets check the decision list");
         yield return new WaitForSeconds(1);
 
 
@@ -998,7 +995,6 @@ public class MahjongManager : MonoBehaviour
         {
             if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
             {
-                // Debug.Log(message);
                 human.debugText.text = message;
             }
         }

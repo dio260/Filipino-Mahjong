@@ -283,8 +283,9 @@ public class MahjongPlayerBase : MonoBehaviour
 
     public bool CalculateSevenPairs()
     {
-        //first, factor in the discarded tile during deciding
+        Debug.Log("Calculating Seven Pairs");
 
+        //first, factor in the discarded tile during deciding
         if (currentState == PlayerState.deciding)
             closedHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
 
@@ -430,7 +431,7 @@ public class MahjongPlayerBase : MonoBehaviour
     public bool CalculateNormalWin()
     {
         //calculate only using tiles from the closed hand, since only melds can exist in the closed hand
-
+        Debug.Log("Calculating Normal Win");
         if (currentState == PlayerState.deciding)
             closedHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
 
