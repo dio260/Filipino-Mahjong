@@ -224,7 +224,8 @@ public class HumanPlayer : MahjongPlayerBase
         //auto calculate kang as a bandaid
         foreach (Tile tile in closedHand)
         {
-            if (tile.tileType == discard.tileType && tile.number == discard.number)
+            //need the last equivalency check to due to the simultaneous method call
+            if (tile.tileType == discard.tileType && tile.number == discard.number && tile != discard)
             {
                 kangMeld.Add(tile);
             }
