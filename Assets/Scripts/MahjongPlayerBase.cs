@@ -287,13 +287,18 @@ public class MahjongPlayerBase : MonoBehaviour
 
         //first, factor in the discarded tile during deciding
         if (currentState == PlayerState.deciding)
+        {
             closedHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
+        }
 
         SortTilesBySuit();
 
         //check if theres more than one meld in the open hand
         if (openHand.Count > 4)
         {
+            if (currentState == PlayerState.deciding)
+                closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
+
             return false;
         }
 
@@ -315,7 +320,8 @@ public class MahjongPlayerBase : MonoBehaviour
             }
             Debug.Log("One Meld Closed Hand Seven Pairs " + allPairs);
 
-            closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
+            if (currentState == PlayerState.deciding)
+                closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
             return allPairs;
 
         }
