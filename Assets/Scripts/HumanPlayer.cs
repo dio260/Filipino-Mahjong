@@ -102,6 +102,30 @@ public class HumanPlayer : MahjongPlayerBase
                 passButton.gameObject.SetActive(false);
             }
 
+            switch(currentState)
+            {
+                case PlayerState.discarding:
+                    if(drawnTile == null)
+                    {
+                        tileText.text = "Drawn:    Discard:";
+                    }
+                    else
+                    {
+                        tileText.text = "Selected Discard:";
+                    }
+                break;
+                case PlayerState.waiting:
+                    tileText.text = "";
+                break;
+                case PlayerState.deciding:
+                    tileText.text = "Selected Meld Tiles:";
+                break;
+                default:
+                    tileText.text = "";
+                break;
+                
+            }
+
 
             // if (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine))
             // {
@@ -437,6 +461,9 @@ public class HumanPlayer : MahjongPlayerBase
 
         discardChoice = clicked;
         clicked.transform.position += Vector3.up * 0.025f;
+
+        tileImage2.enabled = true;
+        tileImage2.sprite = discardChoice.tileImage.sprite;
     }
 
     public void SelectMeldTile(Tile clicked)
@@ -459,10 +486,41 @@ public class HumanPlayer : MahjongPlayerBase
 
         if (selectedTiles.Count > 0)
         {
+            tileImage1.enabled = true;
+            tileImage1.sprite = null;
+            tileImage2.sprite = null;
+            if(selectedTiles.Count == 1)
+            {
+                tileImage2.enabled = false;
+                tileImage1.sprite = selectedTiles[0].tileImage.sprite;
+            }
+            else
+            {
+                tileImage2.enabled = true;
+                tileImage1.sprite = selectedTiles[0].tileImage.sprite;
+                tileImage2.sprite = selectedTiles[1].tileImage.sprite;
+            }
+
             CalculateHandOptions();
         }
     }
 
+    public override void AddDrawnTileToClosedHand()
+    {
+        // tileText.text = "Drawn:    Discard:";
+        tileImage1.enabled = true;
+        tileImage1.sprite = drawnTile.tileImage.sprite;
+        base.AddDrawnTileToClosedHand();
+    }
+
+    public override void StealTile()
+    {
+        base.StealTile();
+        // tileText.text = "Selected Discard:";
+        tileImage2.enabled = true;
+        tileImage1.enabled = false;
+        // tileImage2.sprite = drawnTile.tileImage.sprite;
+    }
 
     public void FlipUI()
     {

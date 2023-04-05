@@ -828,7 +828,7 @@ public class MahjongPlayerBase : MonoBehaviour
         canPong = false;
     }
 
-    public void StealTile()
+    public virtual void StealTile()
     {
         //add stolen tile and its meld to the open hand
         // openHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
@@ -919,7 +919,7 @@ public class MahjongPlayerBase : MonoBehaviour
     }
 
     //adding the drawn tile to closed hand after wards.
-    public void AddDrawnTileToClosedHand()
+    public virtual void AddDrawnTileToClosedHand()
     {
         drawnTile.owner = this;
         closedHand.Add(drawnTile);
