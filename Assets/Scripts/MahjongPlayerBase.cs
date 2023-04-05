@@ -296,6 +296,7 @@ public class MahjongPlayerBase : MonoBehaviour
         //check if theres more than one meld in the open hand
         if (openHand.Count > 4)
         {
+            Debug.Log("More than one meld in the open hand");
             if (currentState == PlayerState.deciding)
                 closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
 
@@ -374,6 +375,7 @@ public class MahjongPlayerBase : MonoBehaviour
         //only one suit collection can have an odd number
         if (oddSuits > 1)
         {
+            Debug.Log("More than one collection of odd suits");
             if (currentState == PlayerState.deciding)
                 closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
             return false;
@@ -480,6 +482,7 @@ public class MahjongPlayerBase : MonoBehaviour
         //only one suit collection can be not divisible by 3
         if (notDivisible > 1)
         {
+            Debug.Log("More than one collection divisible by 3");
             if (currentState == PlayerState.deciding)
                 closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
             return false;
