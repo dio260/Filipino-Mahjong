@@ -362,7 +362,7 @@ public class HumanPlayer : MahjongPlayerBase
             }
         }
 
-        base.VisuallySortTiles();
+        base.ArrangeTiles();
 
         if (discardChoice != null)
         {
