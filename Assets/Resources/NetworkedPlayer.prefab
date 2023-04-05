@@ -463,6 +463,7 @@ MonoBehaviour:
   openHandParent: {fileID: 8121919785658311191}
   flowersParent: {fileID: 8814427028177514817}
   playerCam: {fileID: 0}
+  playerCanvas: {fileID: 0}
   debugText: {fileID: 1561659117543989558}
 --- !u!114 &3073545853664383980
 MonoBehaviour:

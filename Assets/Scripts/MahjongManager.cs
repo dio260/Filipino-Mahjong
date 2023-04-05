@@ -183,7 +183,7 @@ public class MahjongManager : MonoBehaviour
             players = MultiplayerGameManager.Instance.players;
             foreach (MahjongPlayerBase player in players)
             {
-                if (player.GetComponent<HumanPlayer>() != null)
+                if (player.GetComponent<HumanPlayer>() != null && player.GetComponent<NetworkedPlayer>() != null && player.GetComponent<NetworkedPlayer>().photonView.IsMine)
                 {
                     player.GetComponent<HumanPlayer>().playerCanvas.SetActive(true);
                 }

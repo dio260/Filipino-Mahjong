@@ -104,12 +104,14 @@ public class MahjongPlayerBase : MonoBehaviour
             // todasButton.gameObject.SetActive(true);
             canWin = true;
         }
-        else if (CalculateSevenPairs())
+        
+        if (CalculateSevenPairs())
         {
             // todasButton.gameObject.SetActive(true);
             canWin = true;
         }
-        else if (CalculateNormalWin())
+        
+        if (CalculateNormalWin())
         {
             // todasButton.gameObject.SetActive(true);
             canWin = true;
