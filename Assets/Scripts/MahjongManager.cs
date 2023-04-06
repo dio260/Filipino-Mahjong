@@ -81,7 +81,7 @@ public class MahjongManager : MonoBehaviour
     {
         if (!network && debug)
         {
-            if (Input.GetKeyDown(KeyCode.Tab))
+            if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 Debug.Log("StopAllCoroutines called");
 
@@ -691,6 +691,7 @@ public class MahjongManager : MonoBehaviour
             //the tile was not stolen
             mostRecentDiscard.transform.parent = DeadTileParent.transform;
             deadTiles.Add(mostRecentDiscard);
+            deadTiles.Sort(CompareTileNumbers);
             // mostRecentDiscard = null;
 
             if (network)
@@ -1028,7 +1029,40 @@ public class MahjongManager : MonoBehaviour
         StartCoroutine(FirstTurn(dealer));
     }
 
+    private static int CompareTileNumbers(Tile x, Tile y)
+    {
+        if (x == null)
+        {
+            if (y == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        else
+        {
+            if (y == null)
+            {
+                return 1;
+            }
+            else
+            {
+                int retval = x.number.CompareTo(y.number);
 
+                if (retval != 0)
+                {
+                    return retval;
+                }
+                else
+                {
+                    return x.number.CompareTo(y.number);
+                }
+            }
+        }
+    }
 
 
 }

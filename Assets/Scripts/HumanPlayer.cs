@@ -13,6 +13,8 @@ public class HumanPlayer : MahjongPlayerBase
     Button sortButton, passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
     public TMP_Text debugText, tileText;
     public Image tileImage1, tileImage2;
+    public RectTransform HelpUI;
+    bool HelpOpen;
     Vector3 camRotation, camPosition;
     GameObject tileSwap;
 
@@ -84,6 +86,8 @@ public class HumanPlayer : MahjongPlayerBase
                 playerCanvas.SetActive(true);
             }
 
+            //UI being set active
+
             //setting buttons active when conditions are fulfilled
             if (discardChoice != null)
             {
@@ -103,10 +107,10 @@ public class HumanPlayer : MahjongPlayerBase
                 passButton.gameObject.SetActive(false);
             }
 
-            switch(currentState)
+            switch (currentState)
             {
                 case PlayerState.discarding:
-                    if(drawnTile != null)
+                    if (drawnTile != null)
                     {
                         tileText.text = "Drawn:    Discard:";
                     }
@@ -114,17 +118,31 @@ public class HumanPlayer : MahjongPlayerBase
                     {
                         tileText.text = "Selected Discard:";
                     }
-                break;
+                    break;
                 case PlayerState.waiting:
                     tileText.text = "";
-                break;
+                    break;
                 case PlayerState.deciding:
                     tileText.text = "Selected Meld Tiles:";
-                break;
+                    break;
                 default:
                     tileText.text = "";
-                break;
-                
+                    break;
+
+            }
+
+
+            //opening the help UI
+            if (Input.GetKeyDown(KeyCode.Tab) && (HelpUI.sizeDelta.y == 60 || HelpUI.sizeDelta.y == 500))
+            {
+                if (!HelpOpen)
+                {
+                    StartCoroutine(OpenHelp());
+                }
+                else
+                {
+                    StartCoroutine(CloseHelp());
+                }
             }
 
 
@@ -370,7 +388,7 @@ public class HumanPlayer : MahjongPlayerBase
             StartCoroutine(todasButton.GetComponentInParent<ButtonFlip>().Flip());
         }
     }
-    
+
     [PunRPC]
     public override void ArrangeTiles()
     {
@@ -434,7 +452,7 @@ public class HumanPlayer : MahjongPlayerBase
         }
     }
 
-    
+
 
     public void FlipWinButton()
     {
@@ -490,7 +508,7 @@ public class HumanPlayer : MahjongPlayerBase
             tileImage1.enabled = true;
             tileImage1.sprite = null;
             tileImage2.sprite = null;
-            if(selectedTiles.Count == 1)
+            if (selectedTiles.Count == 1)
             {
                 tileImage2.enabled = false;
                 tileImage1.sprite = selectedTiles[0].tileImage.sprite;
@@ -549,5 +567,71 @@ public class HumanPlayer : MahjongPlayerBase
         closedHand = new List<Tile>();
     }
 
-    // public void 
+    public IEnumerator OpenHelp()
+    {
+        while (HelpUI.rect.height < 500)
+        {
+            HelpUI.sizeDelta += Vector2.up;
+
+            if (HelpUI.sizeDelta.y > 69)
+            {
+                if (HelpUI.GetChild(1).localScale.y < 1)
+                {
+                    HelpUI.GetChild(1).localScale += Vector3.up * 0.01f;
+                    if(HelpUI.GetChild(1).localScale.y > 1)
+                    {
+                        HelpUI.GetChild(1).localScale = Vector3.one;
+                    }
+                }
+            }
+            if (HelpUI.sizeDelta.y > 160)
+            {
+                if (HelpUI.GetChild(2).localScale.y < 1)
+                {
+                    HelpUI.GetChild(2).localScale += Vector3.up * 0.00275f;
+                    if(HelpUI.GetChild(2).localScale.y > 1)
+                    {
+                        HelpUI.GetChild(2).localScale = Vector3.one;
+                    }
+                }
+            }
+            yield return new WaitForSeconds(0.005f);
+        }
+        HelpOpen = true;
+        Debug.Log(HelpUI.rect.height);
+    }
+    public IEnumerator CloseHelp()
+    {
+        while (HelpUI.rect.height > 60)
+        {
+            HelpUI.sizeDelta -= Vector2.up;
+
+            if (HelpUI.sizeDelta.y < 155)
+            {
+                if (HelpUI.GetChild(1).localScale.y > 0)
+                {
+                    HelpUI.GetChild(1).localScale -= Vector3.up * 0.012f;
+                    if(HelpUI.GetChild(1).localScale.y < 0)
+                    {
+                        HelpUI.GetChild(1).localScale = Vector3.zero;
+                    }
+                }
+            }
+            if (HelpUI.sizeDelta.y < 485)
+            {
+                if (HelpUI.GetChild(2).localScale.y > 0)
+                {
+                    HelpUI.GetChild(2).localScale -= Vector3.up * 0.0028f;
+                    if(HelpUI.GetChild(2).localScale.y < 0)
+                    {
+                        HelpUI.GetChild(2).localScale = Vector3.zero;
+                    }
+                }
+            }
+            yield return new WaitForSeconds(0.005f);
+        }
+        HelpOpen = false;
+        Debug.Log(HelpUI.rect.height);
+
+    }
 }
