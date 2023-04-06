@@ -760,7 +760,6 @@ MonoBehaviour:
   tileImage1: {fileID: 4821225523110051437}
   tileImage2: {fileID: 3624660964844015204}
   HelpUI: {fileID: 6833752545610956454}
-  HelpOpen: 0
 --- !u!114 &3073545853664383980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1899,7 +1898,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6036939041904070355
 RectTransform:
   m_ObjectHideFlags: 0
