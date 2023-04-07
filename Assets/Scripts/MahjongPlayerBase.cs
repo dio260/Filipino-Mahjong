@@ -885,7 +885,7 @@ public class MahjongPlayerBase : MonoBehaviour
         MahjongManager.mahjongManager.wall.RemoveAt(MahjongManager.mahjongManager.wall.Count - 1);
         // ArrangeTiles();
     }
-    //draw a flower tile from the flower end of the wall
+    //draw an extra tile when a kang is declared
     public void DrawKangTile()
     {
         drawnTile = MahjongManager.mahjongManager.wall[MahjongManager.mahjongManager.wall.Count - 1];

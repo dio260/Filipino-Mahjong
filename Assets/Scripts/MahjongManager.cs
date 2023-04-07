@@ -9,26 +9,28 @@ public enum GameState { setup, playing, finished };
 
 public class MahjongManager : MonoBehaviour
 {
-
+    
     public static MahjongManager mahjongManager;
+    #region Tile-Related
     protected List<Tile> board;
     public List<Tile> wall;
-
     protected List<Tile> deadTiles;
-
     public Tile mostRecentDiscard;
     protected static int MAXTILECOUNT = 144;
-    protected GameState state;
-
-    [SerializeField]
+    #endregion
+    #region Player-Related
     public List<MahjongPlayerBase> players;
-
     public MahjongPlayerBase dealer, currentPlayer, nextPlayer;
     public MahjongPlayerBase previousPlayer;
-
-    protected int round, numRounds;
+    #endregion
+    #region Gameplay Properties
+    protected GameState state;
+    protected int round, numRounds, dieRollResult;
+    #endregion 
+    #region Physical Elements
     public GameObject InitialTileParent, TileSizeReference, DeadTileParent;
     public BoxCollider TileBoundaries;
+    #endregion
     public bool network;
 
     [Header("Debugging Tools")]
@@ -391,7 +393,7 @@ public class MahjongManager : MonoBehaviour
         }
 
         Debug.Log(dieMessage + "Total roll: " + dieRoll);
-        int dieRollResult = (dieRoll - 1) % players.Count;
+        dieRollResult = (dieRoll - 1) % players.Count;
 
         yield return new WaitForSeconds(2);
 
@@ -416,19 +418,19 @@ public class MahjongManager : MonoBehaviour
         else
         {
             SendPlayersMessage("Dealer is " + dealer.name);
-            StartCoroutine(CreateWalls());
+            StartCoroutine(DistributeTiles());
         }
 
 
     }
-    public IEnumerator CreateWalls()
+    public IEnumerator DistributeTiles()
     {
 
         yield return new WaitForSeconds(2);
 
         //now do dealer things
         int dealerIndex = players.IndexOf(dealer);
-        int wallIndex = (MAXTILECOUNT / 4) * dealerIndex;
+        int wallIndex = (MAXTILECOUNT / 4) * dealerIndex + dieRollResult;
         wall.AddRange(board.GetRange(wallIndex, MAXTILECOUNT - wallIndex));
         wall.AddRange(board.GetRange(0, wallIndex));
 
@@ -1010,7 +1012,7 @@ public class MahjongManager : MonoBehaviour
     {
         int dieRollResult = (index - 1) % players.Count;
         dealer = players[dieRollResult];
-        StartCoroutine(CreateWalls());
+        StartCoroutine(DistributeTiles());
     }
 
     public void SendPlayersMessage(string message)
