@@ -4439,9 +4439,34 @@ MonoBehaviour:
     hand involves adding a tile to your hand that makes the hand satisfy the winning
     condition. As your hand and revealed melds still do not make a winning hand,
     discard the rightmost tile to continue.
-  - Discards that are not stolen are placed in the middle of the table to , it is
-    important to take note of what tiles have already been discarded. A top-down
+  - Discards that are not stolen are left in the middle of the table and are no longer
+    in play. It is important to take note of what tiles are dead to know the possible
+    tiles that are still in play. A top-down view of the board can be shown by holding
+    the Spacebar.
   - The player across from you has discarded a tile that you can declare a pong with.
+    Unlike Chow, Pong and Kang can be declared on any player's discard, which can
+    result in some player's turns being skipped as you steal the discard. Select
+    the two tiles that match the discard and declare a Pong.
+  - The more melds you declare, the smaller your closed hand gets. As you play, take
+    note of how the contents of your closed hand affect your possible winning tiles.
+    For now, discard the [] tile to continue.
+  - A tile has been discarded that you can make a Kang with. Due to a kang having
+    four tiles instead of three, declaring a Kang has the player draw an extra tile
+    from the flower end to ensure their hand size stays correct.
+  - Kangs are automatically calculated for the player when a tile that can form a
+    Kang is discarded. In real games, Kangs grant the player and additional payout,
+    but for this game they simply act as another meld. Go ahead and click the Kang
+    button.
+  - Note that declaring a Kang prevents the tiles from being used as pair tiles in
+    a Seven Pairs winning hand (the Kang can still be used as the single meld for
+    a Seven Pair hand). Discard your rightmost tile to continue.
+  - Note that declaring a Kang prevents the tiles from being used as pair tiles in
+    a Seven Pairs winning hand (the Kang can still be used as the single meld for
+    a Seven Pair hand). Discard your rightmost tile to continue.
+  - It looks like the next player's discard results in a winning Standard hand for
+    you. A discard that makes a winning hand can be stolen under any condition for
+    you to win the game. Click the Todas button to declare your win.
+  - That's it for the tutorial! Go and play some Filipino Mahjong.
 --- !u!4 &332700559 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
