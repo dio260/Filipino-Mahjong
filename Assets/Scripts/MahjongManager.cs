@@ -44,7 +44,7 @@ public class MahjongManager : MonoBehaviour
     public List<Tile> debugOpenHandArrangement;
     public List<Tile> debugFlowerArrangement;
 
-    protected virtual void Awake()
+    public virtual void Awake()
     {
         //Singleton thing
         if (mahjongManager != null && mahjongManager != this)

@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class TutorialManager : MahjongManager
 {
-    public new List<Tile> board;
     // private static int MAXTILECOUNT = 144;
     // private GameState state;
     // private MahjongPlayerBase dealer, previousPlayer, currentPlayer, nextPlayer;
@@ -15,8 +15,12 @@ public class TutorialManager : MahjongManager
     public HumanPlayer tutorialGuy;
     public Text tutorialDialogue;
     public Button nextButton, eventButton;
+    [TextArea(5, 15)]
+    public string[] dialogueLines;
+    int dialogueIndex;
+    bool advanceDialogue;
     // Start is called before the first frame update
-    void Awake()
+    public override void Awake()
     {
         if (mahjongManager != null && mahjongManager != this)
         {
@@ -33,8 +37,13 @@ public class TutorialManager : MahjongManager
         deadTiles = new List<Tile>();
         mostRecentDiscard = null;
 
-        if(!TileBoundaries.isTrigger)
+        if (!TileBoundaries.isTrigger)
             TileBoundaries.isTrigger = true;
+
+        //always load into the same scene, so find this object in the scene
+        InitialTileParent = GameObject.Find("Tiles");
+        DeadTileParent = GameObject.Find("Dead Tiles");
+        TileBoundaries = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
 
         //put all the tiles into board structure;
         foreach (Tile tile in InitialTileParent.transform.GetComponentsInChildren<Tile>())
@@ -42,56 +51,69 @@ public class TutorialManager : MahjongManager
             board.Add(tile);
         }
 
+        nextButton.onClick.AddListener(ResetNextButton);
+
         StartCoroutine(GameOverview());
     }
 
     // Update is called once per frame
-    void Update()
+    public void ResetNextButton()
     {
+        advanceDialogue = true;
+        dialogueIndex++;
+    }
+    public void FixedUpdate()
+    {
+        tutorialDialogue.text = dialogueLines[dialogueIndex];
+        if (!advanceDialogue)
+            return;
 
+        advanceDialogue = false;
     }
 
     IEnumerator GameOverview()
     {
-        tutorialDialogue.text = "Welcome to Mahjong! This tutorial will go over basic rules and steps to playing the game.";
-        yield return new WaitForSeconds(2);
-        tutorialDialogue.text = "Mahjong is a tile-based game in which players must form specific hands of 17 tiles to win.";
-        yield return new WaitForSeconds(2);
-        tutorialDialogue.text = "There are many ways of playing Mahjong, but this game focuses on a basic ruleset used in the Philippines.";
-        yield return new WaitForSeconds(2);
-
+        while (dialogueIndex < 3)
+        {
+            yield return new WaitForSeconds(1);
+        }
     }
 
-    IEnumerator BoardSetup()
+    new IEnumerator BoardSetup()
     {
-        tutorialDialogue.text = "All Mahjong games start by shuffling the tiles and sorting them into walls. Press the button to shuffle the tiles on the table.";
-
-        //add a button instead of wait;
-        yield return new WaitForSeconds(2);
+        while (dialogueIndex < 4)
+        {
+            yield return new WaitForSeconds(1);
+        }
         System.Random rand = new System.Random();
 
-        // wall = board;
-        // Debug.Log(TileBoundaries.bounds.max);
-        float distanceReference = TileSizeReference.transform.localScale.z/2;
-        float heightReference = TileSizeReference.transform.localScale.y/2f;
+        SendPlayersMessage("Shuffling Board and Creating Walls");
+        AudioHandler.audioHandler.PlayShuffle();
+        foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+        {
+            player.currentAvatar.PlayShuffleAnim();
+        }
+
+        float distanceReference = TileSizeReference.transform.localScale.z / 2;
+        float heightReference = TileSizeReference.transform.localScale.y / 2f;
         int multiplier = 0;
 
-        for(int x = 0; x < board.Count; x++)
+        for (int x = 0; x < board.Count; x++)
         {
-            if (x%36 == 0)
+            if (x % 36 == 0)
             {
                 multiplier = 0;
             }
-            if(x < 36)
+            if (x < 36)
             {
-                if(x % 2 == 0)
+                if (x % 2 == 0)
                 {
                     board[x].transform.position = new Vector3(TileBoundaries.bounds.max.x, TileBoundaries.bounds.min.y + 0.005f + heightReference, TileBoundaries.bounds.max.z - (distanceReference * multiplier));
                 }
                 else
                 {
-                    board[x].transform.position = board[x-1].transform.position + Vector3.up * -heightReference;
-                    
+                    board[x].transform.position = board[x - 1].transform.position + Vector3.up * -heightReference;
+
                 }
                 multiplier += 1;
                 continue;
@@ -99,47 +121,47 @@ public class TutorialManager : MahjongManager
             // break;
             if (x < 72)
             {
-                board[x].transform.Rotate(Vector3.left  * 90);
-                if(x % 2 == 0)
+                board[x].transform.Rotate(Vector3.left * 90);
+                if (x % 2 == 0)
                 {
-                    board[x].transform.position = new Vector3(TileBoundaries.bounds.max.x - (distanceReference * multiplier), TileBoundaries.bounds.min.y + 0.005f + heightReference, TileBoundaries.bounds.min.z );
+                    board[x].transform.position = new Vector3(TileBoundaries.bounds.max.x - (distanceReference * multiplier), TileBoundaries.bounds.min.y + 0.005f + heightReference, TileBoundaries.bounds.min.z);
                 }
                 else
                 {
-                    board[x].transform.position = board[x-1].transform.position + Vector3.up * -heightReference;
-                    
+                    board[x].transform.position = board[x - 1].transform.position + Vector3.up * -heightReference;
+
                 }
                 multiplier += 1;
                 continue;
-                
+
             }
             // break;
             if (x < 108)
             {
                 // board[x].transform.Rotate(Vector3.left  * 90);
-                if(x % 2 == 0)
+                if (x % 2 == 0)
                 {
                     board[x].transform.position = new Vector3(TileBoundaries.bounds.min.x, TileBoundaries.bounds.min.y + 0.005f + heightReference, TileBoundaries.bounds.min.z + (distanceReference * multiplier));
                 }
                 else
                 {
-                    board[x].transform.position = board[x-1].transform.position + Vector3.up * -heightReference;
-                    
+                    board[x].transform.position = board[x - 1].transform.position + Vector3.up * -heightReference;
+
                 }
                 multiplier += 1;
                 continue;
             }
             if (x < 144)
             {
-                board[x].transform.Rotate(Vector3.left  * 90);
-                if(x % 2 == 0)
+                board[x].transform.Rotate(Vector3.left * 90);
+                if (x % 2 == 0)
                 {
-                    board[x].transform.position = new Vector3(TileBoundaries.bounds.min.x + (distanceReference * multiplier), TileBoundaries.bounds.min.y + 0.005f + heightReference, TileBoundaries.bounds.max.z );
+                    board[x].transform.position = new Vector3(TileBoundaries.bounds.min.x + (distanceReference * multiplier), TileBoundaries.bounds.min.y + 0.005f + heightReference, TileBoundaries.bounds.max.z);
                 }
                 else
                 {
-                    board[x].transform.position = board[x-1].transform.position + Vector3.up * -heightReference;
-                    
+                    board[x].transform.position = board[x - 1].transform.position + Vector3.up * -heightReference;
+
                 }
                 multiplier += 1;
                 continue;
@@ -147,42 +169,56 @@ public class TutorialManager : MahjongManager
             // tile.transform.Rotate(new Vector3(0, 0, -90));
         }
 
-        tutorialDialogue.text = "In a real mahjong game, all players work together to shuffle the board and arrange them into those four walls.";
-        yield return new WaitForSeconds(2);
-        tutorialDialogue.text = "After the walls have been made, the game's dealer then needs to be determined. Press the button to move on to that.";
-        yield return new WaitForSeconds(2);
+        while (dialogueIndex < 8)
+        {
+            yield return new WaitForSeconds(1);
+        }
 
-        // yield return new WaitForSeconds(2);
-        // StartCoroutine(RollDice());
+        StartCoroutine(RollDice());
     }
 
     IEnumerator RollDice()
     {
-        tutorialDialogue.text = "The dealer is determined by counting counterclockwise from a dice roll [needs explanation work]";
-        yield return new WaitForSeconds(2);
-        tutorialDialogue.text = "The dealer gets to split one of the walls to start distributing hands to each player";
-        yield return new WaitForSeconds(2);
-        tutorialDialogue.text = "For the sake of this tutorial, you will start as the dealer.";
-        yield return new WaitForSeconds(2);
-        
+        //newand improved real actual dice roll
+        //play diceroll animation
+        int dieRoll = 0;
+        List<Dice> die = FindObjectsOfType<Dice>().ToList<Dice>();
+
+        StartCoroutine(die[0].TutorialDiceRoll(Vector3.right * 90));
+        StartCoroutine(die[0].TutorialDiceRoll(Vector3.zero));
+
+        yield return new WaitForSeconds(2f);
+        foreach (Dice dice in die)
+        {
+            dieRoll += dice.rollResult;
+        }
+        dieRollResult = (dieRoll - 1) % players.Count;
         dealer = players[0];
 
-        //create walls
-        // System.Random rand = new System.Random();
-        // int dieRollResult = (rand.Next(2, 13) - 1) % 4;
-        // int wallIndex = (MAXTILECOUNT / 4) * dieRollResult;
+        while (dialogueIndex < 8)
+        {
+            yield return new WaitForSeconds(1);
+        }
+
+        int dealerIndex = players.IndexOf(dealer);
+        int wallIndex = (MAXTILECOUNT / 4) * dealerIndex + dieRollResult;
+        wall.AddRange(board.GetRange(wallIndex, MAXTILECOUNT - wallIndex));
+        wall.AddRange(board.GetRange(0, wallIndex));
         wall.AddRange(board);
 
-
-        Debug.Log("Distributing Hands");
-
-        List<Tile> distributedTiles = wall.GetRange(0, 65);
-        wall.RemoveRange(0, 65);
-        dealer.GetComponent<MahjongPlayerBase>().AddTile(distributedTiles[0]);
-        // distributedTiles.Remove(wall[0]);
-        for (int i = 1; i < 65; i++)
+        while (dialogueIndex < 10)
         {
-            players[(((i - 1) / 16)) % 4].AddTile(distributedTiles[i]);
+            yield return new WaitForSeconds(1);
+        }
+
+        //now distribute the tiles to others.
+        List<Tile> distributedTiles = wall.GetRange(0, 1 + (16 * players.Count));
+        wall.RemoveRange(0, 1 + (16 * players.Count));
+        dealer.GetComponent<MahjongPlayerBase>().AddTile(distributedTiles[0]);
+
+        for (int i = 1; i < 1 + (16 * players.Count); i++)
+        {
+            players[(dealerIndex + ((i - 1) / 16)) % players.Count].AddTile(distributedTiles[i]);
         }
 
         foreach (MahjongPlayerBase player in players)
@@ -197,7 +233,7 @@ public class TutorialManager : MahjongManager
         tutorialDialogue.text = "Both ends are used for drawing tiles. One end is for normal drawing, while the end where the die have been placed is for replacing flower tiles.";
         yield return new WaitForSeconds(2);
 
-        
+
     }
 
     IEnumerator FlowersTutorial()
@@ -296,7 +332,7 @@ public class TutorialManager : MahjongManager
         player.GetComponent<HumanPlayer>().debugText.text = "waiting";
         player.SetPlayerState(PlayerState.waiting);
 
-        if(!debug)
+        if (!debug)
             mostRecentDiscard.transform.position = Vector3.up * 0.5f;
 
         StartCoroutine(BetweenTurn());
@@ -328,9 +364,9 @@ public class TutorialManager : MahjongManager
                 break;
         }
         foreach (MahjongPlayerBase player in players)
-            {
-                player.SetPlayerState(PlayerState.waiting);
-            }
+        {
+            player.SetPlayerState(PlayerState.waiting);
+        }
 
         // MahjongPlayerBase next = players[0];
 

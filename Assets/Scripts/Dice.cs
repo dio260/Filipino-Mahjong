@@ -44,4 +44,16 @@ public class Dice : MonoBehaviour
         }
 
     }
+    public IEnumerator TutorialDiceRoll(Vector3 desiredRoll)
+    {
+        StartCoroutine(DiceRoll());
+        yield return new WaitForSeconds(0.01f);
+        transform.rotation = Quaternion.Euler(desiredRoll);
+        if(Physics.Raycast(transform.position, Vector3.up, out RaycastHit hit, 1, 1 << 6) && hit.collider.isTrigger)
+        {
+            Debug.Log(hit.collider.gameObject.name);
+            rollResult = int.Parse(hit.collider.gameObject.name);
+        }
+
+    }
 }
