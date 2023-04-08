@@ -421,7 +421,7 @@ public class TutorialManager : MahjongManager
             {
                 while (TutorialManager.tutorial.mostRecentDiscard == null)
                 {
-                    yield return new WaitForSeconds(0.1f);
+                    yield return new WaitForSeconds(0.01f);
                     if (player.discardChoice != playerHand[playerHand.Count - 1])
                     {
                         player.discardChoice = null;
@@ -432,7 +432,8 @@ public class TutorialManager : MahjongManager
                         StartCoroutine(GameWin());
                     }
 
-                    // Debug.Log("Looping till discard");
+                    if (dialogueIndex == 25 || dialogueIndex == 28)
+                        dialogueIndex--;
                 }
             }
 
@@ -474,7 +475,6 @@ public class TutorialManager : MahjongManager
     {
         Debug.Log("Between Turns");
 
-        nextButton.gameObject.SetActive(false);
 
         foreach (MahjongPlayerBase player in players)
         {
@@ -493,11 +493,9 @@ public class TutorialManager : MahjongManager
                 player.currentDecision = decision.pass;
         }
 
+        tutorialGuy.CalculateHandOptions();
 
-        if (dialogueIndex == 17 && currentPlayer == players[1])
-        {
-            tutorialGuy.currentDecision = decision.pass;
-        }
+
         if (dialogueIndex == 17 && currentPlayer == players[2])
         {
             dialogueIndex++;
@@ -514,13 +512,49 @@ public class TutorialManager : MahjongManager
             while (dialogueIndex < 20)
             {
                 yield return new WaitForSeconds(0.1f);
-                if(tutorialGuy.currentDecision == decision.pass)
+                if (tutorialGuy.currentDecision == decision.pass)
                 {
                     tutorialGuy.currentDecision = decision.none;
                     dialogueIndex--;
                 }
             }
             // nextButton.gameObject.SetActive(true);
+        }
+        else if (dialogueIndex == 22 && currentPlayer != tutorialGuy)
+        {
+
+            nextButton.gameObject.SetActive(true);
+            while (dialogueIndex < 24)
+            {
+
+                yield return new WaitForSeconds(0.01f);
+                if (dialogueIndex == 23)
+                    nextButton.gameObject.SetActive(false);
+            }
+        }
+        else if (dialogueIndex == 24 && currentPlayer != tutorialGuy)
+        {
+            dialogueIndex++;
+            nextButton.gameObject.SetActive(true);
+            while (dialogueIndex < 27)
+            {
+                yield return new WaitForSeconds(0.01f);
+                if (dialogueIndex == 26)
+                    nextButton.gameObject.SetActive(false);
+            }
+        }
+        else if (dialogueIndex == 27 && currentPlayer != tutorialGuy)
+        {
+            dialogueIndex++;
+            // nextButton.gameObject.SetActive(true);
+            while (dialogueIndex < 27)
+            {
+                yield return new WaitForSeconds(0.01f);
+            }
+        }
+        else
+        {
+            tutorialGuy.currentDecision = decision.pass;
         }
 
 

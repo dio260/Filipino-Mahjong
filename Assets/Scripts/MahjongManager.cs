@@ -840,8 +840,6 @@ public class MahjongManager : MonoBehaviour
             {
                 player.SetPlayerState(PlayerState.deciding);
 
-                //this is causing a tile to be added to the open hand for some reason
-                // player.CalculateHandOptions();
             }
             else
             {
