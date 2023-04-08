@@ -948,7 +948,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
 
     //to be called when the player runs out of time
-    public void ForceDiscard()
+    public virtual void ForceDiscard()
     {
         if (drawnTile == null)
         {

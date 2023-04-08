@@ -11,7 +11,7 @@ public class TutorialManager : MahjongManager
     // private GameState state;
     // private MahjongPlayerBase dealer, previousPlayer, currentPlayer, nextPlayer;
     // private int round, numRounds;
-
+    public static TutorialManager tutorial; 
     public HumanPlayer tutorialGuy;
     public Text tutorialDialogue;
     public Button nextButton, eventButton;
@@ -22,38 +22,24 @@ public class TutorialManager : MahjongManager
     // Start is called before the first frame update
     public override void Awake()
     {
-        if (mahjongManager != null && mahjongManager != this)
+        if (tutorial != null && tutorial != this)
         {
             Destroy(gameObject);
         }
         else
         {
-            mahjongManager = this;
+            tutorial = this;
         }
-        //initialize some stuff
-        state = GameState.setup;
-        // board = new List<Tile>(MAXTILECOUNT);
-        wall = new List<Tile>();
-        deadTiles = new List<Tile>();
-        mostRecentDiscard = null;
-
-        if (!TileBoundaries.isTrigger)
-            TileBoundaries.isTrigger = true;
-
         //always load into the same scene, so find this object in the scene
         InitialTileParent = GameObject.Find("Tiles");
         DeadTileParent = GameObject.Find("Dead Tiles");
         TileBoundaries = GameObject.Find("TileBoundaries").GetComponent<BoxCollider>();
 
-        //put all the tiles into board structure;
-        foreach (Tile tile in InitialTileParent.transform.GetComponentsInChildren<Tile>())
-        {
-            board.Add(tile);
-        }
+
 
         nextButton.onClick.AddListener(ResetNextButton);
 
-        StartCoroutine(GameOverview());
+        InitializeGame();
     }
 
     // Update is called once per frame
@@ -71,20 +57,42 @@ public class TutorialManager : MahjongManager
         advanceDialogue = false;
     }
 
-    IEnumerator GameOverview()
+    new public void InitializeGame()
     {
-        while (dialogueIndex < 3)
+
+        //initialize game states, tile lists, and other relevant objects
+        state = GameState.setup;
+        board = new List<Tile>(MAXTILECOUNT);
+        wall = new List<Tile>();
+        deadTiles = new List<Tile>();
+        mostRecentDiscard = null;
+        firstTurn = true;
+
+        if (!TileBoundaries.isTrigger)
+            TileBoundaries.isTrigger = true;
+
+        foreach (Tile tile in InitialTileParent.transform.GetComponentsInChildren<Tile>())
         {
-            yield return new WaitForSeconds(1);
+            board.Add(tile);
         }
+
+        StartCoroutine(BoardSetup());
+
+
     }
 
     new IEnumerator BoardSetup()
     {
+        Debug.Log("BoardSetup");
+
         while (dialogueIndex < 4)
         {
-            yield return new WaitForSeconds(1);
+            // Debug.Log("Shuffling Board and Creating Walls");
+            yield return new WaitForSeconds(1f);
         }
+        tutorialGuy.playerCanvas.SetActive(true);
+
+        Debug.Log("Shuffling Board and Creating Walls");
         System.Random rand = new System.Random();
 
         SendPlayersMessage("Shuffling Board and Creating Walls");
@@ -103,6 +111,7 @@ public class TutorialManager : MahjongManager
             if (x % 36 == 0)
             {
                 multiplier = 0;
+                yield return new WaitForSeconds(1);
             }
             if (x < 36)
             {
@@ -169,15 +178,15 @@ public class TutorialManager : MahjongManager
             // tile.transform.Rotate(new Vector3(0, 0, -90));
         }
 
-        while (dialogueIndex < 8)
+        while (dialogueIndex < 7)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1f);
         }
 
         StartCoroutine(RollDice());
     }
 
-    IEnumerator RollDice()
+    new IEnumerator RollDice()
     {
         //newand improved real actual dice roll
         //play diceroll animation
@@ -226,25 +235,17 @@ public class TutorialManager : MahjongManager
             // player.VisuallySortTiles();
             player.ArrangeTiles();
         }
-        // StartCoroutine(Wait());
-        yield return new WaitForSeconds(2);
-        tutorialDialogue.text = "Now that each player has their starting hand, the wall now has two ends.";
-        yield return new WaitForSeconds(2);
-        tutorialDialogue.text = "Both ends are used for drawing tiles. One end is for normal drawing, while the end where the die have been placed is for replacing flower tiles.";
-        yield return new WaitForSeconds(2);
 
+        while (dialogueIndex < 15)
+        {
+            yield return new WaitForSeconds(1);
+        }
 
+        StartCoroutine(FlowersTutorial());
     }
 
     IEnumerator FlowersTutorial()
     {
-        tutorialDialogue.text = "The ";
-        yield return new WaitForSeconds(2);
-        tutorialDialogue.text = "Flower tiles are bonus tiles that do not influence a player's hand. If a player draws one, they collect it to the side and may draw another tile from the flower end to replace it.";
-        yield return new WaitForSeconds(2);
-        tutorialDialogue.text = "The hand distribution has left you with a flower tile. Press the button to replace it.";
-        yield return new WaitForSeconds(2);
-        Debug.Log("Replacing Flowers");
 
         int needFlowers = -1;
         while (needFlowers != 0)
@@ -258,9 +259,6 @@ public class TutorialManager : MahjongManager
             }
         }
 
-        tutorialDialogue.text = "Now your flowers are replaced and you have a proper hand. Any flowers drawn throughout the ";
-        yield return new WaitForSeconds(2);
-
         foreach (MahjongPlayerBase player in players)
         {
             // player.VisuallySortTiles();
@@ -270,81 +268,201 @@ public class TutorialManager : MahjongManager
         currentPlayer = dealer;
         nextPlayer = players[1];
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.1f);
+
         state = GameState.playing;
         StartCoroutine(TakeTurn(currentPlayer));
     }
 
     IEnumerator TakeTurn(MahjongPlayerBase player)
     {
-        Debug.Log("current turn: " + player.gameObject.name);
-        player.SetPlayerState(PlayerState.discarding);
-        if (player.currentDecision != decision.none && player.currentDecision != decision.pass)
+        while (dialogueIndex < 16)
         {
-            Debug.Log(player.gameObject.name + " stole discard");
-            player.StealTile();
+            if(nextButton.gameObject.activeSelf == true)
+            {
+                nextButton.gameObject.SetActive(false);
+            }
+            yield return new WaitForSeconds(1);
+        }
+        if (!firstTurn)
+        {
+            yield return new WaitForSeconds(2);
+
+            if (player.currentDecision != decision.none && player.currentDecision != decision.pass)
+            {
+                SendPlayersMessage(player.gameObject.name + " stole the discard for a " + player.currentDecision.ToString());
+                player.currentAvatar.PlayStealAnim();
+                player.StealTile();
+
+                //draw like normal if kang
+                if (player.currentDecision == decision.kang)
+                {
+                    yield return new WaitForSeconds(1);
+                    SendPlayersMessage(player.gameObject.name + " is drawing a tile");
+                    player.currentAvatar.PlayDrawAnim();
+
+
+                    player.DrawKangTile();
+
+                    yield return new WaitForSeconds(1);
+
+                    if (player.currentDrawnTile().tileType == suit.flower)
+                    {
+                        while (player.currentDrawnTile().tileType == suit.flower)
+                        {
+                            player.DrawFlowerTile();
+                            SendPlayersMessage(player.gameObject.name + " drew a flower");
+                            player.currentAvatar.PlayDrawAnim();
+                            yield return new WaitForSeconds(1);
+                        }
+                    }
+
+                    if (network)
+                    {
+                        MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " finished drawing.");
+                    }
+                    else
+                    {
+                        SendPlayersMessage(player.gameObject.name + " finished drawing");
+                    }
+
+                    player.AddDrawnTileToClosedHand();
+                }
+            }
+            else
+            {
+                //the tile was not stolen
+                mostRecentDiscard.transform.parent = DeadTileParent.transform;
+                deadTiles.Add(mostRecentDiscard);
+                deadTiles.Sort(CompareTileNumbers);
+                // mostRecentDiscard = null;
+
+
+                SendPlayersMessage(player.gameObject.name + " is drawing a tile");
+                player.currentAvatar.PlayDrawAnim();
+
+                player.DrawTile();
+
+                // StartCoroutine(player.DrawTile());
+                yield return new WaitForSeconds(1);
+                if (player.currentDrawnTile().tileType == suit.flower)
+                {
+                    while (player.currentDrawnTile().tileType == suit.flower)
+                    {
+                        player.DrawFlowerTile();
+                        SendPlayersMessage(player.gameObject.name + " drew a flower");
+                        player.currentAvatar.PlayDrawAnim();
+
+                        yield return new WaitForSeconds(1);
+                    }
+                }
+
+
+                SendPlayersMessage(player.gameObject.name + " finished drawing");
+
+
+                player.AddDrawnTileToClosedHand();
+
+            }
+            player.ArrangeTiles();
         }
         else
         {
-
-            yield return new WaitForSeconds(1);
-            Debug.Log(player.gameObject.name + " drawing tile");
-            player.DrawTile();
-
-            // StartCoroutine(player.DrawTile());
-            yield return new WaitForSeconds(1);
-            if (player.currentDrawnTile().tileType == suit.flower)
-            {
-                while (player.currentDrawnTile().tileType == suit.flower)
-                {
-                    Debug.Log(player.gameObject.name + " drew flower");
-                    player.DrawFlowerTile();
-                    yield return new WaitForSeconds(1);
-                }
-            }
-
-
-            Debug.Log(player.gameObject.name + " finished drawing");
-            player.AddDrawnTileToClosedHand();
-
+            firstTurn = false;
         }
 
-        //do a time based implementation so people cannot stall out the turn;
-        for (int i = 30; i > 0; i--)
+        if (player.CalculateNormalWin() && player.CalculateSevenPairs())
         {
-            if (player.GetType() == typeof(HumanPlayer))
+            if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
             {
-                player.GetComponent<HumanPlayer>().debugText.text = i + " seconds left";
+                human.FlipWinButton();
             }
-            yield return new WaitForSeconds(1);
-            if (mostRecentDiscard != null)
-            {
-                break;
-            }
-        }
-        if (mostRecentDiscard == null)
-        {
-            mostRecentDiscard = player.currentDrawnTile();
-            player.SetNullDrawnTile();
         }
 
-        Debug.Log("Player Discarded " + mostRecentDiscard.number + " " + mostRecentDiscard.tileType);
-        player.GetComponent<HumanPlayer>().debugText.text = "waiting";
+        //set most recent discard as null after the player has drawn so they can make the decision
+        foreach (MahjongPlayerBase user in players)
+            user.ResetMelds();
+        player.currentDecision = decision.none;
+        player.SetPlayerState(PlayerState.discarding);
+        mostRecentDiscard = null;
+
+        SendPlayersMessage(player.gameObject.name + " is deciding on a discard");
+
+
+        if (player.GetComponent<TutorialAI>() != null)
+        {
+            player.ForceDiscard();
+        }
+        else
+        {
+            while (player.discardChoice == null)
+            {
+                yield return new WaitForSeconds(1);
+            }
+        }
+
+        if (player.win)
+        {
+            StartCoroutine(GameWin());
+        }
+
+        yield return new WaitForSeconds(2);
+
+
+        player.ArrangeTiles();
         player.SetPlayerState(PlayerState.waiting);
 
-        if (!debug)
-            mostRecentDiscard.transform.position = Vector3.up * 0.5f;
+
+        SendPlayersMessage(player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
+        player.currentAvatar.PlayDiscardAnim();
+
+        yield return new WaitForSeconds(2);
+
+        //flip it up to be visible
+        mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);
+        //place the discard in the middle of the table
+        mostRecentDiscard.transform.position =
+                new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 0.35f, TileBoundaries.bounds.max.x - 0.35f),
+                0.065f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 0.35f, TileBoundaries.bounds.max.z - 0.35f));
 
         StartCoroutine(BetweenTurn());
     }
 
-    public IEnumerator BetweenTurn()
+    new public IEnumerator BetweenTurn()
     {
-        Debug.Log("Deliberation time");
+
 
         foreach (MahjongPlayerBase player in players)
         {
             player.SetPlayerState(PlayerState.deciding);
+            if (player.GetComponent<TutorialAI>() != null) ;
+            player.currentDecision = decision.pass;
+        }
+
+        if (dialogueIndex < 31)
+        {
+            while (dialogueIndex < 31)
+            {
+                yield return new WaitForSeconds(1);
+            }
+        }
+        else if (dialogueIndex < 28)
+        {
+            while (dialogueIndex < 28)
+            {
+                yield return new WaitForSeconds(1);
+            }
+        }
+        else if (dialogueIndex < 24)
+        {
+            while (dialogueIndex < 24)
+            {
+                yield return new WaitForSeconds(1);
+            }
+        }
+        while (dialogueIndex < 19)
+        {
+            yield return new WaitForSeconds(1);
         }
 
         bool allDone = true;
@@ -368,47 +486,53 @@ public class TutorialManager : MahjongManager
             player.SetPlayerState(PlayerState.waiting);
         }
 
-        // MahjongPlayerBase next = players[0];
+        SendPlayersMessage("All players done making a decision");
+        foreach (MahjongPlayerBase player in players)
+        {
+            player.SetPlayerState(PlayerState.waiting);
+        }
 
-        // foreach (MahjongPlayerBase player in players)
-        // {
-        //     if (player != currentPlayer || player != nextPlayer)
-        //     {
-        //         //only one person can possibly do kang at any given time
-        //         //so break the loop and give them the turn
-        //         if (player.currentDecision == decision.kang)
-        //         {
-        //             nextPlayer = player;
-        //             break;
-        //         }
-        //         //same with pong, but kang get priority so its lower
-        //         if (player.currentDecision == decision.pong)
-        //         {
-        //             nextPlayer = player;
-        //             break;
-        //         }
-        //         //both a chow and a pass result in the next person taking their turn anyway
-        //         //so we do not check it here
-        //     }
-        // }
-        // previousPlayer = currentPlayer;
-        // currentPlayer = nextPlayer;
-        // nextPlayer = players[(players.IndexOf(nextPlayer) + 1) % players.Count];
+        nextPlayer = players[(players.IndexOf(currentPlayer) + 1) % players.Count];
+        yield return new WaitForSeconds(1);
 
-        // StartCoroutine(TakeTurn(currentPlayer));
+
+        foreach (MahjongPlayerBase player in players)
+        {
+            if (player != currentPlayer)
+            {
+                //only one person can do any meld at any given time.
+                //so break the loop and give them the turn if true
+                if (player.currentDecision == decision.kang)
+                {
+                    nextPlayer = player;
+                    // message = nextPlayer.gameObject.name + " calls kang";
+                    break;
+                }
+                //same with pong, but kang get priority so its lower
+                if (player.currentDecision == decision.pong)
+                {
+                    nextPlayer = player;
+                    // message = nextPlayer.gameObject.name + " calls pong";
+                    break;
+                }
+
+            }
+        }
+
+        currentPlayer = nextPlayer;
+        foreach (MahjongPlayerBase player in players)
+        {
+            if (player != currentPlayer)
+            {
+                player.currentDecision = decision.none;
+                player.GetComponent<HumanPlayer>().FlipUI();
+            }
+        }
+
+        yield return new WaitForSeconds(1);
+
+        StartCoroutine(TakeTurn(currentPlayer));
     }
 
-    public void FinishGame()
-    {
-        state = GameState.finished;
-    }
-    public GameState GetGameState()
-    {
-        return state;
-    }
-
-    #region RPC Calls
-
-    #endregion
 
 }

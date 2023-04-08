@@ -10,7 +10,7 @@ public class HumanPlayer : MahjongPlayerBase
     //stuff to be moved to HumanPlayer child class
     public Camera playerCam;
     public GameObject playerCanvas;
-    Button sortButton, passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
+    protected Button sortButton, passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
     public TMP_Text debugText, tileText;
     public Image tileImage1, tileImage2;
     public RectTransform HelpUI;

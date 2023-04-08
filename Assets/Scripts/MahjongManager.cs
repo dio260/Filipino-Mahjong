@@ -26,6 +26,7 @@ public class MahjongManager : MonoBehaviour
     #region Gameplay Properties
     protected GameState state;
     protected int round, numRounds, dieRollResult;
+    protected bool firstTurn;
     #endregion 
     #region Physical Elements
     public GameObject InitialTileParent, TileSizeReference, DeadTileParent;
@@ -199,6 +200,7 @@ public class MahjongManager : MonoBehaviour
         wall = new List<Tile>();
         deadTiles = new List<Tile>();
         mostRecentDiscard = null;
+        firstTurn = true;
 
         if (!TileBoundaries.isTrigger)
             TileBoundaries.isTrigger = true;
@@ -510,14 +512,15 @@ public class MahjongManager : MonoBehaviour
         //now we may set the gamestate properly
         state = GameState.playing;
 
-        if (network)
-        {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("turn1");
-        }
-        else
-        {
-            StartCoroutine(FirstTurn(dealer));
-        }
+        // if (network)
+        // {
+        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("turn1");
+        // }
+        // else
+        // {
+        //     StartCoroutine(FirstTurn(dealer));
+        // }
+        StartCoroutine(TakeTurn(dealer));
     }
 
     //a coroutine differentiating the first turn of every game
@@ -618,6 +621,8 @@ public class MahjongManager : MonoBehaviour
         // {
         //     SendPlayersMessage(player.gameObject.name + " is taking their turn.");
         // }
+        if(!firstTurn)
+        {
 
         yield return new WaitForSeconds(2);
 
@@ -742,6 +747,11 @@ public class MahjongManager : MonoBehaviour
 
         }
         player.ArrangeTiles();
+        }
+        else
+        {
+            firstTurn = false;
+        }
 
         yield return new WaitForSeconds(2);
 
@@ -962,7 +972,7 @@ public class MahjongManager : MonoBehaviour
         StartCoroutine(TakeTurn(currentPlayer));
     }
 
-    IEnumerator GameWin()
+    public IEnumerator GameWin()
     {
         state = GameState.finished;
         if (network)
@@ -1031,7 +1041,7 @@ public class MahjongManager : MonoBehaviour
         StartCoroutine(FirstTurn(dealer));
     }
 
-    private static int CompareTileNumbers(Tile x, Tile y)
+    public static int CompareTileNumbers(Tile x, Tile y)
     {
         if (x == null)
         {

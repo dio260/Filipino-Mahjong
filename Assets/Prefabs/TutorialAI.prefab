@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7339486405072327083}
-  - component: {fileID: 4431173965626103558}
+  - component: {fileID: 6931218397065312097}
   m_Layer: 0
   m_Name: TutorialAI
   m_TagString: Untagged
@@ -37,7 +37,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4431173965626103558
+--- !u!114 &6931218397065312097
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,9 +46,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 552969756238571695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f4ed94ba7628c7499fcc0806a1a31fa, type: 3}
+  m_Script: {fileID: 11500000, guid: eb7e5bd432c1dd945bcd8c7bdedbff7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  win: 0
   currentDecision: 0
   discardChoice: {fileID: 0}
   currentState: 0
