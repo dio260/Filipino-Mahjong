@@ -15,7 +15,7 @@ public class TutorialManager : MahjongManager
     public static TutorialManager tutorial;
     public TutorialPlayer tutorialGuy;
     public TMP_Text tutorialDialogue;
-    public Button nextButton, eventButton;
+    public Button nextButton, exitButton;
     public int dialogueIndex;
     bool advanceDialogue;
     [TextArea(5, 15)]
@@ -40,6 +40,7 @@ public class TutorialManager : MahjongManager
 
 
         nextButton.onClick.AddListener(ResetNextButton);
+        exitButton.onClick.AddListener(LocalSceneLoader.sceneLoader.LoadMenu);
 
         InitializeGame();
     }
