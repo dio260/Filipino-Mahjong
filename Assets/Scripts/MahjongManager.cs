@@ -9,7 +9,7 @@ public enum GameState { setup, playing, finished };
 
 public class MahjongManager : MonoBehaviour
 {
-    
+
     public static MahjongManager mahjongManager;
     #region Tile-Related
     protected List<Tile> board;
@@ -621,31 +621,85 @@ public class MahjongManager : MonoBehaviour
         // {
         //     SendPlayersMessage(player.gameObject.name + " is taking their turn.");
         // }
-        if(!firstTurn)
+        if (!firstTurn)
         {
 
-        yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(2);
 
-        if (player.currentDecision != decision.none && player.currentDecision != decision.pass)
-        {
-            if (network)
+            if (player.currentDecision != decision.none && player.currentDecision != decision.pass)
             {
-                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " stole the discard for a " + player.currentDecision.ToString());
-                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("stealAnim");
+                if (network)
+                {
+                    MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " stole the discard for a " + player.currentDecision.ToString());
+                    MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("stealAnim");
 
+                }
+                else
+                {
+                    SendPlayersMessage(player.gameObject.name + " stole the discard for a " + player.currentDecision.ToString());
+                    player.currentAvatar.PlayStealAnim();
+                }
+
+                player.StealTile();
+
+                //draw like normal if kang
+                if (player.currentDecision == decision.kang)
+                {
+                    yield return new WaitForSeconds(1);
+
+                    if (network)
+                    {
+                        MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is drawing a tile");
+                        MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
+                    }
+                    else
+                    {
+                        SendPlayersMessage(player.gameObject.name + " is drawing a tile");
+                        player.currentAvatar.PlayDrawAnim();
+                    }
+
+                    player.DrawKangTile();
+
+                    yield return new WaitForSeconds(1);
+
+                    if (player.currentDrawnTile().tileType == suit.flower)
+                    {
+                        while (player.currentDrawnTile().tileType == suit.flower)
+                        {
+                            player.DrawFlowerTile();
+                            if (network)
+                            {
+                                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " drew a flower");
+                                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
+                            }
+                            else
+                            {
+                                SendPlayersMessage(player.gameObject.name + " drew a flower");
+                                player.currentAvatar.PlayDrawAnim();
+                            }
+                            yield return new WaitForSeconds(1);
+                        }
+                    }
+
+                    if (network)
+                    {
+                        MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " finished drawing.");
+                    }
+                    else
+                    {
+                        SendPlayersMessage(player.gameObject.name + " finished drawing");
+                    }
+
+                    player.AddDrawnTileToClosedHand();
+                }
             }
             else
             {
-                SendPlayersMessage(player.gameObject.name + " stole the discard for a " + player.currentDecision.ToString());
-                player.currentAvatar.PlayStealAnim();
-            }
-
-            player.StealTile();
-
-            //draw like normal if kang
-            if (player.currentDecision == decision.kang)
-            {
-                yield return new WaitForSeconds(1);
+                //the tile was not stolen
+                mostRecentDiscard.transform.parent = DeadTileParent.transform;
+                deadTiles.Add(mostRecentDiscard);
+                deadTiles.Sort(CompareTileNumbers);
+                // mostRecentDiscard = null;
 
                 if (network)
                 {
@@ -657,11 +711,10 @@ public class MahjongManager : MonoBehaviour
                     SendPlayersMessage(player.gameObject.name + " is drawing a tile");
                     player.currentAvatar.PlayDrawAnim();
                 }
+                player.DrawTile();
 
-                player.DrawKangTile();
-
+                // StartCoroutine(player.DrawTile());
                 yield return new WaitForSeconds(1);
-
                 if (player.currentDrawnTile().tileType == suit.flower)
                 {
                     while (player.currentDrawnTile().tileType == suit.flower)
@@ -691,62 +744,9 @@ public class MahjongManager : MonoBehaviour
                 }
 
                 player.AddDrawnTileToClosedHand();
-            }
-        }
-        else
-        {
-            //the tile was not stolen
-            mostRecentDiscard.transform.parent = DeadTileParent.transform;
-            deadTiles.Add(mostRecentDiscard);
-            deadTiles.Sort(CompareTileNumbers);
-            // mostRecentDiscard = null;
 
-            if (network)
-            {
-                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is drawing a tile");
-                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
             }
-            else
-            {
-                SendPlayersMessage(player.gameObject.name + " is drawing a tile");
-                player.currentAvatar.PlayDrawAnim();
-            }
-            player.DrawTile();
-
-            // StartCoroutine(player.DrawTile());
-            yield return new WaitForSeconds(1);
-            if (player.currentDrawnTile().tileType == suit.flower)
-            {
-                while (player.currentDrawnTile().tileType == suit.flower)
-                {
-                    player.DrawFlowerTile();
-                    if (network)
-                    {
-                        MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " drew a flower");
-                        MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
-                    }
-                    else
-                    {
-                        SendPlayersMessage(player.gameObject.name + " drew a flower");
-                        player.currentAvatar.PlayDrawAnim();
-                    }
-                    yield return new WaitForSeconds(1);
-                }
-            }
-
-            if (network)
-            {
-                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " finished drawing.");
-            }
-            else
-            {
-                SendPlayersMessage(player.gameObject.name + " finished drawing");
-            }
-
-            player.AddDrawnTileToClosedHand();
-
-        }
-        player.ArrangeTiles();
+            // player.ArrangeTiles();
         }
         else
         {
@@ -963,7 +963,8 @@ public class MahjongManager : MonoBehaviour
             if (player != currentPlayer)
             {
                 player.currentDecision = decision.none;
-                player.GetComponent<HumanPlayer>().FlipUI();
+                if (player.GetComponent<HumanPlayer>() != null)
+                    player.GetComponent<HumanPlayer>().FlipUI();
             }
         }
 
@@ -1025,10 +1026,11 @@ public class MahjongManager : MonoBehaviour
         StartCoroutine(DistributeTiles());
     }
 
-    public void SendPlayersMessage(string message)
+    public virtual void SendPlayersMessage(string message)
     {
-        foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+        foreach (MahjongPlayerBase player in players)
         {
+
             if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
             {
                 human.debugText.text = message;

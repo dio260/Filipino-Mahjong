@@ -11,7 +11,7 @@ public class MahjongPlayerBase : MonoBehaviour
 {
     #region Player Properties
     protected List<Tile> closedHand = new List<Tile>(), openHand = new List<Tile>();
-    private List<Tile> flowers = new List<Tile>();
+    protected List<Tile> flowers = new List<Tile>();
     private static int maxHandSize = 17;
     private int score;
     public bool win;
@@ -48,10 +48,10 @@ public class MahjongPlayerBase : MonoBehaviour
     #endregion
 
     #region Debugging 
-    List<Tile> othertiles = new List<Tile>();
-    List<Tile> visitedTiles = new List<Tile>();
-    List<Tile> pair = new List<Tile>();
-    List<Tile> others = new List<Tile>();
+    protected List<Tile> othertiles = new List<Tile>();
+    protected List<Tile> visitedTiles = new List<Tile>();
+    protected List<Tile> pair = new List<Tile>();
+    protected List<Tile> others = new List<Tile>();
     #endregion
 
 
@@ -283,7 +283,7 @@ public class MahjongPlayerBase : MonoBehaviour
         currentDecision = decision.pass;
     }
 
-    public bool CalculateSevenPairs()
+    public virtual bool CalculateSevenPairs()
     {
         Debug.Log("Calculating Seven Pairs");
 
@@ -438,7 +438,7 @@ public class MahjongPlayerBase : MonoBehaviour
         Debug.Log("Full Closed Hand Seven Pairs " + (oddPairsAndMeld && allEvenPairs));
         return (oddPairsAndMeld && allEvenPairs);
     }
-    public bool CalculateNormalWin()
+    public virtual bool CalculateNormalWin()
     {
         //calculate only using tiles from the closed hand, since only melds can exist in the closed hand
         Debug.Log("Calculating Normal Win");
@@ -657,7 +657,7 @@ public class MahjongPlayerBase : MonoBehaviour
     }
 
     // helper function for tile sorting
-    private static int CompareTileNumbers(Tile x, Tile y)
+    public static int CompareTileNumbers(Tile x, Tile y)
     {
         if (x == null)
         {
@@ -745,7 +745,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
     }
 
-    public int replaceInitialFlowerTiles()
+    public virtual int replaceInitialFlowerTiles()
     {
         List<Tile> flowersInHand = new List<Tile>();
 
@@ -759,14 +759,7 @@ public class MahjongPlayerBase : MonoBehaviour
             }
         }
 
-        // flowers.AddRange(flowersInHand);
-
-        // foreach(Tile tile in flowersInHand)
-        // {
-        //     closedHand.Remove(tile);
-        // }
-
-        // StartCoroutine(Wait)
+        // Debug.Log(flowersInHand.Count);
 
 
         int newFlowerCount = 0;
@@ -866,18 +859,19 @@ public class MahjongPlayerBase : MonoBehaviour
                 }
                 break;
         }
-
+        ResetMelds();
+        ArrangeTiles();
     }
 
     // draw a tile from the wall
-    public void DrawTile()
+    public virtual void DrawTile()
     {
         drawnTile = MahjongManager.mahjongManager.wall[0];
         MahjongManager.mahjongManager.wall.RemoveAt(0);
     }
 
     //draw a flower tile from the flower end of the wall
-    public void DrawFlowerTile()
+    public virtual void DrawFlowerTile()
     {
         flowers.Add(drawnTile);
         drawnTile = MahjongManager.mahjongManager.wall[MahjongManager.mahjongManager.wall.Count - 1];
@@ -886,7 +880,7 @@ public class MahjongPlayerBase : MonoBehaviour
         // ArrangeTiles();
     }
     //draw an extra tile when a kang is declared
-    public void DrawKangTile()
+    public virtual void DrawKangTile()
     {
         drawnTile = MahjongManager.mahjongManager.wall[MahjongManager.mahjongManager.wall.Count - 1];
         MahjongManager.mahjongManager.wall.RemoveAt(MahjongManager.mahjongManager.wall.Count - 1);
@@ -907,7 +901,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
     //networked call
     [PunRPC]
-    public void DiscardTile()
+    public virtual void DiscardTile()
     {
         discardChoice.transform.localPosition = new Vector3(0, 0.05f, 0);
         MahjongManager.mahjongManager.mostRecentDiscard = discardChoice;

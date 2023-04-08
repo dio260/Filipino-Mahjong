@@ -46,9 +46,15 @@ public class Dice : MonoBehaviour
     }
     public IEnumerator TutorialDiceRoll(Vector3 desiredRoll)
     {
-        StartCoroutine(DiceRoll());
-        yield return new WaitForSeconds(0.01f);
+        GetComponent<Rigidbody>().AddForce(Vector3.up * rollForce, ForceMode.Impulse);
+        GetComponent<Rigidbody>().AddTorque((Vector3.forward + Vector3.down) * rollForce * 30, ForceMode.Impulse);
+        yield return new WaitForSeconds(0.1f);
+        while(GetComponent<Rigidbody>().velocity != Vector3.zero)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
         transform.rotation = Quaternion.Euler(desiredRoll);
+        yield return new WaitForSeconds(0.1f);
         if(Physics.Raycast(transform.position, Vector3.up, out RaycastHit hit, 1, 1 << 6) && hit.collider.isTrigger)
         {
             Debug.Log(hit.collider.gameObject.name);

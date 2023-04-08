@@ -21,4 +21,20 @@ public class TutorialAI : MahjongPlayerBase
         discardChoice = drawnTile;
         DeclareDiscard();
     }
+
+    public override void DrawTile()
+    {
+        drawnTile = TutorialManager.tutorial.wall[0];
+        TutorialManager.tutorial.wall.RemoveAt(0);
+    }
+    public override void DiscardTile()
+    {
+        discardChoice.transform.localPosition = new Vector3(0, 0.05f, 0.05f);
+        TutorialManager.tutorial.mostRecentDiscard = discardChoice;
+        closedHand.RemoveAt(closedHand.IndexOf(discardChoice));
+        discardChoice.transform.parent = null;
+        discardChoice.owner = null;
+        drawnTile = null;
+        discardChoice = null;
+    }
 }

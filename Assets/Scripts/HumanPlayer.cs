@@ -14,9 +14,9 @@ public class HumanPlayer : MahjongPlayerBase
     public TMP_Text debugText, tileText;
     public Image tileImage1, tileImage2;
     public RectTransform HelpUI;
-    bool HelpOpen;
-    Vector3 camRotation, camPosition;
-    GameObject tileSwap;
+    protected bool HelpOpen;
+    protected Vector3 camRotation, camPosition;
+    protected GameObject tileSwap;
 
     public override void Awake()
     {
@@ -67,7 +67,7 @@ public class HumanPlayer : MahjongPlayerBase
     // }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         if (MahjongManager.mahjongManager.GetGameState() == GameState.playing && (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine)))
         {
@@ -206,7 +206,7 @@ public class HumanPlayer : MahjongPlayerBase
 
     }
 
-    void SwapTilePosition(GameObject tile)
+    protected void SwapTilePosition(GameObject tile)
     {
         if (tileSwap != null && tile != tileSwap)
         {

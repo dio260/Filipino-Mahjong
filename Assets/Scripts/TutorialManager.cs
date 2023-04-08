@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using TMPro;
 
 public class TutorialManager : MahjongManager
 {
@@ -11,14 +12,15 @@ public class TutorialManager : MahjongManager
     // private GameState state;
     // private MahjongPlayerBase dealer, previousPlayer, currentPlayer, nextPlayer;
     // private int round, numRounds;
-    public static TutorialManager tutorial; 
-    public HumanPlayer tutorialGuy;
-    public Text tutorialDialogue;
+    public static TutorialManager tutorial;
+    public TutorialPlayer tutorialGuy;
+    public TMP_Text tutorialDialogue;
     public Button nextButton, eventButton;
+    public int dialogueIndex;
+    bool advanceDialogue;
     [TextArea(5, 15)]
     public string[] dialogueLines;
-    int dialogueIndex;
-    bool advanceDialogue;
+
     // Start is called before the first frame update
     public override void Awake()
     {
@@ -88,16 +90,17 @@ public class TutorialManager : MahjongManager
         while (dialogueIndex < 4)
         {
             // Debug.Log("Shuffling Board and Creating Walls");
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.1f);
         }
         tutorialGuy.playerCanvas.SetActive(true);
+        nextButton.gameObject.SetActive(false);
 
         Debug.Log("Shuffling Board and Creating Walls");
         System.Random rand = new System.Random();
 
         SendPlayersMessage("Shuffling Board and Creating Walls");
         AudioHandler.audioHandler.PlayShuffle();
-        foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+        foreach (MahjongPlayerBase player in players)
         {
             player.currentAvatar.PlayShuffleAnim();
         }
@@ -178,10 +181,14 @@ public class TutorialManager : MahjongManager
             // tile.transform.Rotate(new Vector3(0, 0, -90));
         }
 
+        yield return new WaitForSeconds(0.1f);
+
+        nextButton.gameObject.SetActive(true);
         while (dialogueIndex < 7)
         {
             yield return new WaitForSeconds(1f);
         }
+        nextButton.gameObject.SetActive(false);
 
         StartCoroutine(RollDice());
     }
@@ -194,7 +201,7 @@ public class TutorialManager : MahjongManager
         List<Dice> die = FindObjectsOfType<Dice>().ToList<Dice>();
 
         StartCoroutine(die[0].TutorialDiceRoll(Vector3.right * 90));
-        StartCoroutine(die[0].TutorialDiceRoll(Vector3.zero));
+        StartCoroutine(die[1].TutorialDiceRoll(Vector3.zero));
 
         yield return new WaitForSeconds(2f);
         foreach (Dice dice in die)
@@ -204,6 +211,7 @@ public class TutorialManager : MahjongManager
         dieRollResult = (dieRoll - 1) % players.Count;
         dealer = players[0];
 
+        nextButton.gameObject.SetActive(true);
         while (dialogueIndex < 8)
         {
             yield return new WaitForSeconds(1);
@@ -236,7 +244,7 @@ public class TutorialManager : MahjongManager
             player.ArrangeTiles();
         }
 
-        while (dialogueIndex < 15)
+        while (dialogueIndex < 14)
         {
             yield return new WaitForSeconds(1);
         }
@@ -276,14 +284,13 @@ public class TutorialManager : MahjongManager
 
     IEnumerator TakeTurn(MahjongPlayerBase player)
     {
-        while (dialogueIndex < 16)
+        Debug.Log(player.gameObject.name + " taking turn");
+
+        if (player.GetComponent<TutorialPlayer>() != null)
         {
-            if(nextButton.gameObject.activeSelf == true)
-            {
-                nextButton.gameObject.SetActive(false);
-            }
-            yield return new WaitForSeconds(1);
+            nextButton.gameObject.SetActive(false);
         }
+
         if (!firstTurn)
         {
             yield return new WaitForSeconds(2);
@@ -364,7 +371,9 @@ public class TutorialManager : MahjongManager
                 player.AddDrawnTileToClosedHand();
 
             }
-            player.ArrangeTiles();
+            // player.ArrangeTiles();
+
+
         }
         else
         {
@@ -378,6 +387,9 @@ public class TutorialManager : MahjongManager
                 human.FlipWinButton();
             }
         }
+
+        yield return new WaitForSeconds(2);
+
 
         //set most recent discard as null after the player has drawn so they can make the decision
         foreach (MahjongPlayerBase user in players)
@@ -395,28 +407,37 @@ public class TutorialManager : MahjongManager
         }
         else
         {
-            while (player.discardChoice == null)
+            List<Tile> playerHand = player.GetComponent<TutorialPlayer>().GetClosedHand();
+            while (dialogueIndex < 15
+            || TutorialManager.tutorial.mostRecentDiscard == null)
             {
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.1f);
+                if (player.discardChoice != playerHand[playerHand.Count - 1])
+                {
+                    player.discardChoice = null;
+                }
+
+                if (player.win)
+                {
+                    StartCoroutine(GameWin());
+                }
+
+                // Debug.Log("Looping till discard");
             }
         }
 
-        if (player.win)
-        {
-            StartCoroutine(GameWin());
-        }
+
 
         yield return new WaitForSeconds(2);
 
-
-        player.ArrangeTiles();
+        // player.ArrangeTiles();
         player.SetPlayerState(PlayerState.waiting);
 
 
         SendPlayersMessage(player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
         player.currentAvatar.PlayDiscardAnim();
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
 
         //flip it up to be visible
         mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);
@@ -425,44 +446,64 @@ public class TutorialManager : MahjongManager
                 new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 0.35f, TileBoundaries.bounds.max.x - 0.35f),
                 0.065f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 0.35f, TileBoundaries.bounds.max.z - 0.35f));
 
+        nextButton.gameObject.SetActive(true);
+
+        while (dialogueIndex < 17)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        nextButton.gameObject.SetActive(false);
+
+
         StartCoroutine(BetweenTurn());
     }
 
     new public IEnumerator BetweenTurn()
     {
+        Debug.Log("Between Turns");
 
+        nextButton.gameObject.SetActive(false);
 
         foreach (MahjongPlayerBase player in players)
         {
-            player.SetPlayerState(PlayerState.deciding);
-            if (player.GetComponent<TutorialAI>() != null) ;
-            player.currentDecision = decision.pass;
+            if (player != currentPlayer)
+            {
+                player.SetPlayerState(PlayerState.deciding);
+
+                //this is causing a tile to be added to the open hand for some reason
+                // player.CalculateHandOptions();
+            }
+            else
+            {
+                player.currentDecision = decision.pass;
+            }
+            if (player.GetComponent<TutorialAI>() != null)
+                player.currentDecision = decision.pass;
         }
 
-        if (dialogueIndex < 31)
+
+        if (dialogueIndex == 17 && currentPlayer == players[1])
         {
-            while (dialogueIndex < 31)
-            {
-                yield return new WaitForSeconds(1);
-            }
+            tutorialGuy.currentDecision = decision.pass;
         }
-        else if (dialogueIndex < 28)
+        if (dialogueIndex == 17 && currentPlayer == players[2])
         {
-            while (dialogueIndex < 28)
+            dialogueIndex++;
+            while (dialogueIndex < 19)
             {
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.01f);
             }
+            dialogueIndex--;
+            // nextButton.gameObject.SetActive(true);
         }
-        else if (dialogueIndex < 24)
+        else if (dialogueIndex == 18 && currentPlayer == players[3])
         {
-            while (dialogueIndex < 24)
+            dialogueIndex++;
+            while (dialogueIndex < 20)
             {
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.1f);
             }
-        }
-        while (dialogueIndex < 19)
-        {
-            yield return new WaitForSeconds(1);
+            nextButton.gameObject.SetActive(true);
         }
 
         bool allDone = true;
@@ -480,10 +521,6 @@ public class TutorialManager : MahjongManager
             }
             if (allDone)
                 break;
-        }
-        foreach (MahjongPlayerBase player in players)
-        {
-            player.SetPlayerState(PlayerState.waiting);
         }
 
         SendPlayersMessage("All players done making a decision");
@@ -525,7 +562,8 @@ public class TutorialManager : MahjongManager
             if (player != currentPlayer)
             {
                 player.currentDecision = decision.none;
-                player.GetComponent<HumanPlayer>().FlipUI();
+                if (player.GetComponent<TutorialPlayer>() != null)
+                    player.GetComponent<TutorialPlayer>().FlipUI();
             }
         }
 
@@ -534,5 +572,14 @@ public class TutorialManager : MahjongManager
         StartCoroutine(TakeTurn(currentPlayer));
     }
 
-
+    public override void SendPlayersMessage(string message)
+    {
+        foreach (MahjongPlayerBase player in players)
+        {
+            if (player.TryGetComponent<TutorialPlayer>(out TutorialPlayer tutorial))
+            {
+                tutorial.debugText.text = message;
+            }
+        }
+    }
 }
