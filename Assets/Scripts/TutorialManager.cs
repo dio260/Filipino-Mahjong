@@ -186,7 +186,7 @@ public class TutorialManager : MahjongManager
         nextButton.gameObject.SetActive(true);
         while (dialogueIndex < 7)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.01f);
         }
         nextButton.gameObject.SetActive(false);
 
@@ -246,7 +246,7 @@ public class TutorialManager : MahjongManager
 
         while (dialogueIndex < 14)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.01f);
         }
 
         StartCoroutine(FlowersTutorial());
@@ -390,13 +390,22 @@ public class TutorialManager : MahjongManager
 
         yield return new WaitForSeconds(2);
 
-
         //set most recent discard as null after the player has drawn so they can make the decision
         foreach (MahjongPlayerBase user in players)
             user.ResetMelds();
         player.currentDecision = decision.none;
         player.SetPlayerState(PlayerState.discarding);
         mostRecentDiscard = null;
+
+        if (dialogueIndex == 20)
+        {
+            nextButton.gameObject.SetActive(true);
+            while (dialogueIndex < 21)
+            {
+                yield return new WaitForSeconds(0.001f);
+            }
+            nextButton.gameObject.SetActive(false);
+        }
 
         SendPlayersMessage(player.gameObject.name + " is deciding on a discard");
 
@@ -408,22 +417,25 @@ public class TutorialManager : MahjongManager
         else
         {
             List<Tile> playerHand = player.GetComponent<TutorialPlayer>().GetClosedHand();
-            while (dialogueIndex < 15
-            || TutorialManager.tutorial.mostRecentDiscard == null)
+            if (dialogueIndex == 14 || dialogueIndex == 21 || dialogueIndex == 24 || dialogueIndex == 27)
             {
-                yield return new WaitForSeconds(0.1f);
-                if (player.discardChoice != playerHand[playerHand.Count - 1])
+                while (TutorialManager.tutorial.mostRecentDiscard == null)
                 {
-                    player.discardChoice = null;
-                }
+                    yield return new WaitForSeconds(0.1f);
+                    if (player.discardChoice != playerHand[playerHand.Count - 1])
+                    {
+                        player.discardChoice = null;
+                    }
 
-                if (player.win)
-                {
-                    StartCoroutine(GameWin());
-                }
+                    if (player.win)
+                    {
+                        StartCoroutine(GameWin());
+                    }
 
-                // Debug.Log("Looping till discard");
+                    // Debug.Log("Looping till discard");
+                }
             }
+
         }
 
 
@@ -502,9 +514,15 @@ public class TutorialManager : MahjongManager
             while (dialogueIndex < 20)
             {
                 yield return new WaitForSeconds(0.1f);
+                if(tutorialGuy.currentDecision == decision.pass)
+                {
+                    tutorialGuy.currentDecision = decision.none;
+                    dialogueIndex--;
+                }
             }
-            nextButton.gameObject.SetActive(true);
+            // nextButton.gameObject.SetActive(true);
         }
+
 
         bool allDone = true;
         for (int i = 10; i > 0; i--)
@@ -568,6 +586,8 @@ public class TutorialManager : MahjongManager
         }
 
         yield return new WaitForSeconds(1);
+
+
 
         StartCoroutine(TakeTurn(currentPlayer));
     }
