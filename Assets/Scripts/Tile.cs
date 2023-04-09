@@ -146,17 +146,17 @@ public class Tile : MonoBehaviour
 
         this.number = num;
         this.tileType = suit;
-        if (tileType == suit.flower)
-        {
-            gameObject.name = tileType.ToString();
-            debugText.text = tileType.ToString();
+        // if (tileType == suit.flower)
+        // {
+        //     gameObject.name = tileType.ToString();
+        //     debugText.text = tileType.ToString();
 
-        }
-        else
-        {
+        // }
+        // else
+        // {
             gameObject.name = number + " " + tileType.ToString();
             debugText.text = number + " " + tileType.ToString();
-        }
+        // }
 
         switch (tileType)
         {
