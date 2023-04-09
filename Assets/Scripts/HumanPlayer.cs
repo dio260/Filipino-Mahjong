@@ -354,6 +354,7 @@ public class HumanPlayer : MahjongPlayerBase
         (MahjongManager.mahjongManager.GetPlayers().IndexOf(MahjongManager.mahjongManager.previousPlayer) + 1) %
         MahjongManager.mahjongManager.GetPlayers().Count == MahjongManager.mahjongManager.GetPlayers().IndexOf(this))
         {
+            Debug.Log("Prev player index: " + MahjongManager.mahjongManager.GetPlayers().IndexOf(MahjongManager.mahjongManager.previousPlayer));
             canChow = true;
         }
         else
