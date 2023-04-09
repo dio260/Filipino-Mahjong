@@ -697,13 +697,14 @@ public class MahjongPlayerBase : MonoBehaviour
     [PunRPC]
     public virtual void ArrangeTiles()
     {
-        Debug.Log("Calling Tile Arrange");
+        // Debug.Log("Calling Tile Arrange");
 
         float tileSideOffset = 0.06f;
 
         Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
         float handSize = tileSideOffset * (float)closedHand.Count;
         float placementReference = handSize / 2.0f;
+        Debug.Log(closedHandParent.GetComponentsInChildren<Tile>().ToList<Tile>().Count());
         foreach (Tile tile in closedHandParent.GetComponentsInChildren<Tile>().ToList<Tile>())
         {
             tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
@@ -735,7 +736,7 @@ public class MahjongPlayerBase : MonoBehaviour
     // RPC call for visual sorting
     public virtual void VisuallySortTiles()
     {
-        Debug.Log("Calling Base Visual Tilesort");
+        // Debug.Log("Calling Base Visual Tilesort");
         //first call the sorting function
         if (networked)
         {
