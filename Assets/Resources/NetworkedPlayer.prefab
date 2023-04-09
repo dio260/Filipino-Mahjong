@@ -7167,24 +7167,24 @@ PrefabInstance:
       objectReference: {fileID: 7400000, guid: 1f86f0ec8c8a9d14b860994357eb6b34, type: 2}
     - target: {fileID: 2223639932434330405, guid: 925c9f954e5f14b4ab763133050dd824, type: 3}
       propertyPath: m_Animations.Array.size
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2223639932434330405, guid: 925c9f954e5f14b4ab763133050dd824, type: 3}
       propertyPath: m_Animations.Array.data[0]
       value: 
-      objectReference: {fileID: 7400000, guid: 820f827d63101da4e9e84a15cf84496b, type: 2}
+      objectReference: {fileID: 7400000, guid: 0d700c2e8c1b2404cb3f684d338a2ac0, type: 2}
     - target: {fileID: 2223639932434330405, guid: 925c9f954e5f14b4ab763133050dd824, type: 3}
       propertyPath: m_Animations.Array.data[1]
       value: 
-      objectReference: {fileID: 7400000, guid: d3a9d95f387036343a7e2350a41af61e, type: 2}
+      objectReference: {fileID: 7400000, guid: 1f86f0ec8c8a9d14b860994357eb6b34, type: 2}
     - target: {fileID: 2223639932434330405, guid: 925c9f954e5f14b4ab763133050dd824, type: 3}
       propertyPath: m_Animations.Array.data[2]
       value: 
-      objectReference: {fileID: 7400000, guid: 4642c6b7d25437c48835bcf8ee8238bd, type: 2}
+      objectReference: {fileID: 7400000, guid: 5227a2a0e352ba948ac383d25ae01308, type: 2}
     - target: {fileID: 2223639932434330405, guid: 925c9f954e5f14b4ab763133050dd824, type: 3}
       propertyPath: m_Animations.Array.data[3]
       value: 
-      objectReference: {fileID: 7400000, guid: 63cbb91d02db4dd40b1b59a2d49a7e78, type: 2}
+      objectReference: {fileID: 7400000, guid: f382d491841a90943869155447509955, type: 2}
     - target: {fileID: 2223639932434330405, guid: 925c9f954e5f14b4ab763133050dd824, type: 3}
       propertyPath: m_Animations.Array.data[4]
       value: 
