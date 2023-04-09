@@ -294,7 +294,7 @@ public class MahjongManager : MonoBehaviour
 
                 }
                 multiplier += 1;
-             yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.01f);
 
                 continue;
             }
@@ -312,7 +312,7 @@ public class MahjongManager : MonoBehaviour
 
                 }
                 multiplier += 1;
-             yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.01f);
 
                 continue;
 
@@ -330,7 +330,7 @@ public class MahjongManager : MonoBehaviour
 
                 }
                 multiplier += 1;
-             yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.01f);
 
                 continue;
             }
@@ -348,7 +348,7 @@ public class MahjongManager : MonoBehaviour
 
                 }
                 multiplier += 1;
-             yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.01f);
 
                 continue;
             }
@@ -366,7 +366,7 @@ public class MahjongManager : MonoBehaviour
             }
         }
 
-        StartCoroutine(RollDice());
+        // StartCoroutine(RollDice());
 
     }
 
