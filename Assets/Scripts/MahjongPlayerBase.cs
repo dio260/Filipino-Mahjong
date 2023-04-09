@@ -697,6 +697,8 @@ public class MahjongPlayerBase : MonoBehaviour
     [PunRPC]
     public virtual void ArrangeTiles()
     {
+        Debug.Log("Calling Tile Arrange");
+
         float tileSideOffset = 0.06f;
 
         Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
@@ -733,6 +735,7 @@ public class MahjongPlayerBase : MonoBehaviour
     // RPC call for visual sorting
     public virtual void VisuallySortTiles()
     {
+        Debug.Log("Calling Base Visual Tilesort");
         //first call the sorting function
         if (networked)
         {

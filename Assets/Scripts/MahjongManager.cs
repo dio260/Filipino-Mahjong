@@ -481,16 +481,16 @@ public class MahjongManager : MonoBehaviour
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Replacing flowers");
-            // MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawFlowersAnim");
 
         }
         else
         {
             SendPlayersMessage("Replacing flowers");
-            // foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
-            // {
-            //     player.currentAvatar.PlayDrawAnim();
-            // }
+            foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+            {
+                player.currentAvatar.PlayDrawAnim();
+            }
         }
 
         int needFlowers = -1;
@@ -530,7 +530,7 @@ public class MahjongManager : MonoBehaviour
         // {
         //     StartCoroutine(FirstTurn(dealer));
         // }
-        // StartCoroutine(TakeTurn(dealer));
+        StartCoroutine(TakeTurn(dealer));
     }
 
     //a coroutine differentiating the first turn of every game

@@ -399,6 +399,8 @@ public class HumanPlayer : MahjongPlayerBase
     [PunRPC]
     public override void ArrangeTiles()
     {
+        Debug.Log("Calling Human Override arrange");
+
         if (discardChoice != null)
         {
             discardChoice.transform.position -= Vector3.up * 0.025f;
@@ -430,6 +432,7 @@ public class HumanPlayer : MahjongPlayerBase
 
     public override void VisuallySortTiles()
     {
+        Debug.Log("Calling Human Override Visual Tilesort");
         if (discardChoice != null)
         {
             discardChoice.transform.position -= Vector3.up * 0.025f;
