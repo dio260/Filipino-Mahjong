@@ -47,19 +47,19 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 photonView.RPC("PlayAudio", RpcTarget.Others, command);
                 break;
             case "shuffleSound":
-                photonView.RPC("PlayAudio", RpcTarget.Others, command);
+                photonView.RPC("PlayAudio", RpcTarget.All, command);
                 break;
             case "winSound":
                 photonView.RPC("PlayAudio", RpcTarget.Others, command);
                 break;
             case "diceSound":
-                photonView.RPC("PlayAudio", RpcTarget.Others, command);
+                photonView.RPC("PlayAudio", RpcTarget.All, command);
                 break;
             case "discardAnim":
                 photonView.RPC("PlayAnimation", RpcTarget.Others, command);
                 break;
             case "shuffleAnim":
-                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
+                photonView.RPC("PlayAnimation", RpcTarget.All, command);
                 break;
             case "winAnim":
                 photonView.RPC("PlayAnimation", RpcTarget.Others, command);
@@ -101,11 +101,11 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
     {
         MahjongManager.mahjongManager.SetDealer(index);
     }
-    [PunRPC]
-    public void StartFirstTurn()
-    {
-        MahjongManager.mahjongManager.FirstNetworkedTurn();
-    }
+    // [PunRPC]
+    // public void StartFirstTurn()
+    // {
+    //     MahjongManager.mahjongManager.FirstNetworkedTurn();
+    // }
     [PunRPC]
     public void PlayAudio(string audioClip)
     {

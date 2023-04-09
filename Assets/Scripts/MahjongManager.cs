@@ -529,91 +529,91 @@ public class MahjongManager : MonoBehaviour
         StartCoroutine(TakeTurn(dealer));
     }
 
-    //a coroutine differentiating the first turn of every game
-    IEnumerator FirstTurn(MahjongPlayerBase player)
-    {
-        // if (network)
-        // {
-        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn.");
-        // }
-        // else
-        // {
-        //     SendPlayersMessage(player.gameObject.name + " is taking their turn.");
-        // }
+    //a deprecated coroutine differentiating the first turn of every game
+    // IEnumerator FirstTurn(MahjongPlayerBase player)
+    // {
+    //     // if (network)
+    //     // {
+    //     //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn.");
+    //     // }
+    //     // else
+    //     // {
+    //     //     SendPlayersMessage(player.gameObject.name + " is taking their turn.");
+    //     // }
 
-        //the current player's turn is set to discard
+    //     //the current player's turn is set to discard
 
-        yield return new WaitForSeconds(2);
+    //     yield return new WaitForSeconds(2);
 
-        if (player.CalculateNormalWin() && player.CalculateSevenPairs())
-        {
-            if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
-            {
-                human.FlipWinButton();
-            }
-        }
+    //     if (player.CalculateNormalWin() && player.CalculateSevenPairs())
+    //     {
+    //         if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
+    //         {
+    //             human.FlipWinButton();
+    //         }
+    //     }
 
-        player.SetPlayerState(PlayerState.discarding);
+    //     player.SetPlayerState(PlayerState.discarding);
 
-        //do a time based implementation so people cannot stall out the turn;
-        int time;
-        // time = 60;
-        time = 300;
-        for (int i = time; i > 0; i--)
-        {
-            if (network)
-            {
-                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn." + "\nTurn time remaining: " + i + " seconds left");
-            }
-            else
-            {
-                SendPlayersMessage(player.gameObject.name + " is taking their turn." + "\nTurn time remaining: " + i + " seconds left");
-            }
-            yield return new WaitForSeconds(1);
+    //     //do a time based implementation so people cannot stall out the turn;
+    //     int time;
+    //     // time = 60;
+    //     time = 300;
+    //     for (int i = time; i > 0; i--)
+    //     {
+    //         if (network)
+    //         {
+    //             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn." + "\nTurn time remaining: " + i + " seconds left");
+    //         }
+    //         else
+    //         {
+    //             SendPlayersMessage(player.gameObject.name + " is taking their turn." + "\nTurn time remaining: " + i + " seconds left");
+    //         }
+    //         yield return new WaitForSeconds(1);
 
-            if (player.win)
-            {
-                StartCoroutine(GameWin());
-            }
+    //         if (player.win)
+    //         {
+    //             StartCoroutine(GameWin());
+    //         }
 
-            if (mostRecentDiscard != null)
-            {
-                break;
-            }
-        }
-        if (mostRecentDiscard == null)
-        {
-            player.ForceDiscard();
-        }
-        player.ArrangeTiles();
+    //         if (mostRecentDiscard != null)
+    //         {
+    //             break;
+    //         }
+    //     }
+    //     if (mostRecentDiscard == null)
+    //     {
+    //         player.ForceDiscard();
+    //     }
+    //     player.ArrangeTiles();
 
-        player.SetPlayerState(PlayerState.waiting);
+    //     player.SetPlayerState(PlayerState.waiting);
 
 
-        if (network)
-        {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("discardAnim");
-        }
-        else
-        {
-            SendPlayersMessage(player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
-            player.currentAvatar.PlayDiscardAnim();
-        }
+    //     if (network)
+    //     {
+    //         MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
+    //         MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("discardAnim");
+    //     }
+    //     else
+    //     {
+    //         SendPlayersMessage(player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
+    //         player.currentAvatar.PlayDiscardAnim();
+    //     }
 
-        //the current player's turn is now set to wait
+    //     //the current player's turn is now set to wait
 
-        yield return new WaitForSeconds(2);
+    //     yield return new WaitForSeconds(2);
 
-        //flip it up to be visible
-        mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);
-        //place the discard in the middle of the table
-        mostRecentDiscard.transform.position =
-                new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 0.35f, TileBoundaries.bounds.max.x - 0.35f),
-                0.065f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 0.35f, TileBoundaries.bounds.max.z - 0.35f));
+    //     //flip it up to be visible
+    //     mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);
+    //     //place the discard in the middle of the table
+    //     mostRecentDiscard.transform.position =
+    //             new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 0.35f, TileBoundaries.bounds.max.x - 0.35f),
+    //             0.065f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 0.35f, TileBoundaries.bounds.max.z - 0.35f));
 
-        StartCoroutine(BetweenTurn());
-    }
+    //     StartCoroutine(BetweenTurn());
+    // }
 
     //the proper take turn function
     IEnumerator TakeTurn(MahjongPlayerBase player)
@@ -842,7 +842,7 @@ public class MahjongManager : MonoBehaviour
         //     BoardAudioHandler.audioHandler.source.volume = 1f;
         //     BoardAudioHandler.audioHandler.PlayDiscard();
         // }
-        
+
         BoardAudioHandler.audioHandler.source.volume = 1f;
         BoardAudioHandler.audioHandler.PlayDiscard();
 
@@ -1064,10 +1064,10 @@ public class MahjongManager : MonoBehaviour
         }
     }
 
-    public void FirstNetworkedTurn()
-    {
-        StartCoroutine(FirstTurn(dealer));
-    }
+    // public void FirstNetworkedTurn()
+    // {
+    //     StartCoroutine(FirstTurn(dealer));
+    // }
 
     public static int CompareTileNumbers(Tile x, Tile y)
     {
