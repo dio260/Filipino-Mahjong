@@ -426,7 +426,7 @@ public class MahjongManager : MonoBehaviour
             dealer = FindObjectOfType<HumanPlayer>();
 
             SendPlayersMessage("Dealer is " + dealer.name);
-            //StartCoroutine(DistributeTiles());
+            StartCoroutine(DistributeTiles());
         }
 
 
@@ -445,7 +445,6 @@ public class MahjongManager : MonoBehaviour
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Distributing tiles to players");
-            // MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("shuffleAnim");
         }
         else
         {
@@ -471,61 +470,53 @@ public class MahjongManager : MonoBehaviour
                 player.ArrangeTiles();
             }
 
-        yield return new WaitForSeconds(2);
+        // yield return new WaitForSeconds(2);
 
-        //replace drawn flower tiles
-        if (network)
-        {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Replacing flowers");
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawFlowersAnim");
-
-        }
-        else
-        {
-            SendPlayersMessage("Replacing flowers");
-            foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
-            {
-                player.currentAvatar.PlayDrawAnim();
-            }
-        }
-
-        int needFlowers = -1;
-        while (needFlowers != 0)
-        {
-            needFlowers = players.Count;
-            foreach (MahjongPlayerBase player in players)
-            {
-                int remainingFlowers = player.replaceInitialFlowerTiles();
-                if (remainingFlowers == 0)
-                    needFlowers -= 1;
-            }
-        }
-
-        yield return new WaitForSeconds(2);
-
-        //arrange tiles again
-        if (!network || (network && PhotonNetwork.IsMasterClient))
-            foreach (MahjongPlayerBase player in players)
-            {
-                player.ArrangeTiles();
-            }
-
-        currentPlayer = dealer;
-        nextPlayer = players[(dealerIndex + 1) % players.Count];
-
-        yield return new WaitForSeconds(2);
-
-        //now we may set the gamestate properly
-        state = GameState.playing;
-
+        // //replace drawn flower tiles
         // if (network)
         // {
-        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("turn1");
+        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Replacing flowers");
+        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawFlowersAnim");
+
         // }
         // else
         // {
-        //     StartCoroutine(FirstTurn(dealer));
+        //     SendPlayersMessage("Replacing flowers");
+        //     foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+        //     {
+        //         player.currentAvatar.PlayDrawAnim();
+        //     }
         // }
+
+        // int needFlowers = -1;
+        // while (needFlowers != 0)
+        // {
+        //     needFlowers = players.Count;
+        //     foreach (MahjongPlayerBase player in players)
+        //     {
+        //         int remainingFlowers = player.replaceInitialFlowerTiles();
+        //         if (remainingFlowers == 0)
+        //             needFlowers -= 1;
+        //     }
+        // }
+
+        // yield return new WaitForSeconds(2);
+
+        // //arrange tiles again
+        // if (!network || (network && PhotonNetwork.IsMasterClient))
+        //     foreach (MahjongPlayerBase player in players)
+        //     {
+        //         player.ArrangeTiles();
+        //     }
+
+        // currentPlayer = dealer;
+        // nextPlayer = players[(dealerIndex + 1) % players.Count];
+
+        // yield return new WaitForSeconds(2);
+
+        // //now we may set the gamestate properly
+        // state = GameState.playing;
+
         // StartCoroutine(TakeTurn(dealer));
     }
 
@@ -1039,7 +1030,7 @@ public class MahjongManager : MonoBehaviour
         Debug.Log("dieroll: " + dieRoll);
         int dieRollResult = (dieRoll - 1) % players.Count;
         dealer = players[dieRollResult];
-        //StartCoroutine(DistributeTiles());
+        StartCoroutine(DistributeTiles());
     }
 
     public virtual void SendPlayersMessage(string message)
