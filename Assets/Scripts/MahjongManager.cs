@@ -760,6 +760,7 @@ public class MahjongManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("That was the first turn");
             firstTurn = false;
         }
 
@@ -783,7 +784,7 @@ public class MahjongManager : MonoBehaviour
         //do a time based implementation so people cannot stall out the turn;
         int time;
         // time = 60;
-        time = 300;
+        time = 500;
         for (int i = time; i > 0; i--)
         {
             if (network)

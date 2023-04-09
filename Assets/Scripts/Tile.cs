@@ -142,7 +142,7 @@ public class Tile : MonoBehaviour
     [PunRPC]
     public void SetTile(int num, suit suit)
     {
-        Debug.Log("Tile Set Called");
+        // Debug.Log("Tile Set Called");
 
         this.number = num;
         this.tileType = suit;
