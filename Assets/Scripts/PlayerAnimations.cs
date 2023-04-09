@@ -49,8 +49,8 @@ public class PlayerAnimations : MonoBehaviour
     {
         anim.Play(win.name);
         anim.PlayQueued(win.name);
-        anim.PlayQueued(win.name);
-        anim.PlayQueued(win.name);
+        // anim.PlayQueued(win.name);
+        // anim.PlayQueued(win.name);
         anim.PlayQueued(idle.name);
     }
     public void PlayDiscardAnim()
