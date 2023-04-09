@@ -65,7 +65,7 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 photonView.RPC("PlayAnimation", RpcTarget.All, command);
                 break;
             case "stealAnim":
-                photonView.RPC("PlayAnimation", RpcTarget.All, command);
+                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
                 break;
             case "drawAnim":
                 photonView.RPC("PlayAnimation", RpcTarget.All, command);

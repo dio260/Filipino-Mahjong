@@ -38,6 +38,8 @@ public class PlayerAnimations : MonoBehaviour
 
     public void PlayDrawAnim()
     {
+        Debug.Log("playing draw anim and voice");
+
         anim[discard.name].normalizedTime = 1;
         anim[discard.name].speed = -1.25f;
         anim.Play(discard.name);
@@ -47,6 +49,7 @@ public class PlayerAnimations : MonoBehaviour
 
     public void PlayShuffleAnim()
     {
+        Debug.Log("playing shuffle anim");
         anim.Play(win.name);
         anim.PlayQueued(win.name);
         // anim.PlayQueued(win.name);
@@ -55,6 +58,8 @@ public class PlayerAnimations : MonoBehaviour
     }
     public void PlayDiscardAnim()
     {
+        Debug.Log("playing discard anim");
+
         anim[discard.name].normalizedTime = 0;
         anim[discard.name].speed = 1f;
         anim.Play(discard.name);
@@ -62,10 +67,10 @@ public class PlayerAnimations : MonoBehaviour
     }
     public void PlayStealAnim()
     {
+        Debug.Log("playing steal anim and voice");
         anim.Play(meld.name);
         anim.PlayQueued(idle.name);
 
-        Debug.Log("playing steal voice");
         switch (transform.parent.GetComponent<MahjongPlayerBase>().currentDecision)
         {
             case decision.pong:
@@ -81,6 +86,8 @@ public class PlayerAnimations : MonoBehaviour
     }
     public void PlayWinAnim()
     {
+        Debug.Log("playing win anim and voice");
+
         anim.Play(win.name);
         anim.PlayQueued(idle.name);
         voice.PlayOneShot(todasClips[Random.Range(0, todasClips.Length)]);
