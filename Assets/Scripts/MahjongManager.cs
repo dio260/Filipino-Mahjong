@@ -501,7 +501,6 @@ public class MahjongManager : MonoBehaviour
             {
                 int remainingFlowers = player.replaceInitialFlowerTiles();
                 Debug.Log(player.gameObject.name + " has " + remainingFlowers + " flowers");
-
                 if (remainingFlowers == 0)
                     needFlowers -= 1;
             }
