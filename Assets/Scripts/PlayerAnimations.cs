@@ -65,6 +65,7 @@ public class PlayerAnimations : MonoBehaviour
         anim.Play(meld.name);
         anim.PlayQueued(idle.name);
 
+        Debug.Log("playing steal voice");
         switch (transform.parent.GetComponent<MahjongPlayerBase>().currentDecision)
         {
             case decision.pong:
