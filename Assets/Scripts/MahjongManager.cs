@@ -249,7 +249,8 @@ public class MahjongManager : MonoBehaviour
         else
         {
             SendPlayersMessage("Shuffling Board and Creating Walls");
-            AudioHandler.audioHandler.PlayShuffle();
+            BoardAudioHandler.audioHandler.source.volume = 0.5f;
+            BoardAudioHandler.audioHandler.PlayShuffle();
             foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
             {
                 player.currentAvatar.PlayShuffleAnim();
@@ -371,7 +372,8 @@ public class MahjongManager : MonoBehaviour
         else
         {
             SendPlayersMessage("Rolling dice for dealer");
-            AudioHandler.audioHandler.PlayDiceRoll();
+            BoardAudioHandler.audioHandler.source.volume = 1f;
+            BoardAudioHandler.audioHandler.PlayDiceRoll();
         }
 
 
@@ -818,6 +820,16 @@ public class MahjongManager : MonoBehaviour
         //set to wait
 
         yield return new WaitForSeconds(2);
+
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("discardSound");
+        }
+        else
+        {
+            BoardAudioHandler.audioHandler.source.volume = 1f;
+            BoardAudioHandler.audioHandler.PlayDiscard();
+        }
 
         //flip it up to be visible
         mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);

@@ -77,7 +77,7 @@ public class TutorialManager : MahjongManager
         {
             handsImage.gameObject.SetActive(false);
         }
-        
+
         if(dialogueIndex > 16)
         {
             meldsImage.gameObject.SetActive(true);
@@ -133,7 +133,7 @@ public class TutorialManager : MahjongManager
         System.Random rand = new System.Random();
 
         SendPlayersMessage("Shuffling Board and Creating Walls");
-        AudioHandler.audioHandler.PlayShuffle();
+        BoardAudioHandler.audioHandler.PlayShuffle();
         foreach (MahjongPlayerBase player in players)
         {
             player.currentAvatar.PlayShuffleAnim();

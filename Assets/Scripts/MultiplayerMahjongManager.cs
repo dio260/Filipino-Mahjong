@@ -109,16 +109,13 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
         switch (audioClip)
         {
             case "discardSound":
-                AudioHandler.audioHandler.PlayDiscard();
+                BoardAudioHandler.audioHandler.PlayDiscard();
                 break;
             case "shuffleSound":
-                AudioHandler.audioHandler.PlayShuffle();
-                break;
-            case "winSound":
-                AudioHandler.audioHandler.PlayWin();
+                BoardAudioHandler.audioHandler.PlayShuffle();
                 break;
             case "diceSound":
-                AudioHandler.audioHandler.PlayDiceRoll();
+                BoardAudioHandler.audioHandler.PlayDiceRoll();
                 break;
         }
     }

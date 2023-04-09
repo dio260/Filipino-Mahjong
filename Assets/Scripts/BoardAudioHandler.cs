@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioHandler : MonoBehaviour
+public class BoardAudioHandler : MonoBehaviour
 {
-    public static AudioHandler audioHandler;
-    public AudioClip discardSound, winSound, shuffleSound, diceSound;
+    public static BoardAudioHandler audioHandler;
+    public AudioClip shuffleSound;
+    public AudioClip[] discardSounds, diceSounds;
     public AudioSource source;
     bool networked;
 
@@ -25,30 +26,18 @@ public class AudioHandler : MonoBehaviour
 
     public void PlayDiscard()
     {
-        Debug.Log("discard noise");
-        // source.PlayOneShot(discardSound);
+        source.PlayOneShot(discardSounds[(int) Random.Range(0, discardSounds.Length)]);
     }
 
     public void PlayShuffle()
     {
-        Debug.Log("shuffle noise");
+        source.PlayOneShot(shuffleSound);
 
-        // source.PlayOneShot(shuffleSound);
-
-    }
-
-    public void PlayWin()
-    {
-        Debug.Log("win noise");
-
-        // source.PlayOneShot(winSound);
 
     }
     public void PlayDiceRoll()
     {
-        Debug.Log("dice sound");
-
-        // source.PlayOneShot(diceSound);
+        source.PlayOneShot(diceSounds[(int) Random.Range(0, diceSounds.Length)]);
     }
 
 }

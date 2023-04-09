@@ -8710,10 +8710,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b8302954e1a3641b96f5821aac7ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  discardSound: {fileID: 0}
-  winSound: {fileID: 0}
   shuffleSound: {fileID: 0}
-  diceSound: {fileID: 0}
+  discardSounds:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  diceSounds:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   source: {fileID: 0}
 --- !u!1 &9069051912995254091
 GameObject:
