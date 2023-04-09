@@ -1028,7 +1028,7 @@ public class MahjongManager : MonoBehaviour
     public void SetDealer(int dieRoll)
     {
         Debug.Log("dieroll: " + dieRoll);
-        int dieRollResult = (dieRoll - 1) % players.Count;
+        dieRollResult = (dieRoll - 1) % players.Count;
         dealer = players[dieRollResult];
         StartCoroutine(DistributeTiles());
     }
