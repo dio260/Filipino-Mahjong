@@ -426,7 +426,7 @@ public class MahjongManager : MonoBehaviour
             dealer = FindObjectOfType<HumanPlayer>();
 
             SendPlayersMessage("Dealer is " + dealer.name);
-            StartCoroutine(DistributeTiles());
+            //StartCoroutine(DistributeTiles());
         }
 
 
@@ -1039,7 +1039,7 @@ public class MahjongManager : MonoBehaviour
         Debug.Log("dieroll: " + dieRoll);
         int dieRollResult = (dieRoll - 1) % players.Count;
         dealer = players[dieRollResult];
-        StartCoroutine(DistributeTiles());
+        //StartCoroutine(DistributeTiles());
     }
 
     public virtual void SendPlayersMessage(string message)
