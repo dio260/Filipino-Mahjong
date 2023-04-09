@@ -366,7 +366,7 @@ public class MahjongManager : MonoBehaviour
             }
         }
 
-        StartCoroutine(RollDice());
+        // StartCoroutine(RollDice());
 
     }
 

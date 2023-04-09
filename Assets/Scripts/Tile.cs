@@ -31,17 +31,17 @@ public class Tile : MonoBehaviour
         //     return;
         if (GetComponent<PhotonView>() == null)
         {
-            if (tileType == suit.flower)
-            {
-                gameObject.name = tileType.ToString();
-                debugText.text = tileType.ToString();
+            // if (tileType == suit.flower)
+            // {
+            //     gameObject.name = tileType.ToString();
+            //     debugText.text = tileType.ToString();
 
-            }
-            else
-            {
+            // }
+            // else
+            // {
                 gameObject.name = number + " " + tileType.ToString();
                 debugText.text = number + " " + tileType.ToString();
-            }
+            // }
 
             switch (tileType)
             {
