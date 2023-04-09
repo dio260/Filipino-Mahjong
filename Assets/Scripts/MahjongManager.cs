@@ -366,7 +366,7 @@ public class MahjongManager : MonoBehaviour
             }
         }
 
-        // StartCoroutine(RollDice());
+        StartCoroutine(RollDice());
 
     }
 
@@ -530,7 +530,7 @@ public class MahjongManager : MonoBehaviour
         // {
         //     StartCoroutine(FirstTurn(dealer));
         // }
-        StartCoroutine(TakeTurn(dealer));
+        // StartCoroutine(TakeTurn(dealer));
     }
 
     //a coroutine differentiating the first turn of every game
