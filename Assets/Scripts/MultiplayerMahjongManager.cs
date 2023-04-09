@@ -70,6 +70,9 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
             case "drawAnim":
                 photonView.RPC("PlayAnimation", RpcTarget.Others, command);
                 break;
+            case "drawFlowersAnim":
+                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
+                break;
         }
     }
     [PunRPC]

@@ -481,16 +481,18 @@ public class MahjongManager : MonoBehaviour
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Replacing flowers");
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawFlowersAnim");
+            // MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawFlowersAnim");
 
         }
         else
         {
             SendPlayersMessage("Replacing flowers");
-            foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
-            {
-                player.currentAvatar.PlayDrawAnim();
-            }
+
+        }
+
+        foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+        {
+            player.currentAvatar.PlayDrawAnim();
         }
 
         int needFlowers = -1;
@@ -635,15 +637,16 @@ public class MahjongManager : MonoBehaviour
                 if (network)
                 {
                     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " stole the discard for a " + player.currentDecision.ToString());
-                    MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("stealAnim");
+                    // MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("stealAnim");
 
                 }
                 else
                 {
                     SendPlayersMessage(player.gameObject.name + " stole the discard for a " + player.currentDecision.ToString());
-                    player.currentAvatar.PlayStealAnim();
+                    // player.currentAvatar.PlayStealAnim();
                 }
 
+                player.currentAvatar.PlayStealAnim();
                 player.StealTile();
 
                 //draw like normal if kang
@@ -654,14 +657,15 @@ public class MahjongManager : MonoBehaviour
                     if (network)
                     {
                         MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is drawing a tile");
-                        MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
+                        // MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
                     }
                     else
                     {
                         SendPlayersMessage(player.gameObject.name + " is drawing a tile");
-                        player.currentAvatar.PlayDrawAnim();
+                        // player.currentAvatar.PlayDrawAnim();
                     }
 
+                    player.currentAvatar.PlayDrawAnim();
                     player.DrawKangTile();
 
                     yield return new WaitForSeconds(1);
@@ -674,13 +678,14 @@ public class MahjongManager : MonoBehaviour
                             if (network)
                             {
                                 MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " drew a flower");
-                                MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
+                                // MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
                             }
                             else
                             {
                                 SendPlayersMessage(player.gameObject.name + " drew a flower");
-                                player.currentAvatar.PlayDrawAnim();
+                                // player.currentAvatar.PlayDrawAnim();
                             }
+                            player.currentAvatar.PlayDrawAnim();
                             yield return new WaitForSeconds(1);
                         }
                     }
@@ -708,13 +713,14 @@ public class MahjongManager : MonoBehaviour
                 if (network)
                 {
                     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is drawing a tile");
-                    MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
+                    // MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawAnim");
                 }
                 else
                 {
                     SendPlayersMessage(player.gameObject.name + " is drawing a tile");
-                    player.currentAvatar.PlayDrawAnim();
+                    // player.currentAvatar.PlayDrawAnim();
                 }
+                player.currentAvatar.PlayDrawAnim();
                 player.DrawTile();
 
                 // StartCoroutine(player.DrawTile());
@@ -732,8 +738,9 @@ public class MahjongManager : MonoBehaviour
                         else
                         {
                             SendPlayersMessage(player.gameObject.name + " drew a flower");
-                            player.currentAvatar.PlayDrawAnim();
+                            // player.currentAvatar.PlayDrawAnim();
                         }
+                        player.currentAvatar.PlayDrawAnim();
                         yield return new WaitForSeconds(1);
                     }
                 }
@@ -812,27 +819,32 @@ public class MahjongManager : MonoBehaviour
         if (network)
         {
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("discardAnim");
+            // MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("discardAnim");
         }
         else
         {
             SendPlayersMessage(player.gameObject.name + " discarded " + mostRecentDiscard.ToString());
-            player.currentAvatar.PlayDiscardAnim();
+            // player.currentAvatar.PlayDiscardAnim();
         }
+        player.currentAvatar.PlayDiscardAnim();
+
 
         //set to wait
 
         yield return new WaitForSeconds(2);
 
-        if (network)
-        {
-            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("discardSound");
-        }
-        else
-        {
-            BoardAudioHandler.audioHandler.source.volume = 1f;
-            BoardAudioHandler.audioHandler.PlayDiscard();
-        }
+        // if (network)
+        // {
+        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("discardSound");
+        // }
+        // else
+        // {
+        //     BoardAudioHandler.audioHandler.source.volume = 1f;
+        //     BoardAudioHandler.audioHandler.PlayDiscard();
+        // }
+        
+        BoardAudioHandler.audioHandler.source.volume = 1f;
+        BoardAudioHandler.audioHandler.PlayDiscard();
 
         //flip it up to be visible
         mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);

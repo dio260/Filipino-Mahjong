@@ -239,11 +239,19 @@ public class MahjongPlayerBase : MonoBehaviour
     }
     protected void DeclareWin()
     {
-        win = true;
+        if(networked)
+        {
+            GetComponent<PhotonView>().RPC("NetworkedWinDeclaration", RpcTarget.All);
+        }
+        else
+        {
+            win = true;
+        }
     }
-    void DeclareSevenPairs()
+    [PunRPC]
+    void NetworkedWinDeclaration()
     {
-
+        win = true;
     }
     [PunRPC]
 
