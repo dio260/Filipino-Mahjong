@@ -209,6 +209,15 @@ public class HumanPlayer : MahjongPlayerBase
             }
 
         }
+        else if (MahjongManager.mahjongManager.GetGameState() == GameState.finished)
+        {
+            if (HelpOpen)
+            {
+                StartCoroutine(CloseHelp());
+            }
+            helpUIText.text = "Exit Game ->";
+            exitButton.gameObject.SetActive(true);
+        }
 
 
     }
@@ -348,13 +357,14 @@ public class HumanPlayer : MahjongPlayerBase
         {
             canKang = false;
         }
-        if (chowMeldLeft.Count == 3
+        if ((chowMeldLeft.Count == 3
         || chowMeldMiddle.Count == 3
-        || chowMeldRight.Count == 3 &&
+        || chowMeldRight.Count == 3) &&
         (MahjongManager.mahjongManager.GetPlayers().IndexOf(MahjongManager.mahjongManager.previousPlayer) + 1) %
         MahjongManager.mahjongManager.GetPlayers().Count == MahjongManager.mahjongManager.GetPlayers().IndexOf(this))
         {
-            Debug.Log("Prev player index: " + MahjongManager.mahjongManager.GetPlayers().IndexOf(MahjongManager.mahjongManager.previousPlayer));
+            Debug.Log("Prev player index: " + MahjongManager.mahjongManager.GetPlayers().IndexOf(MahjongManager.mahjongManager.previousPlayer)
+            + "\nMy Index: " + MahjongManager.mahjongManager.GetPlayers().IndexOf(this));
             canChow = true;
         }
         else
@@ -589,7 +599,7 @@ public class HumanPlayer : MahjongPlayerBase
                 if (HelpUI.GetChild(1).localScale.y < 1)
                 {
                     HelpUI.GetChild(1).localScale += Vector3.up * 0.01f;
-                    if(HelpUI.GetChild(1).localScale.y > 1)
+                    if (HelpUI.GetChild(1).localScale.y > 1)
                     {
                         HelpUI.GetChild(1).localScale = Vector3.one;
                     }
@@ -600,7 +610,7 @@ public class HumanPlayer : MahjongPlayerBase
                 if (HelpUI.GetChild(2).localScale.y < 1)
                 {
                     HelpUI.GetChild(2).localScale += Vector3.up * 0.0028f;
-                    if(HelpUI.GetChild(2).localScale.y > 1)
+                    if (HelpUI.GetChild(2).localScale.y > 1)
                     {
                         HelpUI.GetChild(2).localScale = Vector3.one;
                     }
@@ -622,7 +632,7 @@ public class HumanPlayer : MahjongPlayerBase
                 if (HelpUI.GetChild(1).localScale.y > 0)
                 {
                     HelpUI.GetChild(1).localScale -= Vector3.up * 0.012f;
-                    if(HelpUI.GetChild(1).localScale.y < 0)
+                    if (HelpUI.GetChild(1).localScale.y < 0)
                     {
                         HelpUI.GetChild(1).localScale = Vector3.one + Vector3.down;
                     }
@@ -633,7 +643,7 @@ public class HumanPlayer : MahjongPlayerBase
                 if (HelpUI.GetChild(2).localScale.y > 0)
                 {
                     HelpUI.GetChild(2).localScale -= Vector3.up * 0.0028f;
-                    if(HelpUI.GetChild(2).localScale.y < 0)
+                    if (HelpUI.GetChild(2).localScale.y < 0)
                     {
                         HelpUI.GetChild(2).localScale = Vector3.one + Vector3.down;
                     }
