@@ -27571,6 +27571,7 @@ MonoBehaviour:
   roomInput: {fileID: 1534393037}
   nameInput: {fileID: 813015272}
   anim: {fileID: 631576484}
+  joinButton: {fileID: 182808644}
   open: 0
 --- !u!95 &631576484
 Animator:
@@ -99357,10 +99358,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b8302954e1a3641b96f5821aac7ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  discardSound: {fileID: 0}
-  winSound: {fileID: 0}
   shuffleSound: {fileID: 0}
-  diceSound: {fileID: 0}
+  discardSounds: []
+  diceSounds: []
   source: {fileID: 2114365360}
 --- !u!82 &2114365360
 AudioSource:
