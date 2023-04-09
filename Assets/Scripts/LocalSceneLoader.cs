@@ -10,7 +10,7 @@ public class LocalSceneLoader : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        if(sceneLoader != null && sceneLoader != this)
+        if (sceneLoader != null && sceneLoader != this)
         {
             Destroy(gameObject);
         }
@@ -23,16 +23,19 @@ public class LocalSceneLoader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void LoadTutorial()
     {
+        Debug.Log("Tutorial Load Clicked");
         SceneManager.LoadScene("Tutorial");
     }
 
     public void LoadMenu()
     {
+        Debug.Log("Main Menu Clicked");
+
         SceneManager.LoadScene("Main Menu");
     }
 }

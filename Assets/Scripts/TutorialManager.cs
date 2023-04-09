@@ -16,6 +16,7 @@ public class TutorialManager : MahjongManager
     public TutorialPlayer tutorialGuy;
     public TMP_Text tutorialDialogue;
     public Button nextButton, exitButton;
+    public Image tilesImage, meldsImage, handsImage;
     public int dialogueIndex;
     bool advanceDialogue;
     [TextArea(5, 15)]
@@ -40,9 +41,13 @@ public class TutorialManager : MahjongManager
 
 
         nextButton.onClick.AddListener(ResetNextButton);
-        exitButton.onClick.AddListener(LocalSceneLoader.sceneLoader.LoadMenu);
 
         InitializeGame();
+    }
+
+    public void Start()
+    {
+        exitButton.onClick.AddListener(LocalSceneLoader.sceneLoader.LoadMenu);
     }
 
     // Update is called once per frame
@@ -54,6 +59,34 @@ public class TutorialManager : MahjongManager
     public void FixedUpdate()
     {
         tutorialDialogue.text = dialogueLines[dialogueIndex];
+
+        if(dialogueIndex == 11 || dialogueIndex == 12)
+        {
+            tilesImage.gameObject.SetActive(true);
+        }
+        else
+        {
+            tilesImage.gameObject.SetActive(false);
+        }
+
+        if(dialogueIndex == 15 || dialogueIndex == 16)
+        {
+            handsImage.gameObject.SetActive(true);
+        }
+        else
+        {
+            handsImage.gameObject.SetActive(false);
+        }
+        
+        if(dialogueIndex > 16)
+        {
+            meldsImage.gameObject.SetActive(true);
+        }
+        else
+        {
+            meldsImage.gameObject.SetActive(false);
+        }
+
         if (!advanceDialogue)
             return;
 

@@ -613,18 +613,18 @@ public class MahjongManager : MonoBehaviour
     IEnumerator TakeTurn(MahjongPlayerBase player)
     {
 
-        // if (network)
-        // {
-        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn.");
-        // }
-        // else
-        // {
-        //     SendPlayersMessage(player.gameObject.name + " is taking their turn.");
-        // }
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", player.gameObject.name + " is taking their turn.");
+        }
+        else
+        {
+            SendPlayersMessage(player.gameObject.name + " is taking their turn.");
+        }
         if (!firstTurn)
         {
 
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
 
             if (player.currentDecision != decision.none && player.currentDecision != decision.pass)
             {
@@ -753,7 +753,7 @@ public class MahjongManager : MonoBehaviour
             firstTurn = false;
         }
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
 
         if (player.CalculateNormalWin() && player.CalculateSevenPairs())
         {
