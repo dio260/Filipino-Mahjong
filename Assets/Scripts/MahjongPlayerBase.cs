@@ -704,7 +704,7 @@ public class MahjongPlayerBase : MonoBehaviour
         Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
         float handSize = tileSideOffset * (float)closedHand.Count;
         float placementReference = handSize / 2.0f;
-        Debug.Log(closedHandParent.GetComponentsInChildren<Tile>().ToList<Tile>().Count());
+        Debug.Log(gameObject.name + " has " + closedHandParent.GetComponentsInChildren<Tile>().ToList<Tile>().Count() + " tiles in their closed hand");
         foreach (Tile tile in closedHandParent.GetComponentsInChildren<Tile>().ToList<Tile>())
         {
             tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
