@@ -631,8 +631,10 @@ MonoBehaviour:
   playerCanvas: {fileID: 0}
   debugText: {fileID: 8581204886875581759}
   tileText: {fileID: 2614451597989239893}
+  helpUIText: {fileID: 6560756521255317141}
   tileImage1: {fileID: 4712963359521004316}
   tileImage2: {fileID: 905063942270531062}
+  exitButton: {fileID: 2875643050659563519}
   HelpUI: {fileID: 7889524968549955004}
 --- !u!1 &569835579846867957
 GameObject:
@@ -1012,6 +1014,7 @@ RectTransform:
   - {fileID: 7704132058062709827}
   - {fileID: 3429079406403302779}
   - {fileID: 3234996016861826348}
+  - {fileID: 4836184476980856689}
   m_Father: {fileID: 2587354578529146038}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2975,6 +2978,127 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &4169639092640315240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4836184476980856689}
+  - component: {fileID: 5764198842716152302}
+  - component: {fileID: 2144592242081258446}
+  - component: {fileID: 2875643050659563519}
+  m_Layer: 5
+  m_Name: Exit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4836184476980856689
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4169639092640315240}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7889524968549955004}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 200, y: -30}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &5764198842716152302
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4169639092640315240}
+  m_CullTransparentMesh: 1
+--- !u!114 &2144592242081258446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4169639092640315240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 6d6088174bb906b49ad8428526ee337b, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2875643050659563519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4169639092640315240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 2144592242081258446}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4194599209446124931
 GameObject:
   m_ObjectHideFlags: 0
@@ -6300,6 +6424,26 @@ MonoBehaviour:
   discard: {fileID: 7400000, guid: 820f827d63101da4e9e84a15cf84496b, type: 2}
   win: {fileID: 7400000, guid: 4642c6b7d25437c48835bcf8ee8238bd, type: 2}
   meld: {fileID: 7400000, guid: 63cbb91d02db4dd40b1b59a2d49a7e78, type: 2}
+  voice: {fileID: 0}
+  tileset: {fileID: 0}
+  pongClips:
+  - {fileID: 8300000, guid: 40934cc982aa61f41936cf0c00a7e101, type: 3}
+  - {fileID: 8300000, guid: e428400df5d9afa49916b28e4d387c1c, type: 3}
+  - {fileID: 8300000, guid: 3f3e71dc588b29b4e847f682e7164a5a, type: 3}
+  kangClips:
+  - {fileID: 8300000, guid: 3846e9a0f462aae4aa6862dea0f5634e, type: 3}
+  - {fileID: 8300000, guid: 4a655d1192823e34398aee43c9cd7489, type: 3}
+  - {fileID: 8300000, guid: 5c02c2b1b84b8554e82017e0085e60e9, type: 3}
+  chowClips:
+  - {fileID: 8300000, guid: 3ba9c8cece90c9a4391b5fb050fc7c63, type: 3}
+  - {fileID: 8300000, guid: 96b1e63dcf413a646ac2111cb6ec6583, type: 3}
+  - {fileID: 8300000, guid: b3d2533acb385c643ad82e992be86842, type: 3}
+  todasClips:
+  - {fileID: 8300000, guid: 49234075699a49c4a906ffe776f98992, type: 3}
+  - {fileID: 8300000, guid: 1989659eb4cfb5b44a6bb180aee82fa3, type: 3}
+  - {fileID: 8300000, guid: 9f563e749f998804c88b6b9fd313af8a, type: 3}
+  tileThud: {fileID: 8300000, guid: 20371d0644b72f146b50c47ecf35cd36, type: 3}
+  debug: 0
 --- !u!111 &2223639932355358019 stripped
 Animation:
   m_CorrespondingSourceObject: {fileID: 2223639932434330405, guid: 672856d7faaa07a4daacd694927b1a79, type: 3}
@@ -7053,6 +7197,26 @@ MonoBehaviour:
   discard: {fileID: 7400000, guid: 0d700c2e8c1b2404cb3f684d338a2ac0, type: 2}
   win: {fileID: 7400000, guid: f382d491841a90943869155447509955, type: 2}
   meld: {fileID: 7400000, guid: 5227a2a0e352ba948ac383d25ae01308, type: 2}
+  voice: {fileID: 0}
+  tileset: {fileID: 0}
+  pongClips:
+  - {fileID: 8300000, guid: d5c2ae796c477e0489a9383ac1724c1b, type: 3}
+  - {fileID: 8300000, guid: ade1648011e122149897cd5e8aae11c9, type: 3}
+  - {fileID: 8300000, guid: 595dab5004c18d340ad0cebc1ecfa49e, type: 3}
+  kangClips:
+  - {fileID: 8300000, guid: 1a5937cc2c0a6d447b61448b62bc2b18, type: 3}
+  - {fileID: 8300000, guid: 59324f7552f6f5b4492de06211f58244, type: 3}
+  - {fileID: 8300000, guid: b42fd3099e0667f49ad4121166601e42, type: 3}
+  chowClips:
+  - {fileID: 8300000, guid: 0da018668f836bf449079809da010b8c, type: 3}
+  - {fileID: 8300000, guid: 3bf3112d2e94f26409bcb10400591450, type: 3}
+  - {fileID: 8300000, guid: 48554cd16b73cff479523410d793d105, type: 3}
+  todasClips:
+  - {fileID: 8300000, guid: eefa0d1f057f3d8469c0c839214608d0, type: 3}
+  - {fileID: 8300000, guid: b25bfb9f520b2da41b3f71c15b975623, type: 3}
+  - {fileID: 8300000, guid: 91bb825e2e7b0c942905381511081d30, type: 3}
+  tileThud: {fileID: 8300000, guid: 20371d0644b72f146b50c47ecf35cd36, type: 3}
+  debug: 0
 --- !u!111 &2223639932583512332 stripped
 Animation:
   m_CorrespondingSourceObject: {fileID: 2223639932434330405, guid: 925c9f954e5f14b4ab763133050dd824, type: 3}

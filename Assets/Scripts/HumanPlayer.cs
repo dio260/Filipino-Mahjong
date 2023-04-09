@@ -11,8 +11,9 @@ public class HumanPlayer : MahjongPlayerBase
     public Camera playerCam;
     public GameObject playerCanvas;
     protected Button sortButton, passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
-    public TMP_Text debugText, tileText;
+    public TMP_Text debugText, tileText, helpUIText;
     public Image tileImage1, tileImage2;
+    public Button exitButton;
     public RectTransform HelpUI;
     protected bool HelpOpen;
     protected Vector3 camRotation, camPosition;
@@ -58,6 +59,8 @@ public class HumanPlayer : MahjongPlayerBase
         discardButton.gameObject.SetActive(false);
         tileImage1.enabled = false;
         tileImage2.enabled = false;
+        exitButton.onClick.AddListener(LocalSceneLoader.sceneLoader.LoadMenu);
+        exitButton.gameObject.SetActive(false);
         playerCanvas.SetActive(false);
     }
 
@@ -137,10 +140,14 @@ public class HumanPlayer : MahjongPlayerBase
             {
                 if (!HelpOpen)
                 {
+                    helpUIText.text = "Exit Game ->";
+                    exitButton.gameObject.SetActive(true);
                     StartCoroutine(OpenHelp());
                 }
                 else
                 {
+                    helpUIText.text = "Press Tab to open help";
+                    exitButton.gameObject.SetActive(false);
                     StartCoroutine(CloseHelp());
                 }
             }
@@ -588,17 +595,17 @@ public class HumanPlayer : MahjongPlayerBase
             {
                 if (HelpUI.GetChild(2).localScale.y < 1)
                 {
-                    HelpUI.GetChild(2).localScale += Vector3.up * 0.00275f;
+                    HelpUI.GetChild(2).localScale += Vector3.up * 0.0028f;
                     if(HelpUI.GetChild(2).localScale.y > 1)
                     {
                         HelpUI.GetChild(2).localScale = Vector3.one;
                     }
                 }
             }
-            yield return new WaitForSeconds(0.005f);
+            yield return new WaitForSeconds(0.00001f);
         }
         HelpOpen = true;
-        Debug.Log(HelpUI.rect.height);
+        // Debug.Log(HelpUI.rect.height);
     }
     public IEnumerator CloseHelp()
     {
@@ -613,7 +620,7 @@ public class HumanPlayer : MahjongPlayerBase
                     HelpUI.GetChild(1).localScale -= Vector3.up * 0.012f;
                     if(HelpUI.GetChild(1).localScale.y < 0)
                     {
-                        HelpUI.GetChild(1).localScale = Vector3.zero;
+                        HelpUI.GetChild(1).localScale = Vector3.one + Vector3.down;
                     }
                 }
             }
@@ -624,14 +631,14 @@ public class HumanPlayer : MahjongPlayerBase
                     HelpUI.GetChild(2).localScale -= Vector3.up * 0.0028f;
                     if(HelpUI.GetChild(2).localScale.y < 0)
                     {
-                        HelpUI.GetChild(2).localScale = Vector3.zero;
+                        HelpUI.GetChild(2).localScale = Vector3.one + Vector3.down;
                     }
                 }
             }
-            yield return new WaitForSeconds(0.005f);
+            yield return new WaitForSeconds(0.00001f);
         }
         HelpOpen = false;
-        Debug.Log(HelpUI.rect.height);
+        // Debug.Log(HelpUI.rect.height);
 
     }
 }

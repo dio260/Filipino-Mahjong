@@ -280,7 +280,7 @@ public class MahjongManager : MonoBehaviour
             if (x % 36 == 0)
             {
                 multiplier = 0;
-                yield return new WaitForSeconds(1);
+                // yield return new WaitForSeconds(1);
             }
             if (x < 36)
             {
@@ -294,6 +294,8 @@ public class MahjongManager : MonoBehaviour
 
                 }
                 multiplier += 1;
+             yield return new WaitForSeconds(0.01f);
+
                 continue;
             }
 
@@ -310,6 +312,8 @@ public class MahjongManager : MonoBehaviour
 
                 }
                 multiplier += 1;
+             yield return new WaitForSeconds(0.01f);
+
                 continue;
 
             }
@@ -326,6 +330,8 @@ public class MahjongManager : MonoBehaviour
 
                 }
                 multiplier += 1;
+             yield return new WaitForSeconds(0.01f);
+
                 continue;
             }
 
@@ -342,6 +348,8 @@ public class MahjongManager : MonoBehaviour
 
                 }
                 multiplier += 1;
+             yield return new WaitForSeconds(0.01f);
+
                 continue;
             }
 

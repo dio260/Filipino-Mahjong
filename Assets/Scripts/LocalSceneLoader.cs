@@ -9,7 +9,7 @@ public class LocalSceneLoader : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        // DontDestroyOnLoad(gameObject);
         if (sceneLoader != null && sceneLoader != this)
         {
             Destroy(gameObject);

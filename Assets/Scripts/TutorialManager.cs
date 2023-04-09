@@ -60,7 +60,7 @@ public class TutorialManager : MahjongManager
     {
         tutorialDialogue.text = dialogueLines[dialogueIndex];
 
-        if(dialogueIndex == 11 || dialogueIndex == 12)
+        if (dialogueIndex == 11 || dialogueIndex == 12)
         {
             tilesImage.gameObject.SetActive(true);
         }
@@ -69,7 +69,7 @@ public class TutorialManager : MahjongManager
             tilesImage.gameObject.SetActive(false);
         }
 
-        if(dialogueIndex == 15 || dialogueIndex == 16)
+        if (dialogueIndex == 15 || dialogueIndex == 16)
         {
             handsImage.gameObject.SetActive(true);
         }
@@ -78,7 +78,7 @@ public class TutorialManager : MahjongManager
             handsImage.gameObject.SetActive(false);
         }
 
-        if(dialogueIndex > 16)
+        if (dialogueIndex > 16)
         {
             meldsImage.gameObject.SetActive(true);
         }
@@ -148,7 +148,7 @@ public class TutorialManager : MahjongManager
             if (x % 36 == 0)
             {
                 multiplier = 0;
-                yield return new WaitForSeconds(1);
+                // yield return new WaitForSeconds(1);
             }
             if (x < 36)
             {
@@ -162,6 +162,8 @@ public class TutorialManager : MahjongManager
 
                 }
                 multiplier += 1;
+                yield return new WaitForSeconds(0.01f);
+
                 continue;
             }
             // break;
@@ -178,6 +180,8 @@ public class TutorialManager : MahjongManager
 
                 }
                 multiplier += 1;
+                yield return new WaitForSeconds(0.01f);
+
                 continue;
 
             }
@@ -195,6 +199,8 @@ public class TutorialManager : MahjongManager
 
                 }
                 multiplier += 1;
+                yield return new WaitForSeconds(0.01f);
+
                 continue;
             }
             if (x < 144)
@@ -210,9 +216,13 @@ public class TutorialManager : MahjongManager
 
                 }
                 multiplier += 1;
+                yield return new WaitForSeconds(0.01f);
+
                 continue;
             }
             // tile.transform.Rotate(new Vector3(0, 0, -90));
+
+
         }
 
         yield return new WaitForSeconds(0.1f);

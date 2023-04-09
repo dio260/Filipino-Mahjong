@@ -8622,8 +8622,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  MinDistance: 2
+  MaxDistance: 10
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -8710,16 +8710,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b8302954e1a3641b96f5821aac7ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shuffleSound: {fileID: 0}
+  shuffleSound: {fileID: 8300000, guid: 5d8051cbe70e8e24f871d6ca2919b132, type: 3}
   discardSounds:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 808e37184644b8e4b96849644ea60595, type: 3}
+  - {fileID: 8300000, guid: 50ed55e0965e4f04584b951a0ab69a5d, type: 3}
+  - {fileID: 8300000, guid: 7023dcc4149dc7f44a6f187f4c177c28, type: 3}
   diceSounds:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: d0e42b06950d6cc448162f9a7b09b00e, type: 3}
+  - {fileID: 8300000, guid: 599a6c93366089c4183b42cc2906a2b0, type: 3}
+  - {fileID: 8300000, guid: 9504c1b05bf40cf418503bbd44a17ab0, type: 3}
+  - {fileID: 8300000, guid: 6d03cc77ac44d3045a718fb7c1ef20ac, type: 3}
   source: {fileID: 0}
 --- !u!1 &9069051912995254091
 GameObject:

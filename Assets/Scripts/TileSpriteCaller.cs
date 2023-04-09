@@ -17,7 +17,7 @@ public class TileSpriteCaller : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("Awake called on spritecaller");
+        // Debug.Log("Awake called on spritecaller");
         if(sprites != null && sprites != this)
         {
             Destroy(sprites.gameObject);

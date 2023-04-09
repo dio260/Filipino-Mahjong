@@ -1652,6 +1652,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+--- !u!114 &201607309 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6560756521255317141, guid: 36f85a94406dcd84aa55d2f5c873a12d, type: 3}
+  m_PrefabInstance: {fileID: 653909499}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &202249208
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12578,6 +12589,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
+--- !u!1 &1645989934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1645989936}
+  - component: {fileID: 1645989935}
+  m_Layer: 0
+  m_Name: SceneLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1645989935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645989934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb1366037657daa498c52b1f02f6af49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &1645989936
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645989934}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &1671057715 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
@@ -13485,6 +13545,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
   m_PrefabInstance: {fileID: 1778218123}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1763618424 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2875643050659563519, guid: 36f85a94406dcd84aa55d2f5c873a12d, type: 3}
+  m_PrefabInstance: {fileID: 653909499}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1763646240 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8228665404231082844, guid: fcdc9126532b89d4bb2f2ecf0754d7f2, type: 3}
@@ -16157,8 +16228,10 @@ MonoBehaviour:
   playerCanvas: {fileID: 0}
   debugText: {fileID: 1797158532}
   tileText: {fileID: 996349379}
+  helpUIText: {fileID: 201607309}
   tileImage1: {fileID: 1954834365}
   tileImage2: {fileID: 104035394}
+  exitButton: {fileID: 1763618424}
   HelpUI: {fileID: 191733597}
 --- !u!1001 &2143355769
 PrefabInstance:
@@ -18406,10 +18479,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b8302954e1a3641b96f5821aac7ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  discardSound: {fileID: 0}
-  winSound: {fileID: 0}
-  shuffleSound: {fileID: 0}
-  diceSound: {fileID: 0}
+  shuffleSound: {fileID: 8300000, guid: 5d8051cbe70e8e24f871d6ca2919b132, type: 3}
+  discardSounds:
+  - {fileID: 8300000, guid: 808e37184644b8e4b96849644ea60595, type: 3}
+  - {fileID: 8300000, guid: 50ed55e0965e4f04584b951a0ab69a5d, type: 3}
+  - {fileID: 8300000, guid: 7023dcc4149dc7f44a6f187f4c177c28, type: 3}
+  diceSounds:
+  - {fileID: 8300000, guid: d0e42b06950d6cc448162f9a7b09b00e, type: 3}
+  - {fileID: 8300000, guid: 599a6c93366089c4183b42cc2906a2b0, type: 3}
+  - {fileID: 8300000, guid: 9504c1b05bf40cf418503bbd44a17ab0, type: 3}
+  - {fileID: 8300000, guid: 6d03cc77ac44d3045a718fb7c1ef20ac, type: 3}
   source: {fileID: 0}
 --- !u!23 &2276542448885420630
 MeshRenderer:
@@ -21028,8 +21107,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  MinDistance: 2
+  MaxDistance: 10
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
