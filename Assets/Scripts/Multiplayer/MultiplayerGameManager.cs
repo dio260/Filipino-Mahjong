@@ -221,7 +221,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     /// <param name="other">Other.</param>
     public override void OnPlayerLeftRoom(Player other)
     {
-        Debug.Log("OnPlayerLeftRoom() " + other.NickName); // seen when other disconnects
+        Debug.Log("OnPlayerLeftRoom() " + other.NickName + " Am I Master Client? " + PhotonNetwork.IsMasterClient); // seen when other disconnects
         
         for(int x = 0; x < MahjongManager.mahjongManager.players.Count; x++)
         {
