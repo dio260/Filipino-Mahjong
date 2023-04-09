@@ -299,7 +299,7 @@ public class MahjongPlayerBase : MonoBehaviour
         //check if theres more than one meld in the open hand
         if (openHand.Count > 4)
         {
-            Debug.Log("More than one meld in the open hand");
+            // Debug.Log("More than one meld in the open hand");
             if (currentState == PlayerState.deciding)
                 closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
 
@@ -322,7 +322,7 @@ public class MahjongPlayerBase : MonoBehaviour
                 }
 
             }
-            Debug.Log("One Meld Closed Hand Seven Pairs " + allPairs);
+            // Debug.Log("One Meld Closed Hand Seven Pairs " + allPairs);
 
             if (currentState == PlayerState.deciding)
                 closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
@@ -378,7 +378,7 @@ public class MahjongPlayerBase : MonoBehaviour
         //only one suit collection can have an odd number
         if (oddSuits > 1)
         {
-            Debug.Log("More than one collection of odd suits");
+            // Debug.Log("More than one collection of odd suits");
             if (currentState == PlayerState.deciding)
                 closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
             return false;
@@ -442,7 +442,7 @@ public class MahjongPlayerBase : MonoBehaviour
     public virtual bool CalculateNormalWin()
     {
         //calculate only using tiles from the closed hand, since only melds can exist in the closed hand
-        Debug.Log("Calculating Normal Win");
+        // Debug.Log("Calculating Normal Win");
         if (currentState == PlayerState.deciding)
             closedHand.Add(MahjongManager.mahjongManager.mostRecentDiscard);
 
@@ -485,7 +485,7 @@ public class MahjongPlayerBase : MonoBehaviour
         //only one suit collection can be not divisible by 3
         if (notDivisible > 1)
         {
-            Debug.Log("More than one collection divisible by 3");
+            // Debug.Log("More than one collection divisible by 3");
             if (currentState == PlayerState.deciding)
                 closedHand.RemoveAt(closedHand.IndexOf(MahjongManager.mahjongManager.mostRecentDiscard));
             return false;
@@ -520,7 +520,7 @@ public class MahjongPlayerBase : MonoBehaviour
                     //do the meld check with the other tiles
                     if (CheckForAllMelds(others))
                     {
-                        Debug.Log("All melds");
+                        // Debug.Log("All melds");
                         MeldsAndPair = true;
                         break;
                     }

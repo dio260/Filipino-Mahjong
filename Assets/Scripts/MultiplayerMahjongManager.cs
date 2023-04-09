@@ -44,31 +44,31 @@ public class MultiplayerMahjongManager : MonoBehaviourPunCallbacks
                 photonView.RPC("StartFirstTurn", RpcTarget.Others);
                 break;
             case "discardSound":
-                photonView.RPC("PlayAudio", RpcTarget.All, command);
+                photonView.RPC("PlayAudio", RpcTarget.Others, command);
                 break;
             case "shuffleSound":
-                photonView.RPC("PlayAudio", RpcTarget.All, command);
+                photonView.RPC("PlayAudio", RpcTarget.Others, command);
                 break;
             case "winSound":
-                photonView.RPC("PlayAudio", RpcTarget.All, command);
+                photonView.RPC("PlayAudio", RpcTarget.Others, command);
                 break;
             case "diceSound":
-                photonView.RPC("PlayAudio", RpcTarget.All, command);
+                photonView.RPC("PlayAudio", RpcTarget.Others, command);
                 break;
             case "discardAnim":
-                photonView.RPC("PlayAnimation", RpcTarget.All, command);
+                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
                 break;
             case "shuffleAnim":
-                photonView.RPC("PlayAnimation", RpcTarget.All, command);
+                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
                 break;
             case "winAnim":
-                photonView.RPC("PlayAnimation", RpcTarget.All, command);
+                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
                 break;
             case "stealAnim":
                 photonView.RPC("PlayAnimation", RpcTarget.Others, command);
                 break;
             case "drawAnim":
-                photonView.RPC("PlayAnimation", RpcTarget.All, command);
+                photonView.RPC("PlayAnimation", RpcTarget.Others, command);
                 break;
         }
     }
