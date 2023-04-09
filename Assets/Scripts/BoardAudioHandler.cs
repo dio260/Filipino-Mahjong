@@ -26,14 +26,14 @@ public class BoardAudioHandler : MonoBehaviour
 
     public void PlayDiscard()
     {
-        Debug.Log("Playing Discard");
+        // Debug.Log("Playing Discard");
 
         source.PlayOneShot(discardSounds[(int) Random.Range(0, discardSounds.Length)]);
     }
 
     public void PlayShuffle()
     {
-        Debug.Log("Playing Shuffle");
+        // Debug.Log("Playing Shuffle");
         source.PlayOneShot(shuffleSound);
 
 

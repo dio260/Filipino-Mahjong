@@ -366,7 +366,7 @@ public class MahjongManager : MonoBehaviour
             }
         }
 
-        // StartCoroutine(RollDice());
+        StartCoroutine(RollDice());
 
     }
 
@@ -404,22 +404,16 @@ public class MahjongManager : MonoBehaviour
             dieRoll += dice.rollResult;
         }
 
-        Debug.Log(dieMessage + "Total roll: " + dieRoll);
-        dieRollResult = (dieRoll - 1) % players.Count;
 
         yield return new WaitForSeconds(2);
 
-
-
-        if (network)
-            dealer = players[dieRollResult];
-        else
-            dealer = FindObjectOfType<HumanPlayer>();
-
+        // Debug.Log(dieMessage + "Total roll: " + dieRoll);
+        dieRollResult = (dieRoll - 1) % players.Count;
 
         //send the network message to inform everyone of dealer
         if (network)
         {
+            dealer = players[dieRollResult];
             MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall(
                 "message", "Dealer is " + dealer.name
             );
@@ -429,6 +423,8 @@ public class MahjongManager : MonoBehaviour
         }
         else
         {
+            dealer = FindObjectOfType<HumanPlayer>();
+
             SendPlayersMessage("Dealer is " + dealer.name);
             StartCoroutine(DistributeTiles());
         }
@@ -1038,9 +1034,10 @@ public class MahjongManager : MonoBehaviour
         this.board = board;
 
     }
-    public void SetDealer(int index)
+    public void SetDealer(int dieRoll)
     {
-        int dieRollResult = (index - 1) % players.Count;
+        Debug.Log("dieroll: " + dieRoll);
+        int dieRollResult = (dieRoll - 1) % players.Count;
         dealer = players[dieRollResult];
         StartCoroutine(DistributeTiles());
     }
