@@ -421,7 +421,7 @@ public class HumanPlayer : MahjongPlayerBase
         {
             foreach (Tile tile in selectedTiles)
             {
-                discardChoice.transform.position -= Vector3.up * 0.025f;
+                tile.transform.position -= Vector3.up * 0.025f;
             }
         }
 
