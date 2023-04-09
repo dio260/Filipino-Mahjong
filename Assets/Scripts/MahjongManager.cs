@@ -470,54 +470,62 @@ public class MahjongManager : MonoBehaviour
                 player.ArrangeTiles();
             }
 
-        // yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2);
 
-        // //replace drawn flower tiles
-        // if (network)
-        // {
-        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Replacing flowers");
-        //     MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawFlowersAnim");
+        StartCoroutine(ReplaceFlowers());
+    }
 
-        // }
-        // else
-        // {
-        //     SendPlayersMessage("Replacing flowers");
-        //     foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
-        //     {
-        //         player.currentAvatar.PlayDrawAnim();
-        //     }
-        // }
+    IEnumerator ReplaceFlowers()
+    {
+        //replace drawn flower tiles
+        if (network)
+        {
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("message", "Replacing flowers");
+            MultiplayerMahjongManager.multiMahjongManager.MasterRPCCall("drawFlowersAnim");
 
-        // int needFlowers = -1;
-        // while (needFlowers != 0)
-        // {
-        //     needFlowers = players.Count;
-        //     foreach (MahjongPlayerBase player in players)
-        //     {
-        //         int remainingFlowers = player.replaceInitialFlowerTiles();
-        //         if (remainingFlowers == 0)
-        //             needFlowers -= 1;
-        //     }
-        // }
+        }
+        else
+        {
+            SendPlayersMessage("Replacing flowers");
+            foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+            {
+                player.currentAvatar.PlayDrawAnim();
+            }
+        }
 
-        // yield return new WaitForSeconds(2);
+        int needFlowers = -1;
+        while (needFlowers != 0)
+        {
+            needFlowers = players.Count;
+            foreach (MahjongPlayerBase player in players)
+            {
+                int remainingFlowers = player.replaceInitialFlowerTiles();
+                Debug.Log(player.gameObject.name + " has " + remainingFlowers + " flowers");
 
-        // //arrange tiles again
-        // if (!network || (network && PhotonNetwork.IsMasterClient))
-        //     foreach (MahjongPlayerBase player in players)
-        //     {
-        //         player.ArrangeTiles();
-        //     }
+                if (remainingFlowers == 0)
+                    needFlowers -= 1;
+            }
+        }
 
-        // currentPlayer = dealer;
-        // nextPlayer = players[(dealerIndex + 1) % players.Count];
+        yield return new WaitForSeconds(2);
 
-        // yield return new WaitForSeconds(2);
+        //arrange tiles again
+        if (!network || (network && PhotonNetwork.IsMasterClient))
+            foreach (MahjongPlayerBase player in players)
+            {
+                player.ArrangeTiles();
+            }
 
-        // //now we may set the gamestate properly
-        // state = GameState.playing;
+        int dealerIndex = players.IndexOf(dealer);
+        currentPlayer = dealer;
+        nextPlayer = players[(dealerIndex + 1) % players.Count];
 
-        // StartCoroutine(TakeTurn(dealer));
+        yield return new WaitForSeconds(2);
+
+        //now we may set the gamestate properly
+        state = GameState.playing;
+
+        StartCoroutine(TakeTurn(dealer));
     }
 
     //a coroutine differentiating the first turn of every game
@@ -1027,7 +1035,7 @@ public class MahjongManager : MonoBehaviour
     }
     public void SetDealer(int dieRoll)
     {
-        Debug.Log("dieroll: " + dieRoll);
+        // Debug.Log("dieroll: " + dieRoll);
         dieRollResult = (dieRoll - 1) % players.Count;
         dealer = players[dieRollResult];
         StartCoroutine(DistributeTiles());

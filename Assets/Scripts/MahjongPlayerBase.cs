@@ -764,9 +764,6 @@ public class MahjongPlayerBase : MonoBehaviour
             }
         }
 
-        // Debug.Log(flowersInHand.Count);
-
-
         int newFlowerCount = 0;
         for (int x = 0; x < flowersInHand.Count; x++)
         {
