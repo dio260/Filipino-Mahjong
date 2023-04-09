@@ -605,6 +605,44 @@ public class TutorialPlayer : HumanPlayer
         ArrangeTiles();
     }
 
+    public override void ArrangeTiles()
+    {
+        // Debug.Log("Calling Tile Arrange");
+
+        float tileSideOffset = 0.06f;
+
+        Vector3 localLeft = 1 * Vector3.Cross(closedHandParent.forward.normalized, closedHandParent.up.normalized);
+        float handSize = tileSideOffset * (float)closedHand.Count;
+        float placementReference = handSize / 2.0f;
+        Debug.Log(gameObject.name + " has " + closedHandParent.GetComponentsInChildren<Tile>().ToList<Tile>().Count() + " tiles in their closed hand");
+        foreach (Tile tile in closedHandParent.GetComponentsInChildren<Tile>().ToList<Tile>())
+        {
+            tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
+            tile.transform.localEulerAngles = closedHandParent.up * 90;
+            placementReference -= tileSideOffset;
+        }
+
+        localLeft = 1 * Vector3.Cross(flowersParent.forward.normalized, flowersParent.up.normalized);
+        handSize = tileSideOffset * (float)flowers.Count;
+        placementReference = handSize / 2.0f;
+        foreach (Tile tile in flowers)
+        {
+            tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
+            tile.transform.localEulerAngles = flowersParent.up * 90 + Vector3.forward * 90;// + tile.transform.forward * -90;
+            placementReference -= tileSideOffset;
+        }
+
+        localLeft = 1 * Vector3.Cross(openHandParent.forward.normalized, openHandParent.up.normalized);
+        handSize = tileSideOffset * (float)openHand.Count;
+        placementReference = handSize / 2.0f;
+        foreach (Tile tile in openHandParent.GetComponentsInChildren<Tile>().ToList<Tile>())
+        {
+            tile.transform.localPosition = new Vector3(-1, 0, 0) * (placementReference);
+            tile.transform.localEulerAngles = openHandParent.up * 90 + Vector3.forward * 90;
+            placementReference -= tileSideOffset;
+        }
+    }
+
     public override void DrawFlowerTile()
     {
         flowers.Add(drawnTile);
