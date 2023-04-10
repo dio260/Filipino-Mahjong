@@ -831,6 +831,19 @@ public class MahjongPlayerBase : MonoBehaviour
         canChow = false;
         canKang = false;
         canPong = false;
+
+        foreach(Transform tile in closedHandParent.transform)
+        {
+            if(tile.localPosition.y > 0)
+            {
+                tile.localPosition -= Vector3.up * 0.025f;
+            }
+        }
+    }
+
+    public void ResetTileVisuals()
+    {
+
     }
 
     public virtual void StealTile()

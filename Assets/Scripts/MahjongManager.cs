@@ -791,10 +791,14 @@ public class MahjongManager : MonoBehaviour
 
         foreach (MahjongPlayerBase player in players)
         {
-            if (player != currentPlayer)
+            // if (player != currentPlayer)
+            // {
+            //     //this is causing a tile to be added to the open hand for some reason
+            //     //separating its execution order to see what happens
+            //     player.CalculateHandOptions();
+            // }
+            if (network && player.GetComponent<PhotonView>().IsMine)
             {
-                //this is causing a tile to be added to the open hand for some reason
-                //separating its execution order to see what happens
                 player.CalculateHandOptions();
             }
         }
@@ -822,6 +826,10 @@ public class MahjongManager : MonoBehaviour
                 {
                     allDone = false;
                     break;
+                }
+                else
+                {
+                    player.SetPlayerState(PlayerState.waiting);
                 }
             }
             if (allDone)
@@ -902,6 +910,7 @@ public class MahjongManager : MonoBehaviour
             if (player != currentPlayer)
             {
                 player.currentDecision = decision.none;
+                player.ResetMelds();
                 if (player.GetComponent<HumanPlayer>() != null)
                     player.GetComponent<HumanPlayer>().FlipUI();
             }
@@ -973,7 +982,7 @@ public class MahjongManager : MonoBehaviour
 
             if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
             {
-                human.debugText.text = message;
+                human.gameInfoText.text = message;
             }
         }
     }

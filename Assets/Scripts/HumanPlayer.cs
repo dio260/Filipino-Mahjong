@@ -11,7 +11,7 @@ public class HumanPlayer : MahjongPlayerBase
     public Camera playerCam;
     public GameObject playerCanvas;
     protected Button sortButton, passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
-    public TMP_Text debugText, tileText, helpUIText;
+    public TMP_Text gameInfoText, tileText, helpUIText, turnOrderText, nameText;
     public Image tileImage1, tileImage2, discardTileImage;
     public Button exitButton;
     // public RectTransform HelpUI;
@@ -28,7 +28,7 @@ public class HumanPlayer : MahjongPlayerBase
         camRotation = playerCam.transform.eulerAngles;
         camPosition = playerCam.transform.localPosition;
 
-        playerCanvas = GetComponentInChildren<Canvas>().gameObject;
+        // playerCanvas = GetComponentInChildren<Canvas>().gameObject;
         sortButton = playerCanvas.transform.Find("Sort Tiles").GetComponent<Button>();
         passButton = playerCanvas.transform.Find("Pass").GetComponent<Button>();
         discardButton = playerCanvas.transform.Find("Discard Button").GetComponent<Button>();
@@ -46,18 +46,9 @@ public class HumanPlayer : MahjongPlayerBase
         passButton.onClick.AddListener(() => MakeDecision(decision.pass));
         discardButton.onClick.AddListener(() => DeclareDiscard());
 
-
-        // //button debugs
-        // sortButton.onClick.AddListener(() => DebugButtonClick(sortButton.gameObject.name));
-        // todasButton.onClick.AddListener(() => DebugButtonClick(todasButton.gameObject.name));
-        // pongButton.onClick.AddListener(() => DebugButtonClick(pongButton.gameObject.name));
-        // kangButton.onClick.AddListener(() => DebugButtonClick(kangButton.gameObject.name));
-        // chowButton.onClick.AddListener(() => DebugButtonClick(chowButton.gameObject.name));
-        // passButton.onClick.AddListener(() => DebugButtonClick(passButton.gameObject.name));
-        // discardButton.onClick.AddListener(() => DebugButtonClick(discardButton.gameObject.name));
-
         FlipUI();
         discardButton.gameObject.SetActive(false);
+        passButton.gameObject.SetActive(false);
         // tileImage1.enabled = false;
         // tileImage2.enabled = false;
         HelpUI.SetActive(true);
@@ -75,24 +66,27 @@ public class HumanPlayer : MahjongPlayerBase
     // Update is called once per frame
     public virtual void Update()
     {
+
+        nameText.text = gameObject.name;
+
         if (MahjongManager.mahjongManager.GetGameState() == GameState.playing && (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine)))
         {
 
             //bird's eye board view;
             if (Input.GetKey(KeyCode.Space))
             {
-                playerCam.transform.rotation = Quaternion.Euler(Vector3.left * -90);
-                playerCam.transform.position = new Vector3(0, 1.5f, 0);
+                // playerCam.transform.Rotate(Vector3.left * -90);
+                playerCam.transform.rotation = Quaternion.Euler((Vector3.left * -90) + camRotation);
+                playerCam.transform.position = new Vector3(0, 1.75f, 0);
                 playerCanvas.SetActive(false);
             }
             else
             {
+                // playerCam.transform.Rotate(Vector3.left * 90);
                 playerCam.transform.rotation = Quaternion.Euler(camRotation);
                 playerCam.transform.localPosition = camPosition;
                 playerCanvas.SetActive(true);
             }
-
-            //UI being set active
 
             //setting buttons active when conditions are fulfilled
             if (discardChoice != null)
@@ -113,6 +107,8 @@ public class HumanPlayer : MahjongPlayerBase
                 passButton.gameObject.SetActive(false);
             }
 
+
+            //game info
             if(MahjongManager.mahjongManager.mostRecentDiscard != null)
             {
                 discardTileImage.gameObject.SetActive(true);
@@ -123,16 +119,28 @@ public class HumanPlayer : MahjongPlayerBase
                 discardTileImage.sprite = null;
                 discardTileImage.gameObject.SetActive(false);
             }
+            turnOrderText.text = "Turn Order:";
+            foreach(MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+            {
+                turnOrderText.text += "\n" + player.gameObject.name;
+            }
+
+                                
 
             switch (currentState)
             {
                 case PlayerState.discarding:
                     if (drawnTile != null)
                     {
+                        tileImage1.enabled = true;
+                        tileImage1.rectTransform.localPosition = new Vector3(-75, -20, 0);
+                        tileImage2.rectTransform.localPosition = new Vector3(75, -20, 0);
                         tileText.text = "Drawn:    Discard:";
                     }
                     else
                     {
+                        tileImage1.enabled = false;
+                        tileImage2.rectTransform.localPosition = new Vector3(0, -20, 0);
                         tileText.text = "Selected Discard:";
                     }
                     break;
@@ -229,12 +237,19 @@ public class HumanPlayer : MahjongPlayerBase
         }
         else if (MahjongManager.mahjongManager.GetGameState() == GameState.finished)
         {
-            if (HelpOpen)
-            {
-                // StartCoroutine(CloseHelp());
-            }
-            helpUIText.text = "Exit Game ->";
-            exitButton.gameObject.SetActive(true);
+            HelpUI.SetActive(true);
+            ExpandedHelpUI.SetActive(false);
+            // if (ExpandedHelpUI.activeSelf == true)
+            // {
+            //     ExpandedHelpUI.SetActive(false);
+            //     HelpUI.SetActive(true);
+            // }
+            // helpUIText.text = "Exit Game ->";
+            // exitButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            
         }
 
 
@@ -268,7 +283,6 @@ public class HumanPlayer : MahjongPlayerBase
 
     public override void CalculateHandOptions()
     {
-        // base.CalculateHandOptions();
         Debug.Log("Calculating Hand Options");
 
         canPong = false;
@@ -509,7 +523,7 @@ public class HumanPlayer : MahjongPlayerBase
                 Debug.Log("Deselected " + clicked.ToString() + " as discard");
                 discardChoice = null;
                 tileImage2.sprite = null;
-                tileImage2.enabled = false;
+                // tileImage2.enabled = false;
                 return;
             }
         }
@@ -520,7 +534,7 @@ public class HumanPlayer : MahjongPlayerBase
         discardChoice = clicked;
         clicked.transform.position += Vector3.up * 0.025f;
 
-        tileImage2.enabled = true;
+        // tileImage2.enabled = true;
         tileImage2.sprite = discardChoice.tileImage.sprite;
     }
 
@@ -544,21 +558,25 @@ public class HumanPlayer : MahjongPlayerBase
 
         if (selectedTiles.Count > 0)
         {
-            tileImage1.enabled = true;
+            // tileImage1.enabled = true;
             tileImage1.sprite = null;
             tileImage2.sprite = null;
             if (selectedTiles.Count == 1)
             {
-                tileImage2.enabled = false;
+                // tileImage2.enabled = false;
                 tileImage1.sprite = selectedTiles[0].tileImage.sprite;
             }
             else
             {
-                tileImage2.enabled = true;
+                // tileImage2.enabled = true;
                 tileImage1.sprite = selectedTiles[0].tileImage.sprite;
                 tileImage2.sprite = selectedTiles[1].tileImage.sprite;
             }
 
+            // if(!networked || (networked && GetComponent<PhotonView>().IsMine))
+            // {
+                
+            // }
             CalculateHandOptions();
         }
     }
@@ -566,7 +584,7 @@ public class HumanPlayer : MahjongPlayerBase
     public override void AddDrawnTileToClosedHand()
     {
         // tileText.text = "Drawn:    Discard:";
-        tileImage1.enabled = true;
+        // tileImage1.enabled = true;
         tileImage1.sprite = drawnTile.tileImage.sprite;
         base.AddDrawnTileToClosedHand();
     }
@@ -575,8 +593,8 @@ public class HumanPlayer : MahjongPlayerBase
     {
         base.StealTile();
         // tileText.text = "Selected Discard:";
-        tileImage2.enabled = true;
-        tileImage1.enabled = false;
+        // tileImage2.enabled = true;
+        // tileImage1.enabled = false;
         // tileImage2.sprite = drawnTile.tileImage.sprite;
     }
 
@@ -606,71 +624,4 @@ public class HumanPlayer : MahjongPlayerBase
         closedHand = new List<Tile>();
     }
 
-    // public IEnumerator OpenHelp()
-    // {
-    //     while (HelpUI.rect.height < 500)
-    //     {
-    //         HelpUI.sizeDelta += Vector2.up;
-
-    //         if (HelpUI.sizeDelta.y > 69)
-    //         {
-    //             if (HelpUI.GetChild(1).localScale.y < 1)
-    //             {
-    //                 HelpUI.GetChild(1).localScale += Vector3.up * 0.01f;
-    //                 if (HelpUI.GetChild(1).localScale.y > 1)
-    //                 {
-    //                     HelpUI.GetChild(1).localScale = Vector3.one;
-    //                 }
-    //             }
-    //         }
-    //         if (HelpUI.sizeDelta.y > 160)
-    //         {
-    //             if (HelpUI.GetChild(2).localScale.y < 1)
-    //             {
-    //                 HelpUI.GetChild(2).localScale += Vector3.up * 0.0028f;
-    //                 if (HelpUI.GetChild(2).localScale.y > 1)
-    //                 {
-    //                     HelpUI.GetChild(2).localScale = Vector3.one;
-    //                 }
-    //             }
-    //         }
-    //         yield return new WaitForSeconds(0.00001f);
-    //     }
-    //     HelpOpen = true;
-    //     // Debug.Log(HelpUI.rect.height);
-    // }
-    // public IEnumerator CloseHelp()
-    // {
-    //     while (HelpUI.rect.height > 60)
-    //     {
-    //         HelpUI.sizeDelta -= Vector2.up;
-
-    //         if (HelpUI.sizeDelta.y < 155)
-    //         {
-    //             if (HelpUI.GetChild(1).localScale.y > 0)
-    //             {
-    //                 HelpUI.GetChild(1).localScale -= Vector3.up * 0.012f;
-    //                 if (HelpUI.GetChild(1).localScale.y < 0)
-    //                 {
-    //                     HelpUI.GetChild(1).localScale = Vector3.one + Vector3.down;
-    //                 }
-    //             }
-    //         }
-    //         if (HelpUI.sizeDelta.y < 485)
-    //         {
-    //             if (HelpUI.GetChild(2).localScale.y > 0)
-    //             {
-    //                 HelpUI.GetChild(2).localScale -= Vector3.up * 0.0028f;
-    //                 if (HelpUI.GetChild(2).localScale.y < 0)
-    //                 {
-    //                     HelpUI.GetChild(2).localScale = Vector3.one + Vector3.down;
-    //                 }
-    //             }
-    //         }
-    //         yield return new WaitForSeconds(0.00001f);
-    //     }
-    //     HelpOpen = false;
-    //     // Debug.Log(HelpUI.rect.height);
-
-    // }
 }

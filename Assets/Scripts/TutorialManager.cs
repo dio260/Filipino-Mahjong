@@ -676,7 +676,7 @@ public class TutorialManager : MahjongManager
         {
             if (player.TryGetComponent<TutorialPlayer>(out TutorialPlayer tutorial))
             {
-                tutorial.debugText.text = message;
+                tutorial.gameInfoText.text = message;
             }
         }
     }

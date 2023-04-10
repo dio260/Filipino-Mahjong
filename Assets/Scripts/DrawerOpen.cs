@@ -21,7 +21,7 @@ public class DrawerOpen : MonoBehaviour
     {
         if (roomInput.text.Length > 0 && nameInput.text.Length > 0 && !open)
         {
-            Debug.Log("roomname and player name exists");
+            // Debug.Log("roomname and player name exists");
             anim.SetTrigger("OpenTrigger");
             open = true;
             joinButton.gameObject.SetActive(true);
@@ -29,7 +29,7 @@ public class DrawerOpen : MonoBehaviour
         }
         else if ((roomInput.text.Length == 0 || nameInput.text.Length == 0) && open)
         {
-            Debug.Log("no room name or player name");
+            // Debug.Log("no room name or player name");
             anim.SetTrigger("OpenTrigger");
             open = false;
             joinButton.gameObject.SetActive(false);

@@ -30,8 +30,8 @@ public class NetworkedPlayer : MonoBehaviourPunCallbacks
             // GetComponent<Camera>().enabled = false;
             // GetComponent<AudioListener>().enabled = false;
 
-            playerCanvas = GetComponentInChildren<Canvas>();
-            playerCanvas.gameObject.SetActive(false);
+            // playerCanvas = GetComponentInChildren<Canvas>();
+            // playerCanvas.gameObject.SetActive(false);
             // Destroy(this);
         }
     }

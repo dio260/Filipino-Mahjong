@@ -18,21 +18,21 @@ public class PlayerAnimations : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (debug)
-        {
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                PlayDiscardAnim();
-            }
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                PlayStealAnim();
-            }
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                PlayWinAnim();
-            }
-        }
+        // if (debug)
+        // {
+        //     if (Input.GetKeyDown(KeyCode.I))
+        //     {
+        //         PlayDiscardAnim();
+        //     }
+        //     if (Input.GetKeyDown(KeyCode.O))
+        //     {
+        //         PlayStealAnim();
+        //     }
+        //     if (Input.GetKeyDown(KeyCode.P))
+        //     {
+        //         PlayWinAnim();
+        //     }
+        // }
 
     }
 
