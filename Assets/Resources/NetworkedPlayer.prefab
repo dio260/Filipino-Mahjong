@@ -547,7 +547,7 @@ MonoBehaviour:
   helpUIText: {fileID: 9038576701324291344}
   tileImage1: {fileID: 4821225523110051437}
   tileImage2: {fileID: 3624660964844015204}
-  discardTileImage: {fileID: 0}
+  discardTileImage: {fileID: 4443454468763239073}
   exitButton: {fileID: 6416751122971263674}
   HelpUI: {fileID: 2816333313544462352}
   ExpandedHelpUI: {fileID: 6318859513357795420}
