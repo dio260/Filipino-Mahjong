@@ -109,7 +109,7 @@ public class HumanPlayer : MahjongPlayerBase
 
 
             //game info
-            if(MahjongManager.mahjongManager.mostRecentDiscard != null)
+            if (MahjongManager.mahjongManager.mostRecentDiscard != null)
             {
                 discardTileImage.gameObject.SetActive(true);
                 discardTileImage.sprite = MahjongManager.mahjongManager.mostRecentDiscard.tileImage.sprite;
@@ -120,12 +120,12 @@ public class HumanPlayer : MahjongPlayerBase
                 discardTileImage.gameObject.SetActive(false);
             }
             turnOrderText.text = "Turn Order:";
-            foreach(MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
+            foreach (MahjongPlayerBase player in MahjongManager.mahjongManager.GetPlayers())
             {
                 turnOrderText.text += "\n" + player.gameObject.name;
             }
 
-                                
+
 
             switch (currentState)
             {
@@ -133,6 +133,7 @@ public class HumanPlayer : MahjongPlayerBase
                     if (drawnTile != null)
                     {
                         tileImage1.enabled = true;
+                        tileImage1.sprite = drawnTile.tileImage.sprite;
                         tileImage1.rectTransform.localPosition = new Vector3(-75, -20, 0);
                         tileImage2.rectTransform.localPosition = new Vector3(75, -20, 0);
                         tileText.text = "Drawn:    Discard:";
@@ -146,11 +147,23 @@ public class HumanPlayer : MahjongPlayerBase
                     break;
                 case PlayerState.waiting:
                     tileText.text = "";
+                    tileImage2.enabled = true;
+                    tileImage1.enabled = true;
+                    tileImage1.sprite = null;
+                    tileImage2.sprite = null;
+                    tileImage1.rectTransform.localPosition = new Vector3(-75, -20, 0);
+                    tileImage2.rectTransform.localPosition = new Vector3(75, -20, 0);
                     break;
                 case PlayerState.deciding:
                     tileText.text = "Selected Meld Tiles:";
+                    tileImage2.enabled = true;
+                    tileImage1.enabled = true;
+                    tileImage1.rectTransform.localPosition = new Vector3(-75, -20, 0);
+                    tileImage2.rectTransform.localPosition = new Vector3(75, -20, 0);
                     break;
                 default:
+                    tileImage2.enabled = true;
+                    tileImage1.enabled = true;
                     tileText.text = "";
                     break;
 
@@ -249,7 +262,7 @@ public class HumanPlayer : MahjongPlayerBase
         }
         else
         {
-            
+
         }
 
 
@@ -575,7 +588,7 @@ public class HumanPlayer : MahjongPlayerBase
 
             // if(!networked || (networked && GetComponent<PhotonView>().IsMine))
             // {
-                
+
             // }
             CalculateHandOptions();
         }

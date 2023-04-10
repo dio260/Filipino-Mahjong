@@ -97,5 +97,10 @@ public class PlayerAnimations : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         tileset.PlayOneShot(tileThud);
+        foreach (Transform tile in GetComponent<MahjongPlayerBase>().closedHandParent)
+        {
+            tile.Rotate(Vector3.forward * 90);// + tile.transform.forward * -90;
+
+        }
     }
 }

@@ -822,6 +822,12 @@ public class MahjongManager : MonoBehaviour
 
             foreach (MahjongPlayerBase player in players)
             {
+                if (player.win)
+                {
+                    currentPlayer = player;
+                    StartCoroutine(GameWin());
+                }
+
                 if (player.currentDecision == decision.none)
                 {
                     allDone = false;

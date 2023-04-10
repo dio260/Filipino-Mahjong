@@ -620,7 +620,7 @@ MonoBehaviour:
   flowersParent: {fileID: 8814427028177514817}
   playerCam: {fileID: 7374669743108041347}
   playerCanvas: {fileID: 907889861960544068}
-  debugText: {fileID: 1561659117543989558}
+  gameInfoText: {fileID: 1561659117543989558}
   tileText: {fileID: 8055721298154294493}
   helpUIText: {fileID: 9038576701324291344}
   turnOrderText: {fileID: 6949701097455969950}
