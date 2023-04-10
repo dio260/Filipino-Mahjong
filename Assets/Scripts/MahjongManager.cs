@@ -614,6 +614,7 @@ public class MahjongManager : MonoBehaviour
                     }
 
                     player.AddDrawnTileToClosedHand();
+                    // player.CalculateHandOptions();
                 }
             }
             else
@@ -680,8 +681,9 @@ public class MahjongManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1);
+        // player.CalculateHandOptions();
 
-        if (player.CalculateNormalWin() && player.CalculateSevenPairs())
+        if (player.CalculateNormalWin() || player.CalculateSevenPairs())
         {
             if (player.TryGetComponent<HumanPlayer>(out HumanPlayer human))
             {
@@ -715,6 +717,7 @@ public class MahjongManager : MonoBehaviour
             if (player.win)
             {
                 StartCoroutine(GameWin());
+                yield break;
             }
 
             if (mostRecentDiscard != null)
@@ -764,8 +767,8 @@ public class MahjongManager : MonoBehaviour
         mostRecentDiscard.transform.rotation = Quaternion.Euler(0, 90, 90);
         //place the discard in the middle of the table
         mostRecentDiscard.transform.position =
-                new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 0.35f, TileBoundaries.bounds.max.x - 0.35f),
-                0.065f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 0.35f, TileBoundaries.bounds.max.z - 0.35f));
+                new Vector3(UnityEngine.Random.Range(TileBoundaries.bounds.min.x + 0.2f, TileBoundaries.bounds.max.x - 0.2f),
+                0.065f, UnityEngine.Random.Range(TileBoundaries.bounds.min.z + 0.2f, TileBoundaries.bounds.max.z - 0.2f));
 
         StartCoroutine(BetweenTurn());
     }
@@ -826,6 +829,7 @@ public class MahjongManager : MonoBehaviour
                 {
                     currentPlayer = player;
                     StartCoroutine(GameWin());
+                    yield break;
                 }
 
                 if (player.currentDecision == decision.none)
@@ -929,6 +933,7 @@ public class MahjongManager : MonoBehaviour
 
     public IEnumerator GameWin()
     {
+        Debug.Log("game finished");
         state = GameState.finished;
         if (network)
         {
@@ -950,7 +955,7 @@ public class MahjongManager : MonoBehaviour
         }
 
         MultiplayerGameManager.Instance.EnableCanvas();
-        StopAllCoroutines();
+        // StopAllCoroutines();
     }
 
     public GameState GetGameState()

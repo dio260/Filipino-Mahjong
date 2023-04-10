@@ -276,7 +276,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     {
         multiplayerCanvas.SetActive(true);
         multiplayerCanvas.transform.Find("Room Title").gameObject.SetActive(false);
-        multiplayerCanvas.transform.Find("Game Start Button").gameObject.SetActive(false);
+        multiplayerCanvas.transform.Find("GameStartButton").gameObject.SetActive(false);
         multiplayerCanvas.transform.Find("RestartButton").gameObject.SetActive(true);
         multiplayerCanvas.transform.Find("QuitLobbyButton").gameObject.SetActive(true);
     }
@@ -284,7 +284,7 @@ public class MultiplayerGameManager : MonoBehaviourPunCallbacks
     {
         multiplayerCanvas.SetActive(true);
         multiplayerCanvas.transform.Find("Room Title").gameObject.SetActive(false);
-        multiplayerCanvas.transform.Find("Game Start Button").gameObject.SetActive(false);
+        multiplayerCanvas.transform.Find("GameStartButton").gameObject.SetActive(false);
         multiplayerCanvas.transform.Find("RestartButton").gameObject.SetActive(true);
         multiplayerCanvas.transform.Find("QuitLobbyButton").gameObject.SetActive(true);
     }

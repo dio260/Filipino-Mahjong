@@ -822,6 +822,7 @@ public class MahjongPlayerBase : MonoBehaviour
 
     public void ResetMelds()
     {
+        Debug.Log("Reset Melds called for " + gameObject.name);
         pongMeld = new List<Tile>();
         chowMeldLeft = new List<Tile>();
         chowMeldMiddle = new List<Tile>();

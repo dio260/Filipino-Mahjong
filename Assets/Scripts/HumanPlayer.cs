@@ -49,6 +49,7 @@ public class HumanPlayer : MahjongPlayerBase
         FlipUI();
         discardButton.gameObject.SetActive(false);
         passButton.gameObject.SetActive(false);
+        sortButton.gameObject.SetActive(false);
         // tileImage1.enabled = false;
         // tileImage2.enabled = false;
         HelpUI.SetActive(true);
@@ -71,6 +72,11 @@ public class HumanPlayer : MahjongPlayerBase
 
         if (MahjongManager.mahjongManager.GetGameState() == GameState.playing && (!networked || (networked && GetComponent<NetworkedPlayer>().photonView.IsMine)))
         {
+
+            if(!sortButton.gameObject.activeSelf)
+            {
+                sortButton.gameObject.SetActive(true);
+            }
 
             //bird's eye board view;
             if (Input.GetKey(KeyCode.Space))
@@ -457,12 +463,12 @@ public class HumanPlayer : MahjongPlayerBase
     {
         // Debug.Log("Calling Human Override arrange");
 
-        if (discardChoice != null)
+        if (discardChoice != null && currentState == PlayerState.discarding)
         {
             discardChoice.transform.position -= Vector3.up * 0.025f;
         }
 
-        if (selectedTiles.Count != 0)
+        if (selectedTiles.Count != 0 && currentState == PlayerState.deciding)
         {
             foreach (Tile tile in selectedTiles)
             {
@@ -472,16 +478,16 @@ public class HumanPlayer : MahjongPlayerBase
 
         base.ArrangeTiles();
 
-        if (discardChoice != null)
+        if (discardChoice != null && currentState == PlayerState.discarding)
         {
             discardChoice.transform.position += Vector3.up * 0.025f;
         }
 
-        if (selectedTiles.Count != 0)
+        if (selectedTiles.Count != 0 && currentState == PlayerState.deciding)
         {
             foreach (Tile tile in selectedTiles)
             {
-                discardChoice.transform.position += Vector3.up * 0.025f;
+                tile.transform.position += Vector3.up * 0.025f;
             }
         }
     }
