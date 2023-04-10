@@ -38,7 +38,7 @@ public class PlayerAnimations : MonoBehaviour
 
     public void PlayDrawAnim()
     {
-        Debug.Log("playing draw anim and voice");
+        Debug.Log("playing draw anim");
 
         anim[discard.name].normalizedTime = 1;
         anim[discard.name].speed = -1.25f;
