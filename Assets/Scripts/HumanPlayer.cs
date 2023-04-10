@@ -12,7 +12,7 @@ public class HumanPlayer : MahjongPlayerBase
     public GameObject playerCanvas;
     protected Button sortButton, passButton, chowButton, pongButton, kangButton, todasButton, discardButton;
     public TMP_Text debugText, tileText, helpUIText;
-    public Image tileImage1, tileImage2;
+    public Image tileImage1, tileImage2, discardTileImage;
     public Button exitButton;
     // public RectTransform HelpUI;
     public GameObject HelpUI, ExpandedHelpUI;
@@ -111,6 +111,17 @@ public class HumanPlayer : MahjongPlayerBase
             else
             {
                 passButton.gameObject.SetActive(false);
+            }
+
+            if(MahjongManager.mahjongManager.mostRecentDiscard != null)
+            {
+                discardTileImage.gameObject.SetActive(true);
+                discardTileImage.sprite = MahjongManager.mahjongManager.mostRecentDiscard.tileImage.sprite;
+            }
+            else
+            {
+                discardTileImage.sprite = null;
+                discardTileImage.gameObject.SetActive(false);
             }
 
             switch (currentState)
