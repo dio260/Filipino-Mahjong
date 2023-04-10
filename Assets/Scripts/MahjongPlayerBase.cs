@@ -248,11 +248,13 @@ public class MahjongPlayerBase : MonoBehaviour
             win = true;
         }
     }
+
     [PunRPC]
-    void NetworkedWinDeclaration()
+    public void NetworkedWinDeclaration()
     {
         win = true;
     }
+    
     [PunRPC]
 
     protected virtual void DeclarePong()
