@@ -14,7 +14,8 @@ public class HumanPlayer : MahjongPlayerBase
     public TMP_Text debugText, tileText, helpUIText;
     public Image tileImage1, tileImage2;
     public Button exitButton;
-    public RectTransform HelpUI;
+    // public RectTransform HelpUI;
+    public GameObject HelpUI, ExpandedHelpUI;
     protected bool HelpOpen;
     protected Vector3 camRotation, camPosition;
     protected GameObject tileSwap;
@@ -57,10 +58,12 @@ public class HumanPlayer : MahjongPlayerBase
 
         FlipUI();
         discardButton.gameObject.SetActive(false);
-        tileImage1.enabled = false;
-        tileImage2.enabled = false;
+        // tileImage1.enabled = false;
+        // tileImage2.enabled = false;
+        HelpUI.SetActive(true);
+        ExpandedHelpUI.SetActive(false);
         exitButton.onClick.AddListener(LocalSceneLoader.sceneLoader.LoadMenu);
-        exitButton.gameObject.SetActive(false);
+        // exitButton.gameObject.SetActive(false);
         playerCanvas.SetActive(false);
     }
 
@@ -136,19 +139,23 @@ public class HumanPlayer : MahjongPlayerBase
 
 
             //opening the help UI
-            if (Input.GetKeyDown(KeyCode.Tab) && (HelpUI.sizeDelta.y == 60 || HelpUI.sizeDelta.y == 500))
+            if (Input.GetKeyDown(KeyCode.Tab))
             {
                 if (!HelpOpen)
                 {
-                    helpUIText.text = "Exit Game ->";
-                    exitButton.gameObject.SetActive(true);
-                    StartCoroutine(OpenHelp());
+                    HelpUI.SetActive(false);
+                    ExpandedHelpUI.SetActive(true);
+                    HelpOpen = true;
+                    // helpUIText.text = "Exit Game ->";
+                    // exitButton.gameObject.SetActive(true);
+                    // StartCoroutine(OpenHelp());
                 }
                 else
                 {
-                    helpUIText.text = "Press Tab to open help";
-                    exitButton.gameObject.SetActive(false);
-                    StartCoroutine(CloseHelp());
+                    HelpUI.SetActive(true);
+                    ExpandedHelpUI.SetActive(false);
+                    HelpOpen = false;
+                    // StartCoroutine(CloseHelp());
                 }
             }
 
@@ -213,7 +220,7 @@ public class HumanPlayer : MahjongPlayerBase
         {
             if (HelpOpen)
             {
-                StartCoroutine(CloseHelp());
+                // StartCoroutine(CloseHelp());
             }
             helpUIText.text = "Exit Game ->";
             exitButton.gameObject.SetActive(true);
@@ -588,71 +595,71 @@ public class HumanPlayer : MahjongPlayerBase
         closedHand = new List<Tile>();
     }
 
-    public IEnumerator OpenHelp()
-    {
-        while (HelpUI.rect.height < 500)
-        {
-            HelpUI.sizeDelta += Vector2.up;
+    // public IEnumerator OpenHelp()
+    // {
+    //     while (HelpUI.rect.height < 500)
+    //     {
+    //         HelpUI.sizeDelta += Vector2.up;
 
-            if (HelpUI.sizeDelta.y > 69)
-            {
-                if (HelpUI.GetChild(1).localScale.y < 1)
-                {
-                    HelpUI.GetChild(1).localScale += Vector3.up * 0.01f;
-                    if (HelpUI.GetChild(1).localScale.y > 1)
-                    {
-                        HelpUI.GetChild(1).localScale = Vector3.one;
-                    }
-                }
-            }
-            if (HelpUI.sizeDelta.y > 160)
-            {
-                if (HelpUI.GetChild(2).localScale.y < 1)
-                {
-                    HelpUI.GetChild(2).localScale += Vector3.up * 0.0028f;
-                    if (HelpUI.GetChild(2).localScale.y > 1)
-                    {
-                        HelpUI.GetChild(2).localScale = Vector3.one;
-                    }
-                }
-            }
-            yield return new WaitForSeconds(0.00001f);
-        }
-        HelpOpen = true;
-        // Debug.Log(HelpUI.rect.height);
-    }
-    public IEnumerator CloseHelp()
-    {
-        while (HelpUI.rect.height > 60)
-        {
-            HelpUI.sizeDelta -= Vector2.up;
+    //         if (HelpUI.sizeDelta.y > 69)
+    //         {
+    //             if (HelpUI.GetChild(1).localScale.y < 1)
+    //             {
+    //                 HelpUI.GetChild(1).localScale += Vector3.up * 0.01f;
+    //                 if (HelpUI.GetChild(1).localScale.y > 1)
+    //                 {
+    //                     HelpUI.GetChild(1).localScale = Vector3.one;
+    //                 }
+    //             }
+    //         }
+    //         if (HelpUI.sizeDelta.y > 160)
+    //         {
+    //             if (HelpUI.GetChild(2).localScale.y < 1)
+    //             {
+    //                 HelpUI.GetChild(2).localScale += Vector3.up * 0.0028f;
+    //                 if (HelpUI.GetChild(2).localScale.y > 1)
+    //                 {
+    //                     HelpUI.GetChild(2).localScale = Vector3.one;
+    //                 }
+    //             }
+    //         }
+    //         yield return new WaitForSeconds(0.00001f);
+    //     }
+    //     HelpOpen = true;
+    //     // Debug.Log(HelpUI.rect.height);
+    // }
+    // public IEnumerator CloseHelp()
+    // {
+    //     while (HelpUI.rect.height > 60)
+    //     {
+    //         HelpUI.sizeDelta -= Vector2.up;
 
-            if (HelpUI.sizeDelta.y < 155)
-            {
-                if (HelpUI.GetChild(1).localScale.y > 0)
-                {
-                    HelpUI.GetChild(1).localScale -= Vector3.up * 0.012f;
-                    if (HelpUI.GetChild(1).localScale.y < 0)
-                    {
-                        HelpUI.GetChild(1).localScale = Vector3.one + Vector3.down;
-                    }
-                }
-            }
-            if (HelpUI.sizeDelta.y < 485)
-            {
-                if (HelpUI.GetChild(2).localScale.y > 0)
-                {
-                    HelpUI.GetChild(2).localScale -= Vector3.up * 0.0028f;
-                    if (HelpUI.GetChild(2).localScale.y < 0)
-                    {
-                        HelpUI.GetChild(2).localScale = Vector3.one + Vector3.down;
-                    }
-                }
-            }
-            yield return new WaitForSeconds(0.00001f);
-        }
-        HelpOpen = false;
-        // Debug.Log(HelpUI.rect.height);
+    //         if (HelpUI.sizeDelta.y < 155)
+    //         {
+    //             if (HelpUI.GetChild(1).localScale.y > 0)
+    //             {
+    //                 HelpUI.GetChild(1).localScale -= Vector3.up * 0.012f;
+    //                 if (HelpUI.GetChild(1).localScale.y < 0)
+    //                 {
+    //                     HelpUI.GetChild(1).localScale = Vector3.one + Vector3.down;
+    //                 }
+    //             }
+    //         }
+    //         if (HelpUI.sizeDelta.y < 485)
+    //         {
+    //             if (HelpUI.GetChild(2).localScale.y > 0)
+    //             {
+    //                 HelpUI.GetChild(2).localScale -= Vector3.up * 0.0028f;
+    //                 if (HelpUI.GetChild(2).localScale.y < 0)
+    //                 {
+    //                     HelpUI.GetChild(2).localScale = Vector3.one + Vector3.down;
+    //                 }
+    //             }
+    //         }
+    //         yield return new WaitForSeconds(0.00001f);
+    //     }
+    //     HelpOpen = false;
+    //     // Debug.Log(HelpUI.rect.height);
 
-    }
+    // }
 }
