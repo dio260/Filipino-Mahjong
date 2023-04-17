@@ -15,6 +15,8 @@ public class TutorialPlayer : HumanPlayer
         chowButton.onClick.AddListener(() => TutorialManager.tutorial.ResetNextButton());
         passButton.onClick.AddListener(() => TutorialManager.tutorial.ResetNextButton());
         discardButton.onClick.AddListener(() => TutorialManager.tutorial.ResetNextButton());
+
+        HelpUI.SetActive(false);
     }
 
     public override void Update()
